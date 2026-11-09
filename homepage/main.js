@@ -216,7 +216,7 @@
     [0, 10, 20, 30].forEach((t) =>
       el("text", { x: X0 + t * S, y: 292, "text-anchor": "middle", class: "lbl mono dim" }, svg, String(t)));
     el("text", { x: X0 + 15 * S, y: 314, "text-anchor": "middle", class: "lbl dim" }, svg, "net gain under Gaussian noise (pt)");
-    say(`${signed(RERUN_MEAN)} pt rerun <span class="from">vs</span> <span style="color:var(--red)">${signed(COPIED_MEAN)}</span> copied`,
+    say(`${signed(RERUN_MEAN)} pt rerun <span class="from">vs</span> <span style="color:var(--terra-ink)">${signed(COPIED_MEAN)}</span> copied`,
       "Rerun with each network's own 64 + 64 labeled images, the program places its gates anew and keeps its gain. The first network's weight edit, copied unchanged, produces none.",
       "Mean over five ViT-Lites, held-out selection split (test split: +28.57). On the test split all ten programs keep 83% to 110% of their gain.",
       "navy");
@@ -256,7 +256,7 @@
       el("text", { x: X0 + t * S, y: top + 6 * 25 + 22, "text-anchor": "middle", class: "lbl mono dim" }, svg, String(t)));
     el("text", { x: X0 + 8 * S, y: top + 6 * 25 + 44, "text-anchor": "middle", class: "lbl dim" }, svg,
       "contrast robustness added on W1 (pt) · filled: met the bar");
-    say('<span style="color:var(--purple)">+5.23 to +14.50 pt</span> added',
+    say('<span style="color:var(--purple-ink)">+5.23 to +14.50 pt</span> added',
       "Each second program is written for the already edited network W1. The installed noise robustness moves by only −0.17 to +0.23 pt, and clean accuracy stays within 1.47 pt of the original.",
       "Held-out test split. Four of six pass the 10-point bar fixed before the sessions. None of the six writes the units of the noise gate.");
   }
@@ -343,7 +343,7 @@
       ft.fill.style.width = shown && v !== null ? pct(v) : "0%";
       ft.val.textContent = v === null ? "not reported" : nobound ? `${signed(v)} · clean ${signed(r.nbc)}` : signed(v);
     });
-    $("#lg-ft").style.background = nobound ? "var(--orange)" : "var(--gray-bar)";
+    $("#lg-ft").style.background = nobound ? "var(--pink)" : "var(--gb)";
     $("#lg-ft-t").textContent = nobound ? "Fine-tuning, best of 8, no clean-loss bound" : "Fine-tuning, best of 8";
     $("#chart-foot").textContent = nobound
       ? "Without the bound, fine-tuning passes the program only on ResNet-18 contrast (+26.70 against +21.28), and it pays 2.26 pt of clean accuracy for it. The program loses at most 0.5% of clean check images in every row."
@@ -490,7 +490,22 @@
   }
 
   /* =====================================================================
-     6. Copy buttons
+     6. Highlight the section in view in the top navigation
+     ===================================================================== */
+  const navLinks = $$(".topnav a");
+  if ("IntersectionObserver" in window && navLinks.length) {
+    const byId = new Map(navLinks.map((a) => [a.getAttribute("href").slice(1), a]));
+    const spy = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        navLinks.forEach((a) => a.classList.toggle("active", a === byId.get(e.target.id)));
+      });
+    }, { rootMargin: "-45% 0px -50% 0px" });
+    byId.forEach((_, id) => { const sec = document.getElementById(id); if (sec) spy.observe(sec); });
+  }
+
+  /* =====================================================================
+     7. Copy buttons
      ===================================================================== */
   $$(".copy").forEach((b) => b.addEventListener("click", async () => {
     const src = $("#" + b.dataset.copy);
