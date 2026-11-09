@@ -15,7 +15,8 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#fbf8f3">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -39,8 +40,9 @@
 </header>
 
 <main id="top">
+<div class="hero-bg">
 <div class="hero wrap">
-  <span class="eyebrow">W′ = p(W, I) · no gradients · runs without the LLM</span>
+  <span class="eyebrow"><b>W′ = p(W, I)</b> · no gradients · runs without the LLM</span>
   <h1>Install new capabilities into trained networks <span class="accent">by running a program.</span></h1>
   <p class="lead">A frozen language model reads a network's weights and the task knowledge, a rule, a few
     demonstrations or a few labeled examples, and writes an executable <b>weight program</b>. The program computes the
@@ -66,6 +68,15 @@
     <a class="btn" href="#skill">🧩 Use it from your agent</a>
   </div>
 
+  <!-- Results at a glance: held-out test sets (paper Tab. 2, Tab. 3, Fig. 4c) -->
+  <div class="glance">
+    <div class="g amber"><span class="gi">📜</span><span class="k">A rule · SCAN</span><b>0% → 99.8%</b><span class="t">exact match on commands with a verb seen only alone, 257 weights changed</span></div>
+    <div class="g green"><span class="gi">🦾</span><span class="k">8 demos · BabyAI</span><b>0% → 98.4%</b><span class="t">success on a new pickup mission; behavior cloning reaches at most 1.1%</span></div>
+    <div class="g blue"><span class="gi">🖼️</span><span class="k">64 + 64 images · ImageNet</span><b>+10.47 / +17.62</b><span class="t">pt net gain of a ResNet-18 under noise; best of 8 fine-tuning methods +8.67</span></div>
+    <div class="g purple"><span class="gi">♻️</span><span class="k">Reuse · 5 ViT-Lites</span><b>83–110%</b><span class="t">of each program's gain kept when rerun on networks it was not written for, with no LLM</span></div>
+  </div>
+  <p class="glance-note">Held-out test sets. Net gain: change on the new condition plus change in clean accuracy, in percentage points (pt).</p>
+
   <!-- The runner: the paper's program, step by step -->
   <div class="runner" id="runner" aria-label="Interactive: run a weight program">
     <div class="runner-head">
@@ -84,7 +95,7 @@
         <div class="ln" data-n="7" data-g="detect"><span>    b1[j1] = -kappa * t</span></div>
         <div class="ln cm" data-n="8" data-g="correct"><span>    # 3 correct: subtract the noise shift measured on the data</span></div>
         <div class="ln" data-n="9" data-g="correct"><span>    W2[:, j1] = -off / K_RAMP</span></div>
-        <div class="ln dim" data-n="10"><span>    ...  <span class="cm"># the same gate form on the class token, blocks 4 and 6</span></span></div>
+        <div class="ln dim" data-n="10"><span>    ...  <span class="cm"># same gate on the class token, blocks 4 and 6</span></span></div>
         <div class="ln dim" data-n="11"><span>    <span class="kw">return</span> deltas</span></div>
         <div class="shell" id="shell-rerun">$ weightcode apply --task new_network/task --program work/program --out rerun
 # the same program, run on a network it has never seen: no LLM call</div>
@@ -110,6 +121,7 @@
       Drawings are schematic. Numbers are from the paper: install and second programs on held-out test sets, reruns on the
       held-out selection split.</div>
   </div>
+</div>
 </div>
 
 <!-- 1. Install -->
@@ -207,16 +219,18 @@
     <h2>With the same examples and the same feedback, programs beat fine-tuning.</h2>
     <p class="intro">Every method gets the same 64 labeled corrupted images, 64 labeled clean images and 8 checks, and
       is kept only if it loses at most 0.5% of the clean check images. Net gain in points, held-out test sets.</p>
+    <div class="card chart-card">
     <div class="chart-head">
       <div class="legend">
-        <span><i style="background:var(--navy)"></i>WeightCode program</span>
-        <span><i style="background:var(--gray-bar)" id="lg-ft"></i><span id="lg-ft-t">Fine-tuning, best of 8</span></span>
-        <span><i style="background:var(--gray-bar-2)"></i>Best of 11 fixed references</span>
+        <span><i style="background:var(--blue)"></i>WeightCode program</span>
+        <span><i style="background:var(--gb)" id="lg-ft"></i><span id="lg-ft-t">Fine-tuning, best of 8</span></span>
+        <span><i style="background:var(--gb-lt)"></i>Best of 11 fixed references</span>
       </div>
       <label class="switch"><input type="checkbox" id="nobound"> Let fine-tuning lose clean accuracy</label>
     </div>
     <div class="rows" id="rows"></div>
     <p class="chart-foot" id="chart-foot">Under the same clean-accuracy bound, the program leads on all six settings.</p>
+    </div>
     <p class="note">Fine-tuning methods: full, last layer, normalization layers, LoRA rank 4 and 16, full without the clean
       images, full with LwF or L2-SP. Fixed references include label fits, Tent, BN adaptation and SAR. ImageNet shows the
       first program as a bar and the second as a tick.</p>
@@ -341,9 +355,13 @@ uv run python scripts/demo/skill_cli_walkthrough.py --root out/skill_cli</pre><b
   <div class="wrap">
     <div class="kicker">06 · paper and data</div>
     <h2>Everything behind the numbers.</h2>
+    <div class="abstract">
+      <div class="k">Abstract</div>
+      <p>Neural networks encode learned capabilities in their weights, yet extending those capabilities with explicit task knowledge remains a fundamental challenge. Here we show that executable weight programs can construct and install new computations directly within trained neural networks. WeightCode uses a frozen language model to write executable programs that translate task knowledge and measurements of a network’s weights and activations into weight modifications, selected by their effects on new and existing behavior; the installed computations run without the language model. Given a grammar or eight demonstrations, programs enable command compositions the network could not execute (exact match from 0% to 99.8%) and a new pickup action (success from 0% to 98.4%) while keeping the original commands and mission. On ImageNet, four programs improve a pretrained ResNet-18’s corruption robustness by 8.84–17.62 percentage points in net gain while preserving clean accuracy, exceeding the evaluated fine-tuning methods given the same task examples, external checks and retention rule. In a Vision Transformer, causal interventions show that an installed noise correction produces the robustness gain and that its selective activation protects clean accuracy. Rerun without the language model on five independently trained Vision Transformers, ten programs keep 83–110% of their source-network gains on average, whereas directly copying their numerical weight edits does not reproduce the gains. Programs written for an already edited network add a further capability while preserving the earlier gain. These findings establish executable weight programs as reusable specifications for constructing and extending capabilities within trained neural networks.</p>
+    </div>
     <div class="paper">
       <figure>
-        <a href="assets/fig1.png"><img src="assets/fig1.png" srcset="assets/fig1.png 1241w, img/fig1-2400.png 2400w" sizes="(max-width: 980px) 100vw, 680px" alt="Figure 1 of the paper: a frozen LLM writes a weight program; a rule, demonstrations or labeled examples become capabilities; one program recomputes edits on five other networks; new programs build on edited networks" loading="lazy"></a>
+        <a href="img/fig1-2400.png"><img src="assets/fig1.png" srcset="assets/fig1.png 1241w, img/fig1-2400.png 2400w" sizes="(max-width: 980px) 100vw, 680px" alt="Figure 1 of the paper: a frozen LLM writes a weight program; a rule, demonstrations or labeled examples become capabilities; one program recomputes edits on five other networks; new programs build on edited networks" loading="lazy"></a>
         <figcaption>Figure 1. Click to enlarge.</figcaption>
       </figure>
       <div>
@@ -379,7 +397,7 @@ uv run python scripts/demo/skill_cli_walkthrough.py --root out/skill_cli</pre><b
 <footer>
   <div class="wrap">
     <span>WeightCode · capabilities as programs, not gradient steps.</span>
-    <span><a href="https://github.com/Gen-Verse/WeightCode">GitHub</a> · <a href="https://huggingface.co/datasets/Boom5426/WeightCode">Hugging Face</a> · <a href="#top">Back to top ↑</a></span>
+    <span><a href="https://github.com/Gen-Verse/WeightCode">GitHub</a> · <a href="https://huggingface.co/datasets/Boom5426/WeightCode">Hugging Face</a> · <a href="https://github.com/Gen-Verse/WeightCode/blob/main/README.zh-CN.md">中文 README</a> · <a href="#top">Back to top ↑</a></span>
   </div>
 </footer>
 
