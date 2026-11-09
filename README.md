@@ -17,7 +17,6 @@
 </p>
 
 <p align="center">
-  <a href="https://gen-verse.github.io/WeightCode/">🌐&nbsp;Homepage</a> ·
   <a href="#what-we-achieved">🏆&nbsp;Results</a> ·
   <a href="#try-it">⚡&nbsp;Try&nbsp;it</a> ·
   <a href="#agent-skill">🧩&nbsp;Agent&nbsp;skill</a> ·
