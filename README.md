@@ -7,7 +7,6 @@
 </p>
 
 <p align="center">
-  <a href="https://gen-verse.github.io/WeightCode/"><img src="https://img.shields.io/badge/Homepage-Interactive-E0963A?style=for-the-badge" alt="Project homepage with an interactive demo"></a>
   <a href="#try-it"><img src="https://img.shields.io/badge/Try_it-Copy_%26_run-258D88?style=for-the-badge" alt="Copy the commands and run WeightCode locally"></a>
   <a href="#agent-skill"><img src="https://img.shields.io/badge/Agent_Skill-weightcode-405D96?style=for-the-badge" alt="Use WeightCode as an agent skill"></a>
   <a href="assets/WeightCode.pdf"><img src="https://img.shields.io/badge/Paper-PDF-B31B1B?style=for-the-badge" alt="Read the paper (PDF)"></a>
