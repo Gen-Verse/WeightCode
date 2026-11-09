@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WeightCode: Installing New Capabilities into Neural Networks via Weight Programming</title>
+<meta name="description" content="A frozen language model writes executable weight programs that install new capabilities into trained neural networks without gradient training. The updated network runs on its own; the program reruns on other networks.">
+<link rel="canonical" href="https://gen-verse.github.io/WeightCode/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="WeightCode: install new capabilities into trained networks by running a program">
+<meta property="og:description" content="SCAN 0% to 99.8% with 257 weights. BabyAI 0% to 98.4% from 8 demonstrations. ImageNet ResNet-18 +17.62 pt net gain under noise. Programs rerun on other networks; copied weight edits do not.">
+<meta property="og:url" content="https://gen-verse.github.io/WeightCode/">
+<meta property="og:image" content="https://gen-verse.github.io/WeightCode/assets/fig1.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="#top">WeightCode <span class="glyph">p(W, I)</span></a>
+    <nav class="topnav" aria-label="Sections">
+      <a href="#install">Install</a>
+      <a href="#compare">vs fine-tuning</a>
+      <a href="#mechanism">Mechanism</a>
+      <a href="#travel">Reuse</a>
+      <a href="#skill">Skill</a>
+      <a href="#paper">Paper</a>
+    </nav>
+    <div class="toplinks">
+      <a class="btn small" href="https://github.com/Gen-Verse/WeightCode">GitHub</a>
+      <a class="btn small" href="https://huggingface.co/datasets/Boom5426/WeightCode">🤗 Data</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+<div class="hero wrap">
+  <span class="eyebrow">W′ = p(W, I) · no gradients · runs without the LLM</span>
+  <h1>Install new capabilities into trained networks <span class="accent">by running a program.</span></h1>
+  <p class="lead">A frozen language model reads a network's weights and the task knowledge, a rule, a few
+    demonstrations or a few labeled examples, and writes an executable <b>weight program</b>. The program computes the
+    new weights; the updated network runs on its own, and the program reruns on other networks.</p>
+
+  <div class="authors">
+    Bo Li<sup>1,2,∗</sup>, Taoyong Cui<sup>3,∗,†</sup>, Bob Zhang<sup>1,‡</sup>, Mengran Li<sup>4</sup>,
+    Chengyang Zhang<sup>5</sup>, Yang Zhang<sup>2</sup>, Pheng Ann Heng<sup>3</sup>, Wanli Ouyang<sup>3</sup>,
+    Zhenfei Yin<sup>6,‡</sup>, Yingcheng Wu<sup>7,‡</sup>, Ling Yang<sup>8,‡</sup>
+  </div>
+  <div class="affils">
+    <span><sup>1</sup>University of Macau</span><span><sup>2</sup>National University of Singapore</span>
+    <span><sup>3</sup>The Chinese University of Hong Kong</span><span><sup>4</sup>Sun Yat-sen University</span>
+    <span><sup>5</sup>Sichuan University</span><span><sup>6</sup>University of Oxford</span>
+    <span><sup>7</sup>Stanford University</span><span><sup>8</sup>Peking University</span>
+    <br><span><sup>∗</sup>Equal contribution</span><span><sup>†</sup>Project lead</span><span><sup>‡</sup>Corresponding authors</span>
+  </div>
+
+  <div class="ctas">
+    <a class="btn primary" href="assets/WeightCode.pdf">📄 Paper (PDF)</a>
+    <a class="btn" href="https://github.com/Gen-Verse/WeightCode">💻 Code</a>
+    <a class="btn" href="https://huggingface.co/datasets/Boom5426/WeightCode">🤗 Data</a>
+    <a class="btn" href="#skill">🧩 Use it from your agent</a>
+  </div>
+
+  <!-- The runner: the paper's program, step by step -->
+  <div class="runner" id="runner" aria-label="Interactive: run a weight program">
+    <div class="runner-head">
+      <span class="title">▶ Run a weight program yourself</span>
+      <span class="hint">The program an LLM wrote to make a ViT-Lite (CIFAR-10) robust to Gaussian noise. Press the buttons in order.</span>
+    </div>
+    <div class="runner-body">
+      <div class="code" id="code" aria-label="Program excerpt">
+        <div class="file"><span class="dots"><i></i><i></i><i></i></span>program.py · excerpt (paper Fig. 3)</div>
+        <div class="ln dim" data-n="1"><span><span class="kw">def</span> <span class="fn">update</span>(student, experience):</span></div>
+        <div class="ln dim" data-n="2"><span>    ...  <span class="cm"># measure the network on its own images</span></span></div>
+        <div class="ln cm" data-n="3" data-g="free"><span>    # 1 free: the two units least used on clean images</span></div>
+        <div class="ln" data-n="4" data-g="free"><span>    j1, j2 = free[<span class="nu">0</span>], free[<span class="nu">1</span>]</span></div>
+        <div class="ln cm" data-n="5" data-g="detect"><span>    # 2 detect: project z on a noise direction d, open above t</span></div>
+        <div class="ln" data-n="6" data-g="detect"><span>    W1[j1] = kappa * d</span></div>
+        <div class="ln" data-n="7" data-g="detect"><span>    b1[j1] = -kappa * t</span></div>
+        <div class="ln cm" data-n="8" data-g="correct"><span>    # 3 correct: subtract the noise shift measured on the data</span></div>
+        <div class="ln" data-n="9" data-g="correct"><span>    W2[:, j1] = -off / K_RAMP</span></div>
+        <div class="ln dim" data-n="10"><span>    ...  <span class="cm"># the same gate form on the class token, blocks 4 and 6</span></span></div>
+        <div class="ln dim" data-n="11"><span>    <span class="kw">return</span> deltas</span></div>
+        <div class="shell" id="shell-rerun">$ weightcode apply --task new_network/task --program work/program --out rerun
+# the same program, run on a network it has never seen: no LLM call</div>
+        <div class="shell" id="shell-stack"># a second LLM session writes p2 for the edited network W1:
+# robustness to contrast, while keeping the noise gate</div>
+      </div>
+      <div class="stage">
+        <svg id="stage" viewBox="0 0 640 330" role="img" aria-label="Schematic of the network as the program runs"></svg>
+        <div class="readout" id="readout" aria-live="polite">
+          <div class="big"><span class="from">A trained ViT-Lite under Gaussian noise.</span></div>
+          <div class="sub">Its block-2 MLP has 512 units. Press <b>▶ Install</b> to run the program on it.</div>
+        </div>
+      </div>
+    </div>
+    <div class="controls">
+      <span class="step">1</span><button class="btn primary small" id="b-install">▶ Install</button>
+      <span class="step">2</span><button class="btn small" id="b-rerun" disabled>♻ Rerun on 5 other networks</button>
+      <span class="step">3</span><button class="btn small" id="b-stack" disabled>➕ Add a second program</button>
+      <span class="spacer"></span>
+      <button class="btn small" id="b-reset">↺ Reset</button>
+    </div>
+    <div class="runner-note">Bright code lines are quoted from the paper's Figure 3; grey lines summarize the rest of the program.
+      Drawings are schematic. Numbers are from the paper: install and second programs on held-out test sets, reruns on the
+      held-out selection split.</div>
+  </div>
+</div>
+
+<!-- 1. Install -->
+<section id="install" class="alt">
+  <div class="wrap">
+    <div class="kicker">01 · install</div>
+    <h2>A rule, eight demonstrations or 64 images become a new capability.</h2>
+    <p class="intro">The program writes the new computation into the network's existing weights. The network keeps
+      what it could already do. Pick the kind of task knowledge:</p>
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" aria-selected="true" data-tab="rule">📜 A rule · SCAN</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="demos">🦾 8 demonstrations · BabyAI</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="images">🖼️ 64 + 64 images · ImageNet</button>
+    </div>
+
+    <div class="panel on" data-panel="rule" role="tabpanel">
+      <div class="card">
+        <h3>Use a verb seen only alone, inside known commands</h3>
+        <div class="meta">A Transformer trained on SCAN saw <code>jump</code> only on its own.</div>
+        <div class="beforeafter"><span class="b">0%</span><span class="arrow">→</span><span class="a">99.8%</span></div>
+        <div class="meta">exact match on the commands that compose <code>jump</code></div>
+        <ul class="facts">
+          <li><span class="i">✍️</span><span>Given the grammar, 64 old commands and the <code>jump</code> row</span></li>
+          <li><span class="i">🎯</span><span>257 weights changed; old commands unchanged</span></li>
+          <li class="ref"><span class="i">⚖️</span><span>Training on grammar-generated data: 99.6%, changing 152,718 weights</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>What the program wrote</h3>
+        <p class="meta">It moves the embedding of <code>jump</code> to the centroid of <code>walk</code>, <code>look</code>
+          and <code>run</code>, and adds an output row for its action. The composition the network already computes now
+          carries the new verb.</p>
+        <div class="example">
+          <span class="dimtxt">known</span>&nbsp; walk twice → WALK WALK<br>
+          <span class="dimtxt">known</span>&nbsp; jump → JUMP<br>
+          <span class="dimtxt">before</span> jump twice → <span class="bad">✗ wrong</span><br>
+          <span class="dimtxt">after</span>&nbsp; jump twice → <span class="ok">JUMP JUMP ✓</span>
+        </div>
+        <p class="note">A second rule, <code>around right</code>: 17.6% → 89.6% exact match with 25,056 weights, old
+          commands −0.3 pt.</p>
+      </div>
+    </div>
+
+    <div class="panel" data-panel="demos" role="tabpanel">
+      <div class="card">
+        <h3>Add a new action to a navigation policy</h3>
+        <div class="meta">A BabyAI policy trained to go to a named object never used the pickup action.</div>
+        <div class="beforeafter"><span class="b">0%</span><span class="arrow">→</span><span class="a">98.4%</span></div>
+        <div class="meta">success on the new mission <i>pick up</i></div>
+        <ul class="facts">
+          <li><span class="i">✍️</span><span>Given 8 demonstrations and 64 old steps</span></li>
+          <li><span class="i">🎯</span><span>21,482 weights changed; old mission +0.4 pt</span></li>
+          <li class="ref"><span class="i">⚖️</span><span>Behavior cloning on the same 8 demonstrations: at most 1.1%</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>It generalizes past the demonstrations</h3>
+        <p class="meta">Success stays at <b>98.9%</b> on episodes whose object color and type never appear in the eight
+          demonstrations (selection split).</p>
+        <div class="example">
+          before: goes to the ball, <span class="bad">never picks it up</span><br>
+          after:&nbsp; goes to the ball, <span class="ok">picks it up</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" data-panel="images" role="tabpanel">
+      <div class="card">
+        <h3>Recognize noisy images among 1,000 classes</h3>
+        <div class="meta">torchvision's ResNet-18, unchanged on its 1,000 ImageNet classes: top-1 under Gaussian noise.</div>
+        <div class="beforeafter"><span class="b">21.7%</span><span class="arrow">→</span><span class="a">39.7%</span></div>
+        <div class="meta">two independently written programs reach 32.4% and 39.7%</div>
+        <ul class="facts">
+          <li><span class="i">✍️</span><span>Given 64 labeled noisy and 64 labeled clean images</span></li>
+          <li><span class="i">🎯</span><span>Net gain +10.47 and +17.62 pt; clean top-1 −0.25 and −0.40 pt</span></li>
+          <li class="ref"><span class="i">⚖️</span><span>Best of 8 fine-tuning methods, same images and checks: +8.67 pt</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Under contrast reduction too</h3>
+        <p class="meta">Two programs for contrast reach net gains of <b>+8.84</b> and <b>+14.26</b> pt, against
+          <b>+3.38</b> for the best fine-tuning. All four programs keep clean top-1 within 0.47 pt of the original
+          network.</p>
+        <p class="note">Net gain: accuracy change on the new condition plus the change in clean accuracy, in percentage
+          points (pt).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 2. Compare -->
+<section id="compare">
+  <div class="wrap">
+    <div class="kicker">02 · same data, more gain</div>
+    <h2>With the same examples and the same feedback, programs beat fine-tuning.</h2>
+    <p class="intro">Every method gets the same 64 labeled corrupted images, 64 labeled clean images and 8 checks, and
+      is kept only if it loses at most 0.5% of the clean check images. Net gain in points, held-out test sets.</p>
+    <div class="chart-head">
+      <div class="legend">
+        <span><i style="background:var(--navy)"></i>WeightCode program</span>
+        <span><i style="background:var(--gray-bar)" id="lg-ft"></i><span id="lg-ft-t">Fine-tuning, best of 8</span></span>
+        <span><i style="background:var(--gray-bar-2)"></i>Best of 11 fixed references</span>
+      </div>
+      <label class="switch"><input type="checkbox" id="nobound"> Let fine-tuning lose clean accuracy</label>
+    </div>
+    <div class="rows" id="rows"></div>
+    <p class="chart-foot" id="chart-foot">Under the same clean-accuracy bound, the program leads on all six settings.</p>
+    <p class="note">Fine-tuning methods: full, last layer, normalization layers, LoRA rank 4 and 16, full without the clean
+      images, full with LwF or L2-SP. Fixed references include label fits, Tent, BN adaptation and SAR. ImageNet shows the
+      first program as a bar and the second as a tick.</p>
+  </div>
+</section>
+
+<!-- 3. Mechanism -->
+<section id="mechanism" class="alt">
+  <div class="wrap">
+    <div class="kicker">03 · open the network</div>
+    <h2>The program writes a gate you can switch off and measure.</h2>
+    <p class="intro">On the ViT-Lite under Gaussian noise, the program turns two idle MLP units into a ramp gate. It
+      subtracts the measured noise shift only from tokens whose projection on a noise direction lies above the clean
+      range.</p>
+    <div class="mech">
+      <div class="card">
+        <h3>The gate, g(z) = GELU(k(dᵀz − t)) − GELU(k(dᵀz − t) − K)</h3>
+        <svg id="gate" viewBox="0 0 520 250" role="img" aria-label="Gate response against the token's projection"></svg>
+        <label class="sr-only" for="proj">Token projection on the noise direction</label>
+        <input type="range" id="proj" min="0" max="100" value="22">
+        <div class="gate-readout"><span id="gate-state">clean token: gate closed, passes unchanged</span><span>noise shift removed <b id="gate-val">0%</b></span></div>
+        <div class="stat">
+          <div><b>99.5%</b>of noisy patch tokens open the gate</div>
+          <div><b>0.5%</b>of clean patch tokens do</div>
+          <div><b>5.29 → 0.50</b>noisy-minus-clean offset</div>
+        </div>
+        <p class="note">Curve: the form of Eq. 2 with illustrative k, t and K; the program measures them on each network.
+          Rates: selection split.</p>
+      </div>
+      <div class="card">
+        <h3>Interventions on the program</h3>
+        <p class="meta">Net gain of the noise program and of each variant, in points (selection split).</p>
+        <div class="ablate" id="ablate"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. Travel and stack -->
+<section id="travel">
+  <div class="wrap">
+    <div class="kicker">04 · reuse and succession</div>
+    <h2>Programs travel to new networks. Weight edits do not.</h2>
+    <p class="intro">A program reads each network and writes that network's own edit, with no new LLM session. Later
+      programs can build on an edited network without undoing it.</p>
+    <div class="duo">
+      <div class="card green">
+        <h3>♻️ Rerun on five independently trained ViT-Lites</h3>
+        <div class="kpi">
+          <div><b class="navy">+28.14 pt</b>noise program, rerun</div>
+          <div><b class="red">−0.10 pt</b>its weight edit, copied</div>
+          <div><b>83–110%</b>of each program's gain kept, all ten programs (held-out test)</div>
+        </div>
+        <p class="meta">Clean accuracy stays within 1 pt on 48 of the 50 transfers. Rerun and copy: mean over the five
+          networks, selection split. On ResNet-18s fine-tuned from the same ImageNet weights, a copied edit keeps 87–96% of
+          the rerun gain: edits copy only between networks that share their starting point.</p>
+      </div>
+      <div class="card purple">
+        <h3>➕ Second programs on an already edited network</h3>
+        <div class="kpi">
+          <div><b class="purple">+5.23 to +14.50</b>pt of contrast robustness added by six second programs</div>
+          <div><b>−0.17 to +0.23</b>pt change in the installed noise robustness</div>
+        </div>
+        <p class="meta">Clean accuracy stays within 1.47 pt of the original network; four of six pass the 10-point bar fixed
+          before the sessions (held-out test). None of the six writes the units that hold the noise gate. In the reverse
+          order, six noise programs add +30.9 to +37.7 pt (selection split).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. Skill -->
+<section id="skill" class="alt">
+  <div class="wrap">
+    <div class="kicker">05 · use it today</div>
+    <h2>Ask your coding agent. Get back a checked model and the program that built it.</h2>
+    <p class="intro">The <code>weightcode</code> agent skill runs the whole workflow on your own model: import, bind your
+      data, reuse or write a program in a sandbox, and release the update only if it holds up on data the program never
+      saw. First supported model: torchvision ResNet-18.</p>
+    <div class="skill">
+      <div class="term">
+        <div class="bar-top"><span class="dots"><i></i><i></i><i></i></span><span class="grow">claude · your-project</span><button id="replay">replay</button></div>
+        <pre id="term" aria-label="What the agent runs"></pre>
+      </div>
+      <div class="gets">
+        <div class="card"><h4>📥 You bring</h4><p>An FP32 ResNet-18 <code>state_dict</code>, its class list, three disjoint
+          image sets (experience, selection, final) and the clean-accuracy loss you accept.</p></div>
+        <div class="card"><h4>📦 You get</h4><p><code>model.pt</code> (updated only if <code>accepted</code>), the program
+          bundle that reruns on other checkpoints, and <code>report.json</code>: accepted, base-kept or final-rejected.</p></div>
+        <div class="card"><h4>🔒 Why you can trust it</h4><p>The final split is scored once, after the choice is frozen.
+          Edits are bounded and run in a bubblewrap sandbox with no network. Rerun on the same inputs, the program
+          reproduces the released weights exactly.</p></div>
+      </div>
+    </div>
+
+    <div class="steps3">
+      <div>
+        <div class="n">STEP 1</div><h3>Install the engine and the skill</h3>
+        <p>Linux, uv, Python 3.14 under /usr, bubblewrap 0.11+. No API key needed.</p>
+        <div class="copyblock"><pre id="cb-install">git clone https://github.com/Gen-Verse/WeightCode.git && cd WeightCode
+uv sync --locked --extra train --extra dev
+bash scripts/setup_sandbox_venv.sh
+mkdir -p ~/.claude/skills && cp -r skills/weightcode ~/.claude/skills/</pre><button class="copy" data-copy="cb-install">Copy</button></div>
+      </div>
+      <div>
+        <div class="n">STEP 2</div><h3>Check it in 40 seconds</h3>
+        <p>Runs every skill command on a small synthetic project.</p>
+        <div class="copyblock"><pre id="cb-check">uv run weightcode doctor --sandbox-python .venv-sandbox/bin/python
+uv run python scripts/demo/skill_cli_walkthrough.py --root out/skill_cli</pre><button class="copy" data-copy="cb-check">Copy</button></div>
+      </div>
+      <div>
+        <div class="n">STEP 3</div><h3>Ask your agent</h3>
+        <p>In Claude Code, inside your own project:</p>
+        <div class="copyblock"><pre id="cb-ask" style="white-space:pre-wrap">Use $weightcode to improve my ResNet-18 on these new-condition examples while preserving clean recognition. My checkpoint is model.pt, and labels.json gives its class order. I have separate experience, selection and final image folders. Allow at most 1 percentage point of clean-accuracy loss. First inspect compatibility and propose the run budget.</pre><button class="copy" data-copy="cb-ask">Copy</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. Data and paper -->
+<section id="paper">
+  <div class="wrap">
+    <div class="kicker">06 · paper and data</div>
+    <h2>Everything behind the numbers.</h2>
+    <div class="paper">
+      <figure>
+        <a href="assets/fig1.png"><img src="assets/fig1.png" srcset="assets/fig1.png 1241w, img/fig1-2400.png 2400w" sizes="(max-width: 980px) 100vw, 680px" alt="Figure 1 of the paper: a frozen LLM writes a weight program; a rule, demonstrations or labeled examples become capabilities; one program recomputes edits on five other networks; new programs build on edited networks" loading="lazy"></a>
+        <figcaption>Figure 1. Click to enlarge.</figcaption>
+      </figure>
+      <div>
+        <h3>WeightCode: Installing New Capabilities into Neural Networks via Weight Programming</h3>
+        <p class="meta">Bo Li, Taoyong Cui, Bob Zhang, Mengran Li, Chengyang Zhang, Yang Zhang, Pheng Ann Heng, Wanli
+          Ouyang, Zhenfei Yin, Yingcheng Wu, Ling Yang</p>
+        <div class="ctas" style="margin-top:14px">
+          <a class="btn primary" href="assets/WeightCode.pdf">📄 Read the paper</a>
+          <a class="btn" href="https://github.com/Gen-Verse/WeightCode">💻 Code</a>
+        </div>
+        <h4 style="margin:26px 0 4px">🤗 Data on Hugging Face</h4>
+        <p class="meta">Datasets, trained networks and session records:
+          <a href="https://huggingface.co/datasets/Boom5426/WeightCode">Boom5426/WeightCode</a></p>
+        <div class="copyblock"><pre id="cb-data">uvx --with click --from huggingface-hub==1.3.4 hf download \
+  Boom5426/WeightCode --repo-type dataset --local-dir weightcode-data</pre><button class="copy" data-copy="cb-data">Copy</button></div>
+        <h4 style="margin:26px 0 4px">Cite</h4>
+        <div class="copyblock bib"><pre id="cb-bib">@misc{li2026weightcode,
+  title  = {WeightCode: Installing New Capabilities into
+            Neural Networks via Weight Programming},
+  author = {Li, Bo and Cui, Taoyong and Zhang, Bob and Li, Mengran
+            and Zhang, Chengyang and Zhang, Yang and Heng, Pheng Ann
+            and Ouyang, Wanli and Yin, Zhenfei and Wu, Yingcheng
+            and Yang, Ling},
+  year   = {2026},
+  url    = {https://github.com/Gen-Verse/WeightCode}
+}</pre><button class="copy" data-copy="cb-bib">Copy</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>WeightCode · capabilities as programs, not gradient steps.</span>
+    <span><a href="https://github.com/Gen-Verse/WeightCode">GitHub</a> · <a href="https://huggingface.co/datasets/Boom5426/WeightCode">Hugging Face</a> · <a href="#top">Back to top ↑</a></span>
+  </div>
+</footer>
+
+<script src="main.js"></script>
+</body>
+</html>

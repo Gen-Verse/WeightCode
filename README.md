@@ -3,9 +3,11 @@
 <h3 align="center">🧬 Installing New Capabilities into Neural Networks via Weight Programming</h3>
 
 <p align="center">
+  <a href="https://gen-verse.github.io/WeightCode/"><img src="https://img.shields.io/badge/Homepage-Interactive-E0963A?style=for-the-badge" alt="Project homepage with an interactive demo"></a>
+  <a href="#try-it"><img src="https://img.shields.io/badge/Try_it-Copy_%26_run-258D88?style=for-the-badge" alt="Copy the commands and run WeightCode locally"></a>
+  <a href="#agent-skill"><img src="https://img.shields.io/badge/Agent_Skill-weightcode-405D96?style=for-the-badge" alt="Use WeightCode as an agent skill"></a>
   <a href="assets/WeightCode.pdf"><img src="https://img.shields.io/badge/Paper-PDF-B31B1B?style=for-the-badge" alt="Read the paper (PDF)"></a>
-  <a href="#quick-start"><img src="https://img.shields.io/badge/Quick_Start-Run_the_Demo-258D88?style=for-the-badge" alt="Run the toy demo"></a>
-  <a href="#use-weightcode-on-your-own-model"><img src="https://img.shields.io/badge/Agent_Skill-weightcode-405D96?style=for-the-badge" alt="Use the agent skill"></a>
+  <a href="https://huggingface.co/datasets/Boom5426/WeightCode"><img src="https://img.shields.io/badge/Data-Hugging_Face-FFD21E?style=for-the-badge&amp;logo=huggingface&amp;logoColor=black" alt="Get the data on Hugging Face"></a>
 </p>
 
 <p align="center">
@@ -15,43 +17,32 @@
 </p>
 
 <p align="center">
-  <a href="#what-the-paper-shows">📊&nbsp;Results</a> ·
+  <a href="https://gen-verse.github.io/WeightCode/">🌐&nbsp;Homepage</a> ·
+  <a href="#what-we-achieved">🏆&nbsp;Results</a> ·
+  <a href="#try-it">⚡&nbsp;Try&nbsp;it</a> ·
+  <a href="#agent-skill">🧩&nbsp;Agent&nbsp;skill</a> ·
   <a href="#how-it-works">⚙️&nbsp;How&nbsp;it&nbsp;works</a> ·
-  <a href="#quick-start">🚀&nbsp;Quick&nbsp;start</a> ·
-  <a href="#use-weightcode-on-your-own-model">🧩&nbsp;Agent&nbsp;skill</a> ·
+  <a href="#quick-start">🚀&nbsp;More&nbsp;checks</a> ·
   <a href="#run-the-experiments">🔬&nbsp;Experiments</a> ·
+  <a href="https://huggingface.co/datasets/Boom5426/WeightCode">🤗&nbsp;Data</a> ·
   <a href="#repository-map">🗂️&nbsp;Code&nbsp;map</a>
 </p>
 
-💡 **A trained neural network can gain a new capability from a program instead of from gradient training.**
-WeightCode uses a frozen language model to write an executable *weight program* `p`. The program reads a network's
-weights `W` and task knowledge `I`, such as a rule, a few demonstrations or a few labeled examples, and computes new
-weights, `W′ = p(W, I)`. The new computation then runs inside the original network, without the language model.
-The program is kept: rerun on another network, it builds that network's own edit, and later programs can build on it.
+💡 **WeightCode installs new capabilities into trained neural networks without gradient training.** A frozen
+language model writes an executable *weight program* that turns a rule, a few demonstrations or a few labeled
+examples into new weights; the updated network runs on its own, and the program reruns on other networks.
+🧩 It ships as an **agent skill**: ⚡ [copy the commands and run it ↓](#try-it)
 
 <p align="center">
   <a href="assets/fig1.png"><img src="assets/fig1.png" width="1100" alt="Figure 1 of the paper: a frozen LLM writes a weight program from a trained network and task knowledge; a rule, 8 demonstrations or 64 + 64 labeled images become new capabilities in SCAN, BabyAI and ImageNet; one program recomputes effective edits on five other networks; new programs build on already edited networks"></a>
 </p>
+<p align="center">
+  <sub>🖼️ Figure 1 of <a href="assets/WeightCode.pdf">the paper</a>. Click the figure to enlarge.</sub>
+</p>
 
-<table>
-  <tr>
-    <th align="center" width="33%">📜 From a rule · SCAN</th>
-    <th align="center" width="33%">🦾 From 8 demonstrations · BabyAI</th>
-    <th align="center" width="34%">🖼️ From 64 + 64 labeled images · ImageNet</th>
-  </tr>
-  <tr>
-    <td align="center"><strong>0% → 99.8%</strong><br>exact match with a verb seen only alone<br><sub>257 weights changed</sub></td>
-    <td align="center"><strong>0% → 98.4%</strong><br>success on a new pickup action<br><sub>behavior cloning on the same demos: 1.1%</sub></td>
-    <td align="center"><strong>21.7% → 32.4% / 39.7%</strong><br>top-1 under noise, 1,000 classes<br><sub>net gain +10.47 / +17.62 pt vs +8.67 for fine-tuning</sub></td>
-  </tr>
-</table>
+<a id="what-we-achieved"></a>
 
-📏 Held-out test sets. **Net gain** is the accuracy change on the new condition plus the change in clean accuracy;
-**pt** means percentage points.
-
-<a id="what-the-paper-shows"></a>
-
-## 📊 What the paper shows
+## 🏆 What we achieved
 
 | | Finding | Key result |
 | :--- | :--- | :--- |
@@ -62,11 +53,81 @@ The program is kept: rerun on another network, it builds that network's own edit
 | 🧱 **Succession** | New programs build on an already edited network and keep the earlier capability. | **+5.2 to +14.5 pt** added · earlier within **0.23 pt** |
 
 📄 **[Read the paper](assets/WeightCode.pdf)** for the full comparisons, the mechanism analyses and every session.
+🤗 **[Get the data on Hugging Face](https://huggingface.co/datasets/Boom5426/WeightCode)**.
+📏 Net gain is the accuracy change on the new condition plus the change in clean accuracy, in percentage points (pt).
 Mechanism and copied-edit numbers are on a held-out analysis split; the rest are on held-out test sets.
+
+<a id="try-it"></a>
+<a id="install"></a>
+
+## ⚡ Try it: copy, paste, run
+
+🖥️ Needs **Linux x86-64**, [uv](https://docs.astral.sh/uv/), a distribution **Python 3.14 under `/usr`**, and
+[bubblewrap](https://github.com/containers/bubblewrap) **0.11+** at `/usr/bin/bwrap` (Ubuntu:
+`sudo apt install bubblewrap`). No API key and no dataset download.
+
+```bash
+git clone https://github.com/Gen-Verse/WeightCode.git && cd WeightCode
+uv sync --locked --extra train --extra dev
+bash scripts/setup_sandbox_venv.sh
+mkdir -p ~/.claude/skills && cp -r skills/weightcode ~/.claude/skills/
+uv run weightcode doctor --sandbox-python .venv-sandbox/bin/python
+uv run python scripts/demo/skill_cli_walkthrough.py --root out/skill_cli
+```
+
+✅ This installs the engine and its NumPy-only sandbox, installs the skill for Claude Code, checks the sandbox
+(`"status": "ok"`), and runs every skill command on a small synthetic project in about 40 s. The bundled example
+program is too weak for that project, so the run ends with `status: base-kept`: the engine kept the original model.
+If a step fails, see [troubleshooting](#troubleshooting).
+
+💬 **Then open Claude Code in your own project and ask:**
+
+```text
+Use $weightcode to improve my ResNet-18 on these new-condition examples while preserving clean recognition.
+My checkpoint is model.pt, and labels.json gives its class order. I have separate experience,
+selection and final image folders. Allow at most 1 percentage point of clean-accuracy loss.
+First inspect compatibility and propose the run budget.
+```
+
+<a id="agent-skill"></a>
+
+## 🧩 The agent skill
+
+🗣️ **Tell your coding agent what the network should learn. Get back a checked model, the program that built it, and a
+report.** The [`weightcode` skill](skills/weightcode/SKILL.md) drives the whole workflow: it imports your checkpoint,
+binds your data, reuses or writes a weight program in a sandbox, and releases an update only if it holds up on data
+the program never saw.
+
+| 📥 You bring | 🤖 The agent runs | 📦 You get |
+| :--- | :--- | :--- |
+| 🧠 An FP32 torchvision ResNet-18 `state_dict` and its class list<br>🗂️ Three disjoint image sets: *experience* (seen by the program), *selection* (scores candidates), *final* (validates once)<br>🎚️ The clean-accuracy loss you accept | 🔍 Compatibility check and import<br>♻️ **Reuse** an existing program, no language-model call<br>✍️ **Synthesize** a new one with the controlled editor (Claude Code, explicit budget)<br>🏆 A fixed selection rule, then one final validation | 🧠 `model.pt`: the updated model if `accepted`, the original otherwise<br>📝 The program bundle, rerunnable on other checkpoints<br>📋 `report.json`: `accepted`, `base-kept` or `final-rejected` |
+
+### ✅ Why you can trust what comes back
+
+- 🔒 **Final data is scored once**, after the selection is frozen in a write-once file.
+- 🛡️ **No quiet regressions.** An update ships only if it meets your thresholds on both the selection and the final
+  split. Otherwise the original model is returned and the report says so.
+- 📏 **Bounded edits.** By default a program may touch at most 5% of the network's weights and change each weight
+  tensor by at most half its norm. It runs in a 🫧 bubblewrap sandbox with no network.
+- ♻️ **Replayable.** The kept program is a file; rerun on the same inputs, it reproduces the released weights exactly.
+
+### 🔌 Other agents and your own model
+
+🤖 With Codex's skill installer:
+
+```text
+Use $skill-installer to install the skill at
+https://github.com/Gen-Verse/WeightCode/tree/main/skills/weightcode
+```
+
+📘 The [command walkthrough](skills/weightcode/references/workflow.md) lists every `weightcode` command for your own
+model. Synthesis currently runs through Claude Code; Codex can operate the skill and reuse programs.
 
 <a id="how-it-works"></a>
 
 ## ⚙️ How it works
+
+A weight program computes **`W′ = p(W, I)`** from a network's weights `W` and task knowledge `I`:
 
 1. 👀 **Read.** The editor, a frozen language model, works in a NumPy-only sandbox with the network's weights, its
    forward code and the task knowledge `I`. It can run the network and measure its activations.
@@ -83,28 +144,11 @@ Mechanism and copied-edit numbers are on a held-out analysis split; the rest are
 
 <a id="quick-start"></a>
 
-## 🚀 Quick start
+## 🚀 More checks
 
-🎈 The toy demo runs the whole workflow with no dataset download and no API key. A scripted editor drives the real
-sandbox, checks, selection rule and program reuse.
+🎈 With the engine installed ([Try it](#try-it)), everything here runs with no dataset download and no API key.
 
-### 📦 1. Install
-
-Requirements: **Linux x86-64**, [uv](https://docs.astral.sh/uv/), a distribution **Python 3.14 under `/usr`**, and
-[bubblewrap](https://github.com/containers/bubblewrap) **0.11+** at `/usr/bin/bwrap`. Unprivileged user namespaces
-must be available. On Ubuntu, install bubblewrap with `sudo apt install bubblewrap`.
-
-```bash
-git clone https://github.com/Gen-Verse/WeightCode.git
-cd WeightCode
-uv sync --locked --extra train --extra dev
-bash scripts/setup_sandbox_venv.sh
-```
-
-The main environment is `.venv`; the NumPy-only sandbox environment is `.venv-sandbox`. Versions are locked in
-`uv.lock` and `scripts/sandbox_requirements.lock`.
-
-### ▶️ 2. Run the demo
+### ▶️ 1. Run the toy demo
 
 ```bash
 .venv/bin/python scripts/demo/toy_walkthrough.py --root out/toy_demo
@@ -125,78 +169,7 @@ It takes about 5 seconds. Among its last lines (ids are random):
 📁 Session logs, the selected program, network readouts and transfer records are written under `out/toy_demo/`. Use a
 new `--root` for another run. The demo also prints a `--dry-run` command that shows the prompts of a real session.
 
-### 🧪 3. Check the installation
-
-```bash
-.venv/bin/python -m pytest -q \
-  tests/test_patch_ops.py tests/test_patch_validation.py \
-  tests/test_sandbox_isolation.py tests/test_sandbox_kernel.py \
-  tests/test_harness_e2e.py tests/test_harness_e11.py tests/test_demo_toy_walkthrough.py \
-  tests/test_application.py tests/test_skill_docs.py
-```
-
-✅ Expected: `230 passed` in one to two minutes, with no `skipped`. A skip means the sandbox is unavailable (see below).
-
-<details>
-<summary><strong>🩺 Run the full suite and troubleshoot the sandbox</strong></summary>
-
-Run all tests with `.venv/bin/python -m pytest -q` (about 50 minutes). Some checks need external datasets, saved
-sessions or the authors' local research records, and skip without them.
-
-| Issue | Action |
-| :--- | :--- |
-| ⏭️ Sandbox tests skip | Check `/usr/bin/bwrap` and run `bash scripts/setup_sandbox_venv.sh`. |
-| 🐍 The sandbox interpreter is refused | Use a distribution Python under `/usr`; uv-managed and conda interpreters lie outside the sandbox mounts. |
-| 🫧 bubblewrap reports a namespace or uid-map error | Check that the host allows unprivileged user namespaces and `/usr/bin/bwrap`. |
-| 📦 The sandbox environment already exists | Setup preserves it; use the existing environment or choose a new target with `--target`. |
-| 📁 The demo output directory already exists | Pass a new `--root`; existing records are preserved. |
-
-</details>
-
-<a id="use-weightcode-on-your-own-model"></a>
-
-## 🧩 Use WeightCode on your own model
-
-The [`weightcode` agent skill](skills/weightcode/SKILL.md) lets a coding agent install a capability in your own
-trained model. The agent imports the checkpoint, binds your data, runs or writes a weight program, and exports the
-result only if it passes your thresholds on data the program never saw. The engine behind it is the `weightcode` CLI.
-
-| Workflow | What happens | Needs |
-| :--- | :--- | :--- |
-| ♻️ **Reuse** | Rerun an existing program on your checkpoint and your examples. | No language-model call |
-| ✍️ **Synthesize** | The controlled editor writes and checks a new program for your task. | Claude Code and an explicit budget |
-| 📦 **Export** | Save a plain `state_dict`, the program bundle and a validation report. | A final split kept apart from both |
-
-🎯 **First supported model:** an FP32 torchvision ResNet-18 saved as a plain `state_dict`, with an ordered class list
-and standard ImageNet preprocessing. You supply three disjoint image sets: *experience* (seen by the program),
-*selection* (scores candidates) and *final* (validates the chosen one once). The report says `accepted`,
-`base-kept` or `final-rejected`; only an accepted update replaces the original model.
-
-### 🔌 Install the skill
-
-In Claude Code, copy the skill into your personal skills directory (or into `.claude/skills/` of a project):
-
-```bash
-mkdir -p ~/.claude/skills && cp -r skills/weightcode ~/.claude/skills/
-```
-
-With Codex's skill installer:
-
-```text
-Use $skill-installer to install the skill at
-https://github.com/Gen-Verse/WeightCode/tree/main/skills/weightcode
-```
-
-Install the engine and the sandbox with the [quick-start commands](#quick-start), then ask, for example:
-
-```text
-Use $weightcode to improve my ResNet-18 on these new-condition examples while preserving clean recognition.
-My checkpoint is model.pt, and labels.json gives its class order. I have separate experience,
-selection and final image folders. Allow at most 1 percentage point of clean-accuracy loss.
-First inspect compatibility and propose the run budget.
-```
-
-### ⚡ Try the full application loop without an API key
+### ⚡ 2. The skill's application loop, explained
 
 ```bash
 uv run weightcode doctor --sandbox-python .venv-sandbox/bin/python
@@ -213,12 +186,38 @@ uv run python scripts/demo/skill_roundtrip.py --out out/skill_demo --sandbox-pyt
   and the rerun writes a different edit for the second network.
 
 ⚠️ Both checks use synthetic images, so they test the engine, not recognition quality. Together they write about
-1.5 GB under `out/`.
+1.5 GB under `out/`. The bundled [`resnet18-ridge-head`](programs/resnet18-ridge-head/program.py) example is a
+reusable analytic head correction; it is not one of the paper's programs.
 
-📘 For your own model, follow the [command walkthrough](skills/weightcode/references/workflow.md). The
-[`resnet18-ridge-head`](programs/resnet18-ridge-head/program.py) example is a reusable analytic head correction; it
-is not one of the paper's programs. Synthesis currently runs through Claude Code; Codex can operate the skill and
-reuse programs.
+### 🧪 3. Check the installation
+
+```bash
+.venv/bin/python -m pytest -q \
+  tests/test_patch_ops.py tests/test_patch_validation.py \
+  tests/test_sandbox_isolation.py tests/test_sandbox_kernel.py \
+  tests/test_harness_e2e.py tests/test_harness_e11.py tests/test_demo_toy_walkthrough.py \
+  tests/test_application.py tests/test_skill_docs.py
+```
+
+✅ Expected: `231 passed` in about two minutes, with no `skipped`. A skip means the sandbox is unavailable (see below).
+
+<a id="troubleshooting"></a>
+
+<details>
+<summary><strong>🩺 Run the full suite and troubleshoot the sandbox</strong></summary>
+
+Run all tests with `.venv/bin/python -m pytest -q` (about 50 minutes). Some checks need external datasets, saved
+sessions or the authors' local research records, and skip without them.
+
+| Issue | Action |
+| :--- | :--- |
+| ⏭️ Sandbox tests skip | Check `/usr/bin/bwrap` and run `bash scripts/setup_sandbox_venv.sh`. |
+| 🐍 The sandbox interpreter is refused | Use a distribution Python under `/usr`; uv-managed and conda interpreters lie outside the sandbox mounts. |
+| 🫧 bubblewrap reports a namespace or uid-map error | Check that the host allows unprivileged user namespaces and `/usr/bin/bwrap`. |
+| 📦 The sandbox environment already exists | Setup preserves it; use the existing environment or choose a new target with `--target`. |
+| 📁 The demo output directory already exists | Pass a new `--root`; existing records are preserved. |
+
+</details>
 
 <a id="run-the-experiments"></a>
 
@@ -238,8 +237,14 @@ Use `.venv/bin/python <entry-point> --help` for arguments and task-specific opti
 <details>
 <summary><strong>🗄️ Use an experiment store or run a live session</strong></summary>
 
-Full datasets, trained checkpoints and session records live in a separate store and are not bundled here. Point the
-three variables below at existing directories, or start from [scripts/env.sh.example](scripts/env.sh.example).
+Full datasets, trained checkpoints and session records are not bundled here. 🤗 The data are on
+[Hugging Face](https://huggingface.co/datasets/Boom5426/WeightCode):
+
+```bash
+uvx --with click --from huggingface-hub==1.3.4 hf download Boom5426/WeightCode --repo-type dataset --local-dir weightcode-data
+```
+
+Point the three variables below at existing directories, or start from [scripts/env.sh.example](scripts/env.sh.example).
 
 ```bash
 export WEIGHTCODE_PRIVATE=/path/to/store/private
@@ -270,6 +275,8 @@ then pass credentials with `--api-key-file`. Live sessions cost API credit, and 
 | 📜 [`scripts/`](scripts/) | Demos and the drivers for data, training, sessions, reuse and successive programs. |
 | 🧪 [`tests/`](tests/) | Unit and integration tests on synthetic stores. |
 | 📄 [`assets/`](assets/) | The paper (`WeightCode.pdf`) and Figure 1. |
+| 🌐 [`homepage/`](homepage/) | The [project page](https://gen-verse.github.io/WeightCode/), deployed to GitHub Pages by `.github/workflows/pages.yml`. |
+| 🤗 [Hugging Face dataset](https://huggingface.co/datasets/Boom5426/WeightCode) | The data, hosted separately from this repository. |
 
 ## ⚖️ License
 
