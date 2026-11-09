@@ -1,0 +1,137 @@
+"""Numpy reference forward pass of a graph convolutional network described by model_spec.json (arch gcn).
+
+Requires numpy only. Call ``forward(params, x)``:
+
+* ``params``: dict of float arrays keyed by parameter name, PyTorch layout (linear weight [out, in]).
+* ``x``: int64 node ids of shape [N] (any integer dtype is accepted), each in 0 .. N_NODES - 1.
+* returns float32 logits [N, N_CLASSES]; the prediction for a node is the argmax over the last axis.
+
+The graph is read once from GRAPH_FILE next to this file: the CSR arrays ``indptr`` [N_NODES + 1], ``indices``
+[nnz] and ``weight`` [nnz] of the normalized adjacency A (symmetric, one self loop per node) and the node
+``features`` [N_NODES, N_FEATURES]. Every call runs the whole graph, then returns the rows of ``x``:
+
+    h = features
+    per layer i < K: h = relu(bn_i(A @ (h @ conv_i.weight.T) + conv_i.bias))
+    logits = A @ (h @ convK.weight.T) + convK.bias
+
+The first layer is computed as (A @ features) @ conv1.weight.T, the same product reassociated: A @ features does not
+depend on the parameters, so it is computed once per process when the graph is loaded.
+
+Layers ``conv1`` .. ``convK`` and ``bn1`` .. ``bn(K-1)`` are read from the parameter names. BatchNorm in eval form:
+(a - running_mean) / sqrt(running_var + BN_EPS) * weight + bias per channel. (A @ h)[i] = sum over the stored
+entries j of row i of weight[i, j] * h[j]; rows are aggregated in blocks of at most CHUNK_NNZ stored entries, which
+bounds memory. All arithmetic runs in float64 and the logits are cast once to float32.
+"""
+
+from __future__ import annotations
+
+from pathlib import Path
+
+import numpy as np
+
+N_NODES = @@N_NODES@@
+N_FEATURES = @@N_FEATURES@@
+N_CLASSES = @@N_CLASSES@@
+BN_EPS = @@BN_EPS@@
+GRAPH_FILE = "graph.npz"
+CHUNK_NNZ = 1 << 16
+BN_PARTS = ("weight", "bias", "running_mean", "running_var")
+_GRAPH: dict | None = None
+
+
+def _load_graph() -> dict:
+    """graph.npz beside this file, checked once and kept for later calls (float64 copies, row blocks)."""
+    global _GRAPH
+    if _GRAPH is not None:
+        return _GRAPH
+    path = Path(__file__).resolve().with_name(GRAPH_FILE)
+    with np.load(path, allow_pickle=False) as archive:
+        indptr, indices = archive["indptr"].astype(np.int64), archive["indices"].astype(np.int64)
+        weight, features = archive["weight"], archive["features"]
+    if indptr.shape != (N_NODES + 1,) or indptr[0] != 0 or np.any(np.diff(indptr) < 1):
+        raise ValueError(f"{path}: indptr must be [N_NODES + 1], start at 0 and give every row at least one entry")
+    if indices.shape != (int(indptr[-1]),) or weight.shape != indices.shape:
+        raise ValueError(f"{path}: indices and weight must hold indptr[-1] entries")
+    if indices.min() < 0 or indices.max() >= N_NODES or features.shape != (N_NODES, N_FEATURES):
+        raise ValueError(f"{path}: column ids out of range or features not [N_NODES, N_FEATURES]")
+    blocks, start = [], 0
+    while start < N_NODES:
+        stop = int(np.searchsorted(indptr, indptr[start] + CHUNK_NNZ, side="right")) - 1
+        stop = min(max(stop, start + 1), N_NODES)
+        blocks.append((start, stop))
+        start = stop
+    graph = {"indptr": indptr, "indices": indices, "weight": weight.astype(np.float64), "blocks": tuple(blocks)}
+    graph["aggregated_features"] = _aggregate(features.astype(np.float64), graph)
+    _GRAPH = graph
+    return _GRAPH
+
+
+def _tensor(params: dict, key: str) -> np.ndarray:
+    if key not in params:
+        raise KeyError(f"missing parameter {key!r}")
+    value = np.asarray(params[key])
+    if not np.issubdtype(value.dtype, np.floating):
+        raise TypeError(f"{key} must be a float array, got {value.dtype}")
+    return value.astype(np.float64)
+
+
+def _n_layers(params: dict) -> int:
+    convs, norms = set(), set()
+    for key in params:
+        head, _, part = str(key).partition(".")
+        if head.startswith("conv") and head[4:].isdigit() and part in ("weight", "bias"):
+            convs.add(int(head[4:]))
+        elif head.startswith("bn") and head[2:].isdigit() and part in BN_PARTS:
+            norms.add(int(head[2:]))
+        else:
+            raise KeyError(f"unexpected parameter name {key!r}")
+    k = len(convs)
+    if k == 0 or convs != set(range(1, k + 1)) or norms != set(range(1, k)):
+        raise KeyError(f"layers must be conv1..convK with bn1..bn(K-1), got conv {sorted(convs)}, bn {sorted(norms)}")
+    return k
+
+
+def _aggregate(h: np.ndarray, graph: dict) -> np.ndarray:
+    indptr, indices, weight = graph["indptr"], graph["indices"], graph["weight"]
+    out = np.empty_like(h)
+    for start, stop in graph["blocks"]:
+        lo, hi = indptr[start], indptr[stop]
+        gathered = h[indices[lo:hi]]
+        gathered *= weight[lo:hi, None]
+        out[start:stop] = np.add.reduceat(gathered, indptr[start:stop] - lo, axis=0)
+    return out
+
+
+def _batchnorm(h: np.ndarray, params: dict, name: str) -> np.ndarray:
+    weight, bias, mean, var = (_tensor(params, f"{name}.{part}") for part in BN_PARTS)
+    if not weight.shape == bias.shape == mean.shape == var.shape == (h.shape[1],):
+        raise ValueError(f"{name} tensors do not fit width {h.shape[1]}")
+    if np.any(var + BN_EPS <= 0):
+        raise ValueError(f"{name}.running_var + BN_EPS must be positive")
+    return (h - mean) / np.sqrt(var + BN_EPS) * weight + bias
+
+
+def forward(params: dict[str, np.ndarray], x: np.ndarray) -> np.ndarray:
+    """Logits float32 [N, N_CLASSES] for int node ids [N]."""
+    x = np.asarray(x)
+    if not np.issubdtype(x.dtype, np.integer):
+        raise TypeError(f"node ids must be integers, got {x.dtype}")
+    if x.ndim != 1:
+        raise ValueError(f"node ids must have shape [N], got {list(x.shape)}")
+    if x.size and (x.min() < 0 or x.max() >= N_NODES):
+        raise ValueError(f"node ids must lie in 0 .. {N_NODES - 1}")
+    k = _n_layers(params)
+    if x.size == 0:
+        return np.zeros((0, N_CLASSES), dtype=np.float32)
+    graph = _load_graph()
+    h = graph["aggregated_features"]
+    for index in range(1, k + 1):
+        weight, bias = _tensor(params, f"conv{index}.weight"), _tensor(params, f"conv{index}.bias")
+        if weight.ndim != 2 or weight.shape[1] != h.shape[1] or bias.shape != (weight.shape[0],):
+            raise ValueError(f"conv{index} weight {weight.shape} / bias {bias.shape} do not fit width {h.shape[1]}")
+        h = (h @ weight.T if index == 1 else _aggregate(h @ weight.T, graph)) + bias
+        if index < k:
+            h = np.maximum(_batchnorm(h, params, f"bn{index}"), 0.0)
+    if h.shape[1] != N_CLASSES:
+        raise ValueError(f"model produces {h.shape[1]} outputs per node, expected {N_CLASSES}")
+    return h[x.astype(np.int64)].astype(np.float32)

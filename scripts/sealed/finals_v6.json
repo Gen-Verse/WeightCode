@@ -1,0 +1,316 @@
+{
+  "schema": "weightcode.sealed_finals_list.v1",
+  "status": "approved",
+  "approval": "User (Boom5426), 2026-11-08 about 05:49 Beijing, AskUserQuestion in the WEIGHTCODE-main session: 全部 23 条 (the 9 PREREG-required and the 14 proposed entries); 允许续读 (an interrupted read may be resumed under the same commit, plan and kit); 读前登记配对 95% 区间 (paired 95% intervals registered before the read). PREREG T04, \"Sealed read of list v6\".",
+  "note": "List v6 of the sealed read (PREREG \"T04\", sealed test section, main 475a899; the edge-extension amendment, main 9f0baa9), drafted by the t04-sealed subagent of WEIGHTCODE-main from the T04 records (scripts/sealed/make_finals_v6.py; role map scripts/sealed/finals_v6_roles.json). Native ImageNet ResNet-18 (in1k_t04), seed 100: gaussian_noise_s3 on i4c8c63bd and contrast_s4 on i62cbf956. PREREG-required entries: the base, both LEARN finals, the main control of record (gaussian ft_bn f1 q5; contrast grad_full t04g3 q0), bn_adapt and the large-sample diagnostic at their kept picks of record. Proposed entries, for the user to keep or drop (the paper states that the finals are above every fine-tuning pick at matched information): T04_contrast_arm3_ft_bn, T04_contrast_arm3_ft_full_noreplay, T04_contrast_arm3_grad_last, T04_contrast_arm3_lora_r16, T04_contrast_arm3_lora_r4, T04_contrast_bar_grad_sparse19_sal, T04_gaussian_arm3_ft_full_l2sp, T04_gaussian_arm3_ft_full_lwf, T04_gaussian_arm3_ft_full_noreplay, T04_gaussian_arm3_grad_full, T04_gaussian_arm3_grad_last, T04_gaussian_arm3_lora_r16, T04_gaussian_arm3_lora_r4, T04_gaussian_bar_grad_sparse19_sal. A kept pick that is the base is read once, as the condition's base entry: contrast_s4 bn_adapt at its kept pick of record (arm 4) (bn_adapt/t04 base) -> T04_contrast_base; contrast_s4 arm-3 kept pick of record (ft_full_l2sp) (ft_full_l2sp/f1 base) -> T04_contrast_base; contrast_s4 arm-3 kept pick of record (ft_full_lwf) (ft_full_lwf/f1 base) -> T04_contrast_base. References pair with repeat 1's final on their instance; the pairing is nominal, every entry of a condition is read on the same rows. 23 entries (4 finals, 19 references). Each entry is dev-checked on NSCC (R37 jobs 51 to 54: the child rebuilt from its session patch or reference run, its V_select and clean V_select readouts equal to the records field for field) before the read. Read once, locally, after the user approves the list: clean and the condition on the 38,000 test rows (row % 25 not in 0..5) from the 14 validation shards at revision 49e2ee26, after the fidelity check; the secondary readout (severities 1 to 5 of the target corruption and the other corruption at its chosen severity on the 20,000 rows with row % 25 in 6..15) for the base, the LEARN finals and the main control only.",
+  "finals": [
+    {
+      "name": "T04_gaussian_LEARN_r1",
+      "readout": "vision_t04",
+      "source": {
+        "kind": "session",
+        "session_id": "sece3a52c03e092dd"
+      },
+      "instance_id": "i4c8c63bd",
+      "child_sha256": "3a3ae203fe15d82f865ec81887d17cbd5263bb24670d3eee7c513e926a1f319e"
+    },
+    {
+      "name": "T04_gaussian_LEARN_r2",
+      "readout": "vision_t04",
+      "source": {
+        "kind": "session",
+        "session_id": "sec0ee969740e55ce"
+      },
+      "instance_id": "i4c8c63bd",
+      "child_sha256": "54b9a2ed9342581b27ab95cb3333e3466e6d00627f2637b3a2163289bcd1f452"
+    },
+    {
+      "name": "T04_contrast_LEARN_r1",
+      "readout": "vision_t04",
+      "source": {
+        "kind": "session",
+        "session_id": "sf37fe1409ceb446a"
+      },
+      "instance_id": "i62cbf956",
+      "child_sha256": "0d7971e153e31f0e11c2e9e86a10ad7fb973ebcad375d348cb98a385d1d5b94d"
+    },
+    {
+      "name": "T04_contrast_LEARN_r2",
+      "readout": "vision_t04",
+      "source": {
+        "kind": "session",
+        "session_id": "sd5cdd5dd4e51c1b3"
+      },
+      "instance_id": "i62cbf956",
+      "child_sha256": "ce55b9a551a5d6d063c0aa0d7fd903b5dda9d382b01330d3d1fdc2cbdfb1b1e7"
+    }
+  ],
+  "references": [
+    {
+      "name": "T04_gaussian_main_ft_bn",
+      "readout": "vision_t04",
+      "source": {
+        "kind": "reference",
+        "run": "baselines/i4c8c63bd/ft_bn/f1/0/run.json",
+        "pick": "kept",
+        "s_old_floor": -20,
+        "dev_record": "devreadouts/t04/gaussian_noise_s3/kept_f1_gaussian_noise_s3_ft_bn_20261107_142020_b9067445f4.jsonl"
+      },
+      "instance_id": "i4c8c63bd",
+      "child_sha256": "25b6d3e00258aafc2a3fff01f2214cebc5aee7f78ec6df345e48b5598267bda4",
+      "pairs_with": "T04_gaussian_LEARN_r1"
+    },
+    {
+      "name": "T04_gaussian_base",
+      "readout": "vision_t04",
+      "source": {
+        "kind": "reference",
+        "run": "baselines/i4c8c63bd/ft_large/t04/0/run.json",
+        "pick": "kept",
+        "s_old_floor": -20,
+        "dev_record": "devreadouts/t04/gaussian_noise_s3/kept_largeft_gaussian_noise_s3_20261107_142938_b9067445f4.jsonl"
+      },
+      "instance_id": "i4c8c63bd",
+      "child_sha256": "d68d3932c5169cb3ab8eeb128436d1ad487e55a3409865ac47f0cd2bd9149412",
+      "pairs_with": "T04_gaussian_LEARN_r1"
+    },
+    {
+      "name": "T04_gaussian_bn_adapt",
+      "readout": "vision_t04",
+      "source": {
+        "kind": "reference",
+        "run": "baselines/i4c8c63bd/bn_adapt/t04g3/0/run.json",
+        "pick": "kept",
+        "s_old_floor": -20,
+        "dev_record": "devreadouts/t04/gaussian_noise_s3/kept_ext_gaussian_noise_s3_bn_adapt_g3_20261107_171810_784c9046e8.jsonl"
+      },
+      "instance_id": "i4c8c63bd",
+      "child_sha256": "56a9bd8c5f58a8dd4092d04901f081a758e645fb5ee1f33d1096cf82bbba2870",
+      "pairs_with": "T04_gaussian_LEARN_r1"
+    },
+    {
+      "name": "T04_gaussian_bar_grad_sparse19_sal",
+      "readout": "vision_t04",
+      "source": {
+        "kind": "reference",
+        "run": "baselines/i4c8c63bd/grad_sparse19_sal/t04g2/0/run.json",
+        "pick": "kept",
+        "s_old_floor": -20,
+        "dev_record": "devreadouts/t04/gaussian_noise_s3/kept_refs_gaussian_noise_s3_grad_sparse19_sal_g2_20261107_142010_b9067445f4.jsonl"
+      },
+      "instance_id": "i4c8c63bd",
+      "child_sha256": "3097b0c23e44afc36632981bf84b8a028c655c151f2ee554ca9d49b505d43d2a",
+      "pairs_with": "T04_gaussian_LEARN_r1"
+    },
+    {
+      "name": "T04_gaussian_arm3_ft_full_l2sp",
+      "readout": "vision_t04",
+      "source": {
+        "kind": "reference",
+        "run": "baselines/i4c8c63bd/ft_full_l2sp/t04g3/0/run.json",
+        "pick": "kept",
+        "s_old_floor": -20,
+        "dev_record": "devreadouts/t04/gaussian_noise_s3/kept_ext_gaussian_noise_s3_ft_full_l2sp_g3_20261107_163913_784c9046e8.jsonl"
+      },
+      "instance_id": "i4c8c63bd",
+      "child_sha256": "19b4e6c381df86707ca3a5158f729726ef1466edaa52dc759aff3aeb3d971beb",
+      "pairs_with": "T04_gaussian_LEARN_r1"
+    },
+    {
+      "name": "T04_gaussian_arm3_ft_full_lwf",
+      "readout": "vision_t04",
+      "source": {
+        "kind": "reference",
+        "run": "baselines/i4c8c63bd/ft_full_lwf/t04g3/0/run.json",
+        "pick": "kept",
+        "s_old_floor": -20,
+        "dev_record": "devreadouts/t04/gaussian_noise_s3/kept_ext_gaussian_noise_s3_ft_full_lwf_g3_20261107_163922_784c9046e8.jsonl"
+      },
+      "instance_id": "i4c8c63bd",
+      "child_sha256": "70838b42adc47627d4173135f5e751c0519a2e1a63e2222c4348ef5a2dfc1a65",
+      "pairs_with": "T04_gaussian_LEARN_r1"
+    },
+    {
+      "name": "T04_gaussian_arm3_ft_full_noreplay",
+      "readout": "vision_t04",
+      "source": {
+        "kind": "reference",
+        "run": "baselines/i4c8c63bd/ft_full_noreplay/t04g3/0/run.json",
+        "pick": "kept",
+        "s_old_floor": -20,
+        "dev_record": "devreadouts/t04/gaussian_noise_s3/kept_ext_gaussian_noise_s3_ft_full_noreplay_g3_20261107_171814_784c9046e8.jsonl"
+      },
+      "instance_id": "i4c8c63bd",
+      "child_sha256": "25b8dc6e60c53fd8bd0b09900210b307605950fd4dd9c7d5570ed84609b7d360",
+      "pairs_with": "T04_gaussian_LEARN_r1"
+    },
+    {
+      "name": "T04_gaussian_arm3_grad_full",
+      "readout": "vision_t04",
+      "source": {
+        "kind": "reference",
+        "run": "baselines/i4c8c63bd/grad_full/t04g3/0/run.json",
+        "pick": "kept",
+        "s_old_floor": -20,
+        "dev_record": "devreadouts/t04/gaussian_noise_s3/kept_ext_gaussian_noise_s3_grad_full_g3_20261107_171819_784c9046e8.jsonl"
+      },
+      "instance_id": "i4c8c63bd",
+      "child_sha256": "a03c1118790abf17fb55b833b2f8efb9d98df3ef8ba450d7ce4fcdfe3b8a6b6f",
+      "pairs_with": "T04_gaussian_LEARN_r1"
+    },
+    {
+      "name": "T04_gaussian_arm3_grad_last",
+      "readout": "vision_t04",
+      "source": {
+        "kind": "reference",
+        "run": "baselines/i4c8c63bd/grad_last/t04g2/0/run.json",
+        "pick": "kept",
+        "s_old_floor": -20,
+        "dev_record": "devreadouts/t04/gaussian_noise_s3/kept_refs_gaussian_noise_s3_grad_last_g2_20261107_142004_b9067445f4.jsonl"
+      },
+      "instance_id": "i4c8c63bd",
+      "child_sha256": "8535347b8ceef0edbcd2cfe5fb510abec816f814e6f4c7c68927c60687e4e76e",
+      "pairs_with": "T04_gaussian_LEARN_r1"
+    },
+    {
+      "name": "T04_gaussian_arm3_lora_r16",
+      "readout": "vision_t04",
+      "source": {
+        "kind": "reference",
+        "run": "baselines/i4c8c63bd/lora_r16/t04g3/0/run.json",
+        "pick": "kept",
+        "s_old_floor": -20,
+        "dev_record": "devreadouts/t04/gaussian_noise_s3/kept_ext_gaussian_noise_s3_lora_r16_g3_20261107_171843_784c9046e8.jsonl"
+      },
+      "instance_id": "i4c8c63bd",
+      "child_sha256": "68bec70e73f73d484b153f13c7989d1325089b63e10addee986446d2434ed1a5",
+      "pairs_with": "T04_gaussian_LEARN_r1"
+    },
+    {
+      "name": "T04_gaussian_arm3_lora_r4",
+      "readout": "vision_t04",
+      "source": {
+        "kind": "reference",
+        "run": "baselines/i4c8c63bd/lora_r4/f1/0/run.json",
+        "pick": "kept",
+        "s_old_floor": -20,
+        "dev_record": "devreadouts/t04/gaussian_noise_s3/kept_f1_gaussian_noise_s3_lora_r4_20261107_142023_b9067445f4.jsonl"
+      },
+      "instance_id": "i4c8c63bd",
+      "child_sha256": "66e52e85c5b05c8c5dc7c7b92015e3555281e7ed644e9435586700692ddad03c",
+      "pairs_with": "T04_gaussian_LEARN_r1"
+    },
+    {
+      "name": "T04_contrast_main_grad_full",
+      "readout": "vision_t04",
+      "source": {
+        "kind": "reference",
+        "run": "baselines/i62cbf956/grad_full/t04g3/0/run.json",
+        "pick": "kept",
+        "s_old_floor": -20,
+        "dev_record": "devreadouts/t04/contrast_s4/kept_ext_contrast_s4_grad_full_g3_20261107_171738_784c9046e8.jsonl"
+      },
+      "instance_id": "i62cbf956",
+      "child_sha256": "34d2ff5a657460444ee6bbe2e681151e55bd57c8bbcb8f5668f7deacba697e30",
+      "pairs_with": "T04_contrast_LEARN_r1"
+    },
+    {
+      "name": "T04_contrast_base",
+      "readout": "vision_t04",
+      "source": {
+        "kind": "reference",
+        "run": "baselines/i62cbf956/ft_large/t04/0/run.json",
+        "pick": "kept",
+        "s_old_floor": -20,
+        "dev_record": "devreadouts/t04/contrast_s4/kept_largeft_contrast_s4_20261107_142941_b9067445f4.jsonl"
+      },
+      "instance_id": "i62cbf956",
+      "child_sha256": "d68d3932c5169cb3ab8eeb128436d1ad487e55a3409865ac47f0cd2bd9149412",
+      "pairs_with": "T04_contrast_LEARN_r1"
+    },
+    {
+      "name": "T04_contrast_bar_grad_sparse19_sal",
+      "readout": "vision_t04",
+      "source": {
+        "kind": "reference",
+        "run": "baselines/i62cbf956/grad_sparse19_sal/t04g3/0/run.json",
+        "pick": "kept",
+        "s_old_floor": -20,
+        "dev_record": "devreadouts/t04/contrast_s4/kept_ext_contrast_s4_grad_sparse19_sal_g3_20261107_171747_784c9046e8.jsonl"
+      },
+      "instance_id": "i62cbf956",
+      "child_sha256": "8f7a8945397bcb950ab8c18c0831d251fd0dc98271e15ada9f320b317ddeedd9",
+      "pairs_with": "T04_contrast_LEARN_r1"
+    },
+    {
+      "name": "T04_contrast_arm3_ft_bn",
+      "readout": "vision_t04",
+      "source": {
+        "kind": "reference",
+        "run": "baselines/i62cbf956/ft_bn/f1/0/run.json",
+        "pick": "kept",
+        "s_old_floor": -20,
+        "dev_record": "devreadouts/t04/contrast_s4/kept_f1_contrast_s4_ft_bn_20261107_142136_b9067445f4.jsonl"
+      },
+      "instance_id": "i62cbf956",
+      "child_sha256": "641e69aff09e9b91a22da09a5c4ad906c5210bb290711b2b7c23fa64d15fb022",
+      "pairs_with": "T04_contrast_LEARN_r1"
+    },
+    {
+      "name": "T04_contrast_arm3_ft_full_noreplay",
+      "readout": "vision_t04",
+      "source": {
+        "kind": "reference",
+        "run": "baselines/i62cbf956/ft_full_noreplay/t04g3/0/run.json",
+        "pick": "kept",
+        "s_old_floor": -20,
+        "dev_record": "devreadouts/t04/contrast_s4/kept_ext_contrast_s4_ft_full_noreplay_g3_20261107_171733_784c9046e8.jsonl"
+      },
+      "instance_id": "i62cbf956",
+      "child_sha256": "6456d9a9b9d0e10067225c0f109f2df679d20e964e827184c74c0993db021b9b",
+      "pairs_with": "T04_contrast_LEARN_r1"
+    },
+    {
+      "name": "T04_contrast_arm3_grad_last",
+      "readout": "vision_t04",
+      "source": {
+        "kind": "reference",
+        "run": "baselines/i62cbf956/grad_last/t04g2/0/run.json",
+        "pick": "kept",
+        "s_old_floor": -20,
+        "dev_record": "devreadouts/t04/contrast_s4/kept_refs_contrast_s4_grad_last_g2_20261107_142121_b9067445f4.jsonl"
+      },
+      "instance_id": "i62cbf956",
+      "child_sha256": "351f7b010d22973fc898becd8b9ac51fad031906ac9d5fea2bbaea5b1ea0ecb4",
+      "pairs_with": "T04_contrast_LEARN_r1"
+    },
+    {
+      "name": "T04_contrast_arm3_lora_r16",
+      "readout": "vision_t04",
+      "source": {
+        "kind": "reference",
+        "run": "baselines/i62cbf956/lora_r16/t04g3/0/run.json",
+        "pick": "kept",
+        "s_old_floor": -20,
+        "dev_record": "devreadouts/t04/contrast_s4/kept_ext_contrast_s4_lora_r16_g3_20261107_171801_784c9046e8.jsonl"
+      },
+      "instance_id": "i62cbf956",
+      "child_sha256": "84ec8c6f3e7e0f244c0059268ad5f7b0ede8aeed280b7683b466519eb5b63ed4",
+      "pairs_with": "T04_contrast_LEARN_r1"
+    },
+    {
+      "name": "T04_contrast_arm3_lora_r4",
+      "readout": "vision_t04",
+      "source": {
+        "kind": "reference",
+        "run": "baselines/i62cbf956/lora_r4/t04g3/0/run.json",
+        "pick": "kept",
+        "s_old_floor": -20,
+        "dev_record": "devreadouts/t04/contrast_s4/kept_ext_contrast_s4_lora_r4_g3_20261107_171805_784c9046e8.jsonl"
+      },
+      "instance_id": "i62cbf956",
+      "child_sha256": "a59c233e78d1a06424704e4d2a0a47ad37d01a44d022b3c2c77113c7a1b6b1cf",
+      "pairs_with": "T04_contrast_LEARN_r1"
+    }
+  ]
+}

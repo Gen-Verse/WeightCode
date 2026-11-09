@@ -1,0 +1,338 @@
+{
+  "schema": "weightcode.sealed_finals_list.v1",
+  "status": "approved",
+  "approval": "User approved list v1 (13 finals, 15 references; rulegen_mixed_sparse19_sal on E13 around_right) for one sealed read; AskUserQuestion 2026-11-06 about 15:55 Beijing; PREREG main d282d72 / b54636c. Sealed numbers become the paper's main numbers.",
+  "note": "Draft v1 of the sealed-read list (PREREG Sealed read, main 6d186d4; scenario plan M6), drafted 2026-11-06 by session weightcode-0e for WEIGHTCODE-main from the store's run records. Finals: the ten finals of draft v0 (R26-sealed-dry), the two E13 finals, addprim_jump (session s9be29c2c302e4daa) and around_right (session s41876e82b0843c53), readout scan_em, and the E14 B final (session s2502912e3f1b2c04), readout policy_success. References, an optional block the user keeps or drops at approval: per B condition the kept reference that defines the bar, the best kept F1 pick of record on E11 and E12 gaussian and contrast, and the best sequential fine-tuning stream (PREREG F4, f4_ft_replay, NSCC R18) read after its last round on the four E10 stream instances, each read beside its final on the same instance. The E14 hand-written wrapper (+97.5) is not in it: it is a logits function around the base policy, not a child of the weights. On around_right two kept rule-generated references tie at the bar's +83.68 (rulegen_mixed_sparse19_sal and _traj); the list carries _sal, the method that sets the bar on addprim_jump. Not in it: the E11 replication finals (s101, s102), deferred. Read once, after the last LLM session of the paper, only once the user has approved the list and it is committed with status approved.",
+  "finals": [
+    {
+      "name": "E11_B_gaussian_s100",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "session",
+        "session_id": "sc918e11dceef637a"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "e40c20786ae91c904cfd7a195addb7e03b6601b955d731518da1ff54bc01c251"
+    },
+    {
+      "name": "E11_B_contrast_s100",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "session",
+        "session_id": "s760cb52ce82fb937"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "07943b6df1f9424be9b7c76cc32630f4c194b79e44b8ad00d9a89749aa0308e7"
+    },
+    {
+      "name": "E12_B_gaussian_s100",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "session",
+        "session_id": "s2abaefab30d20b42"
+      },
+      "instance_id": "i26d23d3e",
+      "child_sha256": "ab961aa19217aabbf6b3298ff5546a1cffa10c3406f6f9af26f6dbf240712713"
+    },
+    {
+      "name": "E12_B_contrast_s100",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "session",
+        "session_id": "sccd12677dcdd125b"
+      },
+      "instance_id": "ie3840b28",
+      "child_sha256": "9792a0d3d26ee935322c26c5df99cb32ceb083a46f930dc083732ca2ec1f50f5"
+    },
+    {
+      "name": "E10_stream_v2_W4_gaussian",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "stream_final",
+        "record": "loop_streams/loop_teacher_88d4ae0edeaf_4dacc6c42bfa.json"
+      },
+      "instance_id": "id14b4f0b",
+      "child_sha256": "82907acacc44719cdc41a61ade43213100bb3c7dffb3c1189dc7c4ab3ab07e7f"
+    },
+    {
+      "name": "E10_stream_v2_W4_defocus",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "stream_final",
+        "record": "loop_streams/loop_teacher_88d4ae0edeaf_4dacc6c42bfa.json"
+      },
+      "instance_id": "id64b2abc",
+      "child_sha256": "82907acacc44719cdc41a61ade43213100bb3c7dffb3c1189dc7c4ab3ab07e7f"
+    },
+    {
+      "name": "E10_stream_v2_W4_snow",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "stream_final",
+        "record": "loop_streams/loop_teacher_88d4ae0edeaf_4dacc6c42bfa.json"
+      },
+      "instance_id": "if90033fc",
+      "child_sha256": "82907acacc44719cdc41a61ade43213100bb3c7dffb3c1189dc7c4ab3ab07e7f"
+    },
+    {
+      "name": "E10_stream_v2_W4_contrast",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "stream_final",
+        "record": "loop_streams/loop_teacher_88d4ae0edeaf_4dacc6c42bfa.json"
+      },
+      "instance_id": "i1bf0c953",
+      "child_sha256": "82907acacc44719cdc41a61ade43213100bb3c7dffb3c1189dc7c4ab3ab07e7f"
+    },
+    {
+      "name": "ladder_U_gaussian_s100",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "session",
+        "session_id": "s92ca011539abdbea"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "54d6ce162668e3c5ad6a8e4c032c24aa58fcfd136a4a67827b9e9bf432915d60"
+    },
+    {
+      "name": "ladder_K1_gaussian_s100",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "session",
+        "session_id": "s63b6ad75d137a090"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "59d12e14c5a7954bbb02750bcf001fa4f907f7503b9ee24ab64df38bfa2639d7"
+    },
+    {
+      "name": "E13_addprim_jump_s100",
+      "readout": "scan_em",
+      "source": {
+        "kind": "session",
+        "session_id": "s9be29c2c302e4daa"
+      },
+      "instance_id": "ncc5c260f",
+      "child_sha256": "6c9bc3bdaf347dfb6c868a71f17506bea58ab51f82707f236692604dc34198a0"
+    },
+    {
+      "name": "E13_around_right_s100",
+      "readout": "scan_em",
+      "source": {
+        "kind": "session",
+        "session_id": "s41876e82b0843c53"
+      },
+      "instance_id": "n8826c49e",
+      "child_sha256": "69346a9002aa6c1a7d80dd7855d9e8299526677c78d236ca673fbecb1c236b7f"
+    },
+    {
+      "name": "E14_B_pickup_s100",
+      "readout": "policy_success",
+      "source": {
+        "kind": "session",
+        "session_id": "s2502912e3f1b2c04"
+      },
+      "instance_id": "p6ce8ad67",
+      "child_sha256": "43fc68d6d913bc60d917c665a59833b529231fd4cd284cbd3036477d5116f9ad"
+    }
+  ],
+  "references": [
+    {
+      "name": "ref_E11_gaussian_bar_grad_sparse19_sal",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "reference",
+        "run": "baselines/i00802425/grad_sparse19_sal/e11g2/0/run.json",
+        "pick": "kept",
+        "s_old_floor": -20,
+        "dev_record": "devreadouts/e11g2_refs_i00802425_gaussian_noise_s5_floor20_dev_20261105.jsonl"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "6e6a1e4bab4419e8ddf23e91af9453e205f43da38d81f754f494653cf8ccf057",
+      "pairs_with": "E11_B_gaussian_s100"
+    },
+    {
+      "name": "ref_E11_gaussian_F1_lora_r4",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "reference",
+        "run": "baselines/i00802425/lora_r4/f1/0/run.json",
+        "pick": "kept",
+        "s_old_floor": -20,
+        "dev_record": "devreadouts/f1_i00802425_gaussian_noise_s5_floor20_dev_nscc_20261105.jsonl"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "bed61accac2f72db1f40149aead73e8a8074ec6f81305583f836d5ec0878e310",
+      "pairs_with": "E11_B_gaussian_s100"
+    },
+    {
+      "name": "ref_E11_contrast_bar_grad_sparse19_traj",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "reference",
+        "run": "baselines/i3eb3fc78/grad_sparse19_traj/e11g2/0/run.json",
+        "pick": "kept",
+        "s_old_floor": -20,
+        "dev_record": "devreadouts/e11g2_refs_i3eb3fc78_contrast_s5_floor20_dev_20261105.jsonl"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "9bedbf092a40963402d2253620be7f1a4b53ff85b1849dbaa1f8e8ccc73f3df7",
+      "pairs_with": "E11_B_contrast_s100"
+    },
+    {
+      "name": "ref_E11_contrast_F1_ft_full_l2sp",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "reference",
+        "run": "baselines/i3eb3fc78/ft_full_l2sp/f1/0/run.json",
+        "pick": "kept",
+        "s_old_floor": -20,
+        "dev_record": "devreadouts/f1_i3eb3fc78_contrast_s5_floor20_dev_nscc_20261105.jsonl"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "f5bd4352477c7cffcafde3ed52092ca96fd593e5fd31231c42a412593e95da90",
+      "pairs_with": "E11_B_contrast_s100"
+    },
+    {
+      "name": "ref_E12_gaussian_bar_grad_sparse19_traj",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "reference",
+        "run": "baselines/i26d23d3e/grad_sparse19_traj/e12g2/0/run.json",
+        "pick": "kept",
+        "s_old_floor": -20,
+        "dev_record": "devreadouts/e12g2_refs_i26d23d3e_gaussian_noise_s5_floor20_dev_nscc_20261105.jsonl"
+      },
+      "instance_id": "i26d23d3e",
+      "child_sha256": "fdfdb071cb45d21b6f87b6c5ad86497ac50f456adfe3a77784344a23dbb1c7a8",
+      "pairs_with": "E12_B_gaussian_s100"
+    },
+    {
+      "name": "ref_E12_contrast_bar_bn_adapt",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "reference",
+        "run": "baselines/ie3840b28/bn_adapt/e12/0/run.json",
+        "pick": "kept",
+        "s_old_floor": -20,
+        "dev_record": "devreadouts/e12_refs_ie3840b28_contrast_s5_floor20_dev_nscc_20261105.jsonl"
+      },
+      "instance_id": "ie3840b28",
+      "child_sha256": "29454300dc88874e5773250e580ef5e715f26e2f459012f399d68612af840bae",
+      "pairs_with": "E12_B_contrast_s100"
+    },
+    {
+      "name": "ref_E12_gaussian_F1_lora_r16",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "reference",
+        "run": "baselines/i26d23d3e/lora_r16/f1/0/run.json",
+        "pick": "kept",
+        "s_old_floor": -20,
+        "dev_record": "devreadouts/f1e12_i26d23d3e_gaussian_noise_s5_floor20_dev_nscc_20261105.jsonl"
+      },
+      "instance_id": "i26d23d3e",
+      "child_sha256": "c00a51488bf06b0d015df58c73be0f6defbc814cab6228f603bcde79a963f5a8",
+      "pairs_with": "E12_B_gaussian_s100"
+    },
+    {
+      "name": "ref_E12_contrast_F1_lora_r16",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "reference",
+        "run": "baselines/ie3840b28/lora_r16/f1/0/run.json",
+        "pick": "kept",
+        "s_old_floor": -20,
+        "dev_record": "devreadouts/f1e12_ie3840b28_contrast_s5_floor20_dev_nscc_20261105.jsonl"
+      },
+      "instance_id": "ie3840b28",
+      "child_sha256": "b932ef1dcbb1b19b13159d21899b69fe09fa40ff00050dce4ae0ba6eef4e2915",
+      "pairs_with": "E12_B_contrast_s100"
+    },
+    {
+      "name": "ref_E10_stream_F4_ft_replay_W4_gaussian",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "stream_final",
+        "record": "f4/e10/ctrlb_f4_ft_replay_b325008afc61_4dacc6c42bfa.json"
+      },
+      "instance_id": "id14b4f0b",
+      "child_sha256": "492dfa39c835bb6c4563849362bfab369ab4a67fcf739d0ba1c5464bc6800976",
+      "pairs_with": "E10_stream_v2_W4_gaussian"
+    },
+    {
+      "name": "ref_E10_stream_F4_ft_replay_W4_defocus",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "stream_final",
+        "record": "f4/e10/ctrlb_f4_ft_replay_b325008afc61_4dacc6c42bfa.json"
+      },
+      "instance_id": "id64b2abc",
+      "child_sha256": "492dfa39c835bb6c4563849362bfab369ab4a67fcf739d0ba1c5464bc6800976",
+      "pairs_with": "E10_stream_v2_W4_defocus"
+    },
+    {
+      "name": "ref_E10_stream_F4_ft_replay_W4_snow",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "stream_final",
+        "record": "f4/e10/ctrlb_f4_ft_replay_b325008afc61_4dacc6c42bfa.json"
+      },
+      "instance_id": "if90033fc",
+      "child_sha256": "492dfa39c835bb6c4563849362bfab369ab4a67fcf739d0ba1c5464bc6800976",
+      "pairs_with": "E10_stream_v2_W4_snow"
+    },
+    {
+      "name": "ref_E10_stream_F4_ft_replay_W4_contrast",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "stream_final",
+        "record": "f4/e10/ctrlb_f4_ft_replay_b325008afc61_4dacc6c42bfa.json"
+      },
+      "instance_id": "i1bf0c953",
+      "child_sha256": "492dfa39c835bb6c4563849362bfab369ab4a67fcf739d0ba1c5464bc6800976",
+      "pairs_with": "E10_stream_v2_W4_contrast"
+    },
+    {
+      "name": "ref_E13_addprim_jump_bar_rulegen_mixed_sparse19_sal",
+      "readout": "scan_em",
+      "source": {
+        "kind": "reference",
+        "run": "baselines/ncc5c260f/rulegen_mixed_sparse19_sal/e13/0/run.json",
+        "pick": "kept",
+        "s_old_floor": -5,
+        "dev_record": "devreadouts/e13_refs_ncc5c260f_addprim_jump_floor5_dev_nscc_20261106.jsonl"
+      },
+      "instance_id": "ncc5c260f",
+      "child_sha256": "727dae68a426bb3fcd1dc1d56b18a16c70b5b9d80254b0454a1664130ef542db",
+      "pairs_with": "E13_addprim_jump_s100"
+    },
+    {
+      "name": "ref_E13_around_right_bar_rulegen_mixed_sparse19_sal",
+      "readout": "scan_em",
+      "source": {
+        "kind": "reference",
+        "run": "baselines/n8826c49e/rulegen_mixed_sparse19_sal/e13/0/run.json",
+        "pick": "kept",
+        "s_old_floor": -5,
+        "dev_record": "devreadouts/e13_refs_n8826c49e_around_right_floor5_dev_nscc_20261106.jsonl"
+      },
+      "instance_id": "n8826c49e",
+      "child_sha256": "29d034a13d72c2e2445cf05623e4cdd3d00a5d6af5506f8b12528dc5a3c46886",
+      "pairs_with": "E13_around_right_s100"
+    },
+    {
+      "name": "ref_E14_pickup_bar_bc_emb_head",
+      "readout": "policy_success",
+      "source": {
+        "kind": "reference",
+        "run": "baselines/p6ce8ad67/bc_emb_head/e14/0/run.json",
+        "pick": "kept",
+        "s_old_floor": -3,
+        "dev_record": "devreadouts/e14_read_p6ce8ad67_bc_emb_head.jsonl"
+      },
+      "instance_id": "p6ce8ad67",
+      "child_sha256": "46b0678fea87c87f95841f9719c06dd78677d2c4f468532c9cfc6fb9d9aa38bd",
+      "pairs_with": "E14_B_pickup_s100"
+    }
+  ]
+}

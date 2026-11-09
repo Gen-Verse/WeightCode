@@ -1,0 +1,30 @@
+# Store inputs of the R30-mech-m03-m06 job, relative to $WEIGHTCODE_RUNS (shipped by scripts/mech_v1/submit.sh).
+# The E11 instances i3eb3fc78 and i00802425 and their dev splits come from session_port/store_base/private on NSCC.
+# Contrast final s760cb52ce82fb937 (M03): program, deltas, derived patch, run record, selection, saved child.
+sessions/s760cb52ce82fb937/final/k145_gated_b2_r6_orig_targets.py
+sessions/s760cb52ce82fb937/final/deltas.npz
+sessions/s760cb52ce82fb937/final/patch.json
+sessions/s760cb52ce82fb937/final/delta_000.npy
+sessions/s760cb52ce82fb937/final/delta_031.npy
+sessions/s760cb52ce82fb937/final/delta_032.npy
+sessions/s760cb52ce82fb937/final/delta_035.npy
+sessions/s760cb52ce82fb937/final/delta_036.npy
+sessions/s760cb52ce82fb937/final/program_run.json
+sessions/s760cb52ce82fb937/final/selection.json
+sessions/s760cb52ce82fb937/final/model.npz
+# The final's V_select readouts of record.
+devreadouts/learn/s760cb52ce82fb937/info.json
+# Control (a) of the E11 two-round stream (M06, M06b): record, W1, round-2 evidence, candidate_1's patch, run and
+# experience.
+loop_streams/loop_checked_selection_2faae3ff4b3c_fd7f6d4b8014.json
+loop_streams/loop_checked_selection_2faae3ff4b3c_fd7f6d4b8014/student_after_round_1.npz
+loop_streams/loop_checked_selection_2faae3ff4b3c_fd7f6d4b8014/evidence_round_2.npz
+loop_streams/loop_checked_selection_2faae3ff4b3c_fd7f6d4b8014/round_2/candidate_1/patch/derived_patch.json
+loop_streams/loop_checked_selection_2faae3ff4b3c_fd7f6d4b8014/round_2/candidate_1/patch/delta_000.npy
+loop_streams/loop_checked_selection_2faae3ff4b3c_fd7f6d4b8014/round_2/candidate_1/patch/delta_031.npy
+loop_streams/loop_checked_selection_2faae3ff4b3c_fd7f6d4b8014/round_2/candidate_1/patch/delta_032.npy
+loop_streams/loop_checked_selection_2faae3ff4b3c_fd7f6d4b8014/round_2/candidate_1/patch/delta_035.npy
+loop_streams/loop_checked_selection_2faae3ff4b3c_fd7f6d4b8014/round_2/candidate_1/patch/delta_036.npy
+loop_streams/loop_checked_selection_2faae3ff4b3c_fd7f6d4b8014/round_2/candidate_1/run/stdout.txt
+loop_streams/loop_checked_selection_2faae3ff4b3c_fd7f6d4b8014/round_2/candidate_1/run/out/deltas.npz
+loop_streams/loop_checked_selection_2faae3ff4b3c_fd7f6d4b8014/round_2/candidate_1/student/experience.npz

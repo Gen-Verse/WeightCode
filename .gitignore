@@ -1,0 +1,64 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.venv-sandbox/
+.venvs/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+*.egg-info/
+
+# Data, checkpoints and run outputs live outside the repo ($WEIGHTCODE_PRIVATE, $WEIGHTCODE_SEALED, $WEIGHTCODE_RUNS).
+# These patterns guard against accidental copies inside the tree.
+/data/
+/runs/
+/trials/
+/sealed/
+/private/
+# Outputs of the README commands and scripts/demo (toy store, rerun records).
+/out/
+*.npz
+*.pt
+*.ckpt
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/
+.claude/
+.env
+.env.*
+
+# Internal research and maintenance material stays on the local workstation.
+/docs/
+/experiments/
+/src/
+/Weight*_Paper_Theme_Freeze_*.md
+/Weight*_Research_and_Implementation_Blueprint_*.md
+/Paper/
+/scripts/env.sh
+/scripts/exp8/
+/scripts/maintenance/
+/scripts/data_jobs/
+/scripts/nscc_session/
+/scripts/nscc_store/
+/scripts/**/*.pbs
+/scripts/**/*.cmds
+/scripts/**/*.inputs
+/scripts/**/*.env
+/scripts/**/*.template
+/scripts/**/*.cells
+/scripts/**/*.jsonl
+/scripts/**/*.sha256
+/scripts/**/*.sh
+!/scripts/setup_sandbox_venv.sh
+
+# assets/ holds the latest paper build and its figures; only the paper PDF and Figure 1 are published.
+/assets/*
+!/assets/WeightCode.pdf
+!/assets/fig1.png
+
+# Packaging artifacts
+/dist/
+/build/

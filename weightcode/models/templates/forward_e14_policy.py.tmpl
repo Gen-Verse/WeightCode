@@ -1,0 +1,142 @@
+"""Numpy reference forward pass of a grid-world policy (model_spec.json describes it).
+
+Requires numpy only. Call ``forward(params, x)``:
+
+* ``params``: dict of float arrays keyed by parameter name, PyTorch layout (conv weight [out, in, kh, kw], linear
+  weight [out, in]).
+* ``x``: int64 rows [N, 197]. A row is one observation and instruction: the grid's 8 x 8 cells, each (object index,
+  color index, state), in [x, y, channel] C order (192 values), then the instruction's 5 word ids.
+* returns float32 action logits [N, 7]; the action taken is the argmax over axis 1 (the first index on ties).
+
+Architecture (fixed; the sizes are read from the parameter shapes and checked against each other):
+
+* cell embedding: e[n, x, y] = obj_emb[object] + col_emb[color] + state_emb[state], d_cell values per cell.
+* instruction: the 5 word rows word_emb[id] concatenated in order ([5 * d_word]), then
+  h = ReLU(instr.weight @ w + instr.bias), [d_instr].
+* two FiLM convolution blocks k = 1, 2 on the [channels, 8, 8] map (channel, x, y): z = conv_k(z) (3x3, stride 1,
+  zero padding 1, with bias), (g, b) = film_k.weight @ h + film_k.bias split into two halves of the block's
+  channels, z = ReLU(z * (1 + g) + b) with g and b broadcast over the 8 x 8 positions.
+* u = fc.weight @ flatten(z) + fc.bias, where flatten takes z in (channel, x, y) C order; then LayerNorm over u's
+  d_hidden values, (u - mean) / sqrt(var + LN_EPS) * ln.weight + ln.bias with the biased variance; then ReLU.
+* logits = head.weight @ u + head.bias.
+
+Convolution is 2-D cross-correlation as in torch.nn.functional.conv2d. All arithmetic runs in float64 and the logits
+are cast once to float32. Rows are processed in chunks of at most CHUNK.
+"""
+
+from __future__ import annotations
+
+import numpy as np
+
+GRID = 8
+N_CHANNELS = 3
+INSTR_LEN = 5
+ROW_LEN = GRID * GRID * N_CHANNELS + INSTR_LEN
+N_OBJECTS = 11
+N_COLORS = 6
+N_STATES = 4
+N_WORDS = 15
+N_ACTIONS = 7
+LN_EPS = 1e-5
+CHUNK = 512
+NAMES = ("obj_emb.weight", "col_emb.weight", "state_emb.weight", "word_emb.weight", "instr.weight", "instr.bias",
+         "conv1.weight", "conv1.bias", "film1.weight", "film1.bias", "conv2.weight", "conv2.bias", "film2.weight",
+         "film2.bias", "fc.weight", "fc.bias", "ln.weight", "ln.bias", "head.weight", "head.bias")
+
+
+def expected_shapes(d_cell: int, d_word: int, d_instr: int, channels: int, d_hidden: int) -> dict[str, tuple]:
+    """Every parameter name with its shape for the given sizes, in forward order."""
+    return {
+        "obj_emb.weight": (N_OBJECTS, d_cell), "col_emb.weight": (N_COLORS, d_cell),
+        "state_emb.weight": (N_STATES, d_cell), "word_emb.weight": (N_WORDS, d_word),
+        "instr.weight": (d_instr, INSTR_LEN * d_word), "instr.bias": (d_instr,),
+        "conv1.weight": (channels, d_cell, 3, 3), "conv1.bias": (channels,),
+        "film1.weight": (2 * channels, d_instr), "film1.bias": (2 * channels,),
+        "conv2.weight": (channels, channels, 3, 3), "conv2.bias": (channels,),
+        "film2.weight": (2 * channels, d_instr), "film2.bias": (2 * channels,),
+        "fc.weight": (d_hidden, channels * GRID * GRID), "fc.bias": (d_hidden,),
+        "ln.weight": (d_hidden,), "ln.bias": (d_hidden,),
+        "head.weight": (N_ACTIONS, d_hidden), "head.bias": (N_ACTIONS,),
+    }
+
+
+def sizes(params: dict) -> tuple[int, int, int, int, int]:
+    """(d_cell, d_word, d_instr, channels, d_hidden) read from the parameter shapes."""
+    return (int(np.shape(params["obj_emb.weight"])[1]), int(np.shape(params["word_emb.weight"])[1]),
+            int(np.shape(params["instr.weight"])[0]), int(np.shape(params["conv1.weight"])[0]),
+            int(np.shape(params["fc.weight"])[0]))
+
+
+def _checked(params: dict) -> dict[str, np.ndarray]:
+    names = {str(key) for key in params}
+    if names != set(NAMES):
+        raise ValueError(f"parameter names differ: missing {sorted(set(NAMES) - names)}, unexpected "
+                         f"{sorted(names - set(NAMES))}")
+    expected = expected_shapes(*sizes(params))
+    out = {}
+    for name in NAMES:
+        value = np.asarray(params[name], dtype=np.float64)
+        if value.shape != expected[name]:
+            raise ValueError(f"{name}: expected shape {expected[name]}, got {value.shape}")
+        if not np.all(np.isfinite(value)):
+            raise ValueError(f"{name} has non-finite values")
+        out[name] = value
+    return out
+
+
+def _rows(x) -> np.ndarray:
+    x = np.asarray(x)
+    if not np.issubdtype(x.dtype, np.integer) or x.ndim != 2 or x.shape[1] != ROW_LEN:
+        raise ValueError(f"expected integer rows [N, {ROW_LEN}], got {x.dtype} {x.shape}")
+    x = x.astype(np.int64)
+    grid = x[:, : GRID * GRID * N_CHANNELS].reshape(-1, GRID, GRID, N_CHANNELS)
+    instr = x[:, GRID * GRID * N_CHANNELS:]
+    for values, limit, what in ((grid[..., 0], N_OBJECTS, "object"), (grid[..., 1], N_COLORS, "color"),
+                                (grid[..., 2], N_STATES, "state"), (instr, N_WORDS, "word")):
+        if values.size and (values.min() < 0 or values.max() >= limit):
+            raise ValueError(f"a {what} index is outside 0..{limit - 1}")
+    return x
+
+
+def _conv3x3(z: np.ndarray, weight: np.ndarray, bias: np.ndarray) -> np.ndarray:
+    """z [n, X, Y, C] (channels last) -> [n, X, Y, O]; cross-correlation, zero padding 1, stride 1."""
+    n, height, width, _ = z.shape
+    padded = np.zeros((n, height + 2, width + 2, z.shape[3]))
+    padded[:, 1:-1, 1:-1, :] = z
+    out = np.zeros((n * height * width, weight.shape[0]))
+    for u in range(3):
+        for v in range(3):
+            patch = padded[:, u:u + height, v:v + width, :].reshape(n * height * width, -1)
+            out += patch @ weight[:, :, u, v].T
+    return (out + bias).reshape(n, height, width, weight.shape[0])
+
+
+def _chunk(p: dict[str, np.ndarray], x: np.ndarray) -> np.ndarray:
+    n = len(x)
+    grid = x[:, : GRID * GRID * N_CHANNELS].reshape(n, GRID, GRID, N_CHANNELS)
+    instr = x[:, GRID * GRID * N_CHANNELS:]
+    z = p["obj_emb.weight"][grid[..., 0]] + p["col_emb.weight"][grid[..., 1]] + p["state_emb.weight"][grid[..., 2]]
+    w = p["word_emb.weight"][instr].reshape(n, -1)
+    h = np.maximum(w @ p["instr.weight"].T + p["instr.bias"], 0.0)
+    for k in (1, 2):
+        z = _conv3x3(z, p[f"conv{k}.weight"], p[f"conv{k}.bias"])
+        film = h @ p[f"film{k}.weight"].T + p[f"film{k}.bias"]
+        channels = z.shape[3]
+        gamma, beta = film[:, :channels], film[:, channels:]
+        z = np.maximum(z * (1.0 + gamma[:, None, None, :]) + beta[:, None, None, :], 0.0)
+    flat = z.transpose(0, 3, 1, 2).reshape(n, -1)
+    u = flat @ p["fc.weight"].T + p["fc.bias"]
+    mean = u.mean(axis=1, keepdims=True)
+    var = ((u - mean) ** 2).mean(axis=1, keepdims=True)
+    u = np.maximum((u - mean) / np.sqrt(var + LN_EPS) * p["ln.weight"] + p["ln.bias"], 0.0)
+    return u @ p["head.weight"].T + p["head.bias"]
+
+
+def forward(params: dict, x) -> np.ndarray:
+    """Action logits float32 [N, 7] of rows ``x`` int [N, 197] under ``params``."""
+    p = _checked(params)
+    rows = _rows(x)
+    if len(rows) == 0:
+        return np.zeros((0, N_ACTIONS), dtype=np.float32)
+    out = [_chunk(p, rows[start:start + CHUNK]) for start in range(0, len(rows), CHUNK)]
+    return np.concatenate(out).astype(np.float32)

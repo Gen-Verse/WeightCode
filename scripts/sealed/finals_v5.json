@@ -1,0 +1,3544 @@
+{
+  "schema": "weightcode.sealed_finals_list.v1",
+  "status": "approved",
+  "approval": "User approved list v5 (191 vision_range entries: T07's eight networks on T07's 25 corruption sets; 17 of T07's 208 cells reused from lists v2 and v4; draft canonical 6a6e572c392cdd50...) for one sealed read: AskUserQuestion 2026-11-07 about 16:12 Beijing (\"\u6279\u51c6\uff0c\u73b0\u5728\u8bfb\"), after the dev check, under PREREG \"T07 sealed read (list v5)\" (main 81a0f26). The read itself was agreed at about 13:30 (\"1\u3001\u53ef\u4ee5\"); the note's \"13:40 ... 2\u3001\u8981\" is a slip for that answer, left unchanged so the entries and note match the dev-checked draft. Dev-checked 191 of 191 equal to T07's rows and predictions (NSCC R40 job 245934); lists v2 to v4 under the same code 151 of 151 (job 245937). Read locally once, --workers 4 at 4 threads (about 10 GB available at launch).",
+  "note": "List v5 of the sealed read (PREREG \"T07 sealed read (list v5)\"; user 2026-11-07 about 13:40 Beijing via WEIGHTCODE-main, \"2\u3001\u8981\"), built by scripts/sealed/make_finals_v5.py from T07's table of record (t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json, sha256 55982f0da04b3514...). T07's eight networks (B finals of record and F1's kept picks at floor -20, sources copied from list v2) on T07's 25 corruption sets, each read on the official CIFAR-10-C test rows of its corruption and severity (10,000 per set) through the range index ($WEIGHTCODE_PRIVATE/<dataset>/t07_range/<set>/dataset.json). 191 vision_range entries (vit 95, r18 96). 17 of T07's 208 cells are not read again; their test cells are the earlier reads: vit llm_gaussian_noise clean from finals_v2.json E11_B_gaussian_s100 (readouts_clean); vit llm_gaussian_noise gaussian_noise_s5 from finals_v2.json E11_B_gaussian_s100 (readouts); vit llm_gaussian_noise contrast_s5 from finals_v4.json E11_stream_W1_contrast (readouts); vit llm_contrast clean from finals_v2.json E11_B_contrast_s100 (readouts_clean); vit llm_contrast contrast_s5 from finals_v2.json E11_B_contrast_s100 (readouts); vit ft_gaussian_noise clean from finals_v2.json ref_E11_gaussian_F1_lora_r4 (readouts_clean); vit ft_gaussian_noise gaussian_noise_s5 from finals_v2.json ref_E11_gaussian_F1_lora_r4 (readouts); vit ft_contrast clean from finals_v2.json ref_E11_contrast_F1_ft_full_l2sp (readouts_clean); vit ft_contrast contrast_s5 from finals_v2.json ref_E11_contrast_F1_ft_full_l2sp (readouts); r18 llm_gaussian_noise clean from finals_v2.json E12_B_gaussian_s100 (readouts_clean); r18 llm_gaussian_noise gaussian_noise_s5 from finals_v2.json E12_B_gaussian_s100 (readouts); r18 llm_contrast clean from finals_v2.json E12_B_contrast_s100 (readouts_clean); r18 llm_contrast contrast_s5 from finals_v2.json E12_B_contrast_s100 (readouts); r18 ft_gaussian_noise clean from finals_v2.json ref_E12_gaussian_F1_lora_r16 (readouts_clean); r18 ft_gaussian_noise gaussian_noise_s5 from finals_v2.json ref_E12_gaussian_F1_lora_r16 (readouts); r18 ft_contrast clean from finals_v2.json ref_E12_contrast_F1_lora_r16 (readouts_clean); r18 ft_contrast contrast_s5 from finals_v2.json ref_E12_contrast_F1_lora_r16 (readouts). Each entry is dev-checked equal to its T07 row and predictions on NSCC before the read. Read once, after the user approves the list.",
+  "finals": [
+    {
+      "name": "T07_vit_llm_gaussian_noise__gaussian_noise_s1",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "gaussian_noise_s1",
+        "network": {
+          "kind": "session",
+          "session_id": "sc918e11dceef637a"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "llm_gaussian_noise"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "e40c20786ae91c904cfd7a195addb7e03b6601b955d731518da1ff54bc01c251"
+    },
+    {
+      "name": "T07_vit_llm_gaussian_noise__gaussian_noise_s2",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "gaussian_noise_s2",
+        "network": {
+          "kind": "session",
+          "session_id": "sc918e11dceef637a"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "llm_gaussian_noise"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "e40c20786ae91c904cfd7a195addb7e03b6601b955d731518da1ff54bc01c251"
+    },
+    {
+      "name": "T07_vit_llm_gaussian_noise__gaussian_noise_s3",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "gaussian_noise_s3",
+        "network": {
+          "kind": "session",
+          "session_id": "sc918e11dceef637a"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "llm_gaussian_noise"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "e40c20786ae91c904cfd7a195addb7e03b6601b955d731518da1ff54bc01c251"
+    },
+    {
+      "name": "T07_vit_llm_gaussian_noise__gaussian_noise_s4",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "gaussian_noise_s4",
+        "network": {
+          "kind": "session",
+          "session_id": "sc918e11dceef637a"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "llm_gaussian_noise"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "e40c20786ae91c904cfd7a195addb7e03b6601b955d731518da1ff54bc01c251"
+    },
+    {
+      "name": "T07_vit_llm_gaussian_noise__contrast_s1",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "contrast_s1",
+        "network": {
+          "kind": "session",
+          "session_id": "sc918e11dceef637a"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "llm_gaussian_noise"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "e40c20786ae91c904cfd7a195addb7e03b6601b955d731518da1ff54bc01c251"
+    },
+    {
+      "name": "T07_vit_llm_gaussian_noise__contrast_s2",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "contrast_s2",
+        "network": {
+          "kind": "session",
+          "session_id": "sc918e11dceef637a"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "llm_gaussian_noise"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "e40c20786ae91c904cfd7a195addb7e03b6601b955d731518da1ff54bc01c251"
+    },
+    {
+      "name": "T07_vit_llm_gaussian_noise__contrast_s3",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "contrast_s3",
+        "network": {
+          "kind": "session",
+          "session_id": "sc918e11dceef637a"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "llm_gaussian_noise"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "e40c20786ae91c904cfd7a195addb7e03b6601b955d731518da1ff54bc01c251"
+    },
+    {
+      "name": "T07_vit_llm_gaussian_noise__contrast_s4",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "contrast_s4",
+        "network": {
+          "kind": "session",
+          "session_id": "sc918e11dceef637a"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "llm_gaussian_noise"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "e40c20786ae91c904cfd7a195addb7e03b6601b955d731518da1ff54bc01c251"
+    },
+    {
+      "name": "T07_vit_llm_gaussian_noise__defocus_blur_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "defocus_blur_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "sc918e11dceef637a"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "llm_gaussian_noise"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "e40c20786ae91c904cfd7a195addb7e03b6601b955d731518da1ff54bc01c251"
+    },
+    {
+      "name": "T07_vit_llm_gaussian_noise__snow_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "snow_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "sc918e11dceef637a"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "llm_gaussian_noise"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "e40c20786ae91c904cfd7a195addb7e03b6601b955d731518da1ff54bc01c251"
+    },
+    {
+      "name": "T07_vit_llm_gaussian_noise__shot_noise_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "shot_noise_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "sc918e11dceef637a"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "llm_gaussian_noise"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "e40c20786ae91c904cfd7a195addb7e03b6601b955d731518da1ff54bc01c251"
+    },
+    {
+      "name": "T07_vit_llm_gaussian_noise__impulse_noise_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "impulse_noise_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "sc918e11dceef637a"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "llm_gaussian_noise"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "e40c20786ae91c904cfd7a195addb7e03b6601b955d731518da1ff54bc01c251"
+    },
+    {
+      "name": "T07_vit_llm_gaussian_noise__motion_blur_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "motion_blur_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "sc918e11dceef637a"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "llm_gaussian_noise"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "e40c20786ae91c904cfd7a195addb7e03b6601b955d731518da1ff54bc01c251"
+    },
+    {
+      "name": "T07_vit_llm_gaussian_noise__zoom_blur_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "zoom_blur_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "sc918e11dceef637a"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "llm_gaussian_noise"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "e40c20786ae91c904cfd7a195addb7e03b6601b955d731518da1ff54bc01c251"
+    },
+    {
+      "name": "T07_vit_llm_gaussian_noise__frost_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "frost_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "sc918e11dceef637a"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "llm_gaussian_noise"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "e40c20786ae91c904cfd7a195addb7e03b6601b955d731518da1ff54bc01c251"
+    },
+    {
+      "name": "T07_vit_llm_gaussian_noise__fog_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "fog_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "sc918e11dceef637a"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "llm_gaussian_noise"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "e40c20786ae91c904cfd7a195addb7e03b6601b955d731518da1ff54bc01c251"
+    },
+    {
+      "name": "T07_vit_llm_gaussian_noise__brightness_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "brightness_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "sc918e11dceef637a"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "llm_gaussian_noise"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "e40c20786ae91c904cfd7a195addb7e03b6601b955d731518da1ff54bc01c251"
+    },
+    {
+      "name": "T07_vit_llm_gaussian_noise__elastic_transform_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "elastic_transform_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "sc918e11dceef637a"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "llm_gaussian_noise"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "e40c20786ae91c904cfd7a195addb7e03b6601b955d731518da1ff54bc01c251"
+    },
+    {
+      "name": "T07_vit_llm_gaussian_noise__pixelate_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "pixelate_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "sc918e11dceef637a"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "llm_gaussian_noise"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "e40c20786ae91c904cfd7a195addb7e03b6601b955d731518da1ff54bc01c251"
+    },
+    {
+      "name": "T07_vit_llm_gaussian_noise__jpeg_compression_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "jpeg_compression_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "sc918e11dceef637a"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "llm_gaussian_noise"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "e40c20786ae91c904cfd7a195addb7e03b6601b955d731518da1ff54bc01c251"
+    },
+    {
+      "name": "T07_vit_llm_gaussian_noise__speckle_noise_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "speckle_noise_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "sc918e11dceef637a"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "llm_gaussian_noise"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "e40c20786ae91c904cfd7a195addb7e03b6601b955d731518da1ff54bc01c251"
+    },
+    {
+      "name": "T07_vit_llm_gaussian_noise__spatter_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "spatter_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "sc918e11dceef637a"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "llm_gaussian_noise"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "e40c20786ae91c904cfd7a195addb7e03b6601b955d731518da1ff54bc01c251"
+    },
+    {
+      "name": "T07_vit_llm_gaussian_noise__saturate_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "saturate_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "sc918e11dceef637a"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "llm_gaussian_noise"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "e40c20786ae91c904cfd7a195addb7e03b6601b955d731518da1ff54bc01c251"
+    },
+    {
+      "name": "T07_vit_llm_contrast__gaussian_noise_s1",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "gaussian_noise_s1",
+        "network": {
+          "kind": "session",
+          "session_id": "s760cb52ce82fb937"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "llm_contrast"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "07943b6df1f9424be9b7c76cc32630f4c194b79e44b8ad00d9a89749aa0308e7"
+    },
+    {
+      "name": "T07_vit_llm_contrast__gaussian_noise_s2",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "gaussian_noise_s2",
+        "network": {
+          "kind": "session",
+          "session_id": "s760cb52ce82fb937"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "llm_contrast"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "07943b6df1f9424be9b7c76cc32630f4c194b79e44b8ad00d9a89749aa0308e7"
+    },
+    {
+      "name": "T07_vit_llm_contrast__gaussian_noise_s3",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "gaussian_noise_s3",
+        "network": {
+          "kind": "session",
+          "session_id": "s760cb52ce82fb937"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "llm_contrast"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "07943b6df1f9424be9b7c76cc32630f4c194b79e44b8ad00d9a89749aa0308e7"
+    },
+    {
+      "name": "T07_vit_llm_contrast__gaussian_noise_s4",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "gaussian_noise_s4",
+        "network": {
+          "kind": "session",
+          "session_id": "s760cb52ce82fb937"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "llm_contrast"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "07943b6df1f9424be9b7c76cc32630f4c194b79e44b8ad00d9a89749aa0308e7"
+    },
+    {
+      "name": "T07_vit_llm_contrast__gaussian_noise_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "gaussian_noise_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "s760cb52ce82fb937"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "llm_contrast"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "07943b6df1f9424be9b7c76cc32630f4c194b79e44b8ad00d9a89749aa0308e7"
+    },
+    {
+      "name": "T07_vit_llm_contrast__contrast_s1",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "contrast_s1",
+        "network": {
+          "kind": "session",
+          "session_id": "s760cb52ce82fb937"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "llm_contrast"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "07943b6df1f9424be9b7c76cc32630f4c194b79e44b8ad00d9a89749aa0308e7"
+    },
+    {
+      "name": "T07_vit_llm_contrast__contrast_s2",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "contrast_s2",
+        "network": {
+          "kind": "session",
+          "session_id": "s760cb52ce82fb937"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "llm_contrast"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "07943b6df1f9424be9b7c76cc32630f4c194b79e44b8ad00d9a89749aa0308e7"
+    },
+    {
+      "name": "T07_vit_llm_contrast__contrast_s3",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "contrast_s3",
+        "network": {
+          "kind": "session",
+          "session_id": "s760cb52ce82fb937"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "llm_contrast"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "07943b6df1f9424be9b7c76cc32630f4c194b79e44b8ad00d9a89749aa0308e7"
+    },
+    {
+      "name": "T07_vit_llm_contrast__contrast_s4",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "contrast_s4",
+        "network": {
+          "kind": "session",
+          "session_id": "s760cb52ce82fb937"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "llm_contrast"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "07943b6df1f9424be9b7c76cc32630f4c194b79e44b8ad00d9a89749aa0308e7"
+    },
+    {
+      "name": "T07_vit_llm_contrast__defocus_blur_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "defocus_blur_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "s760cb52ce82fb937"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "llm_contrast"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "07943b6df1f9424be9b7c76cc32630f4c194b79e44b8ad00d9a89749aa0308e7"
+    },
+    {
+      "name": "T07_vit_llm_contrast__snow_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "snow_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "s760cb52ce82fb937"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "llm_contrast"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "07943b6df1f9424be9b7c76cc32630f4c194b79e44b8ad00d9a89749aa0308e7"
+    },
+    {
+      "name": "T07_vit_llm_contrast__shot_noise_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "shot_noise_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "s760cb52ce82fb937"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "llm_contrast"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "07943b6df1f9424be9b7c76cc32630f4c194b79e44b8ad00d9a89749aa0308e7"
+    },
+    {
+      "name": "T07_vit_llm_contrast__impulse_noise_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "impulse_noise_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "s760cb52ce82fb937"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "llm_contrast"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "07943b6df1f9424be9b7c76cc32630f4c194b79e44b8ad00d9a89749aa0308e7"
+    },
+    {
+      "name": "T07_vit_llm_contrast__motion_blur_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "motion_blur_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "s760cb52ce82fb937"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "llm_contrast"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "07943b6df1f9424be9b7c76cc32630f4c194b79e44b8ad00d9a89749aa0308e7"
+    },
+    {
+      "name": "T07_vit_llm_contrast__zoom_blur_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "zoom_blur_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "s760cb52ce82fb937"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "llm_contrast"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "07943b6df1f9424be9b7c76cc32630f4c194b79e44b8ad00d9a89749aa0308e7"
+    },
+    {
+      "name": "T07_vit_llm_contrast__frost_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "frost_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "s760cb52ce82fb937"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "llm_contrast"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "07943b6df1f9424be9b7c76cc32630f4c194b79e44b8ad00d9a89749aa0308e7"
+    },
+    {
+      "name": "T07_vit_llm_contrast__fog_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "fog_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "s760cb52ce82fb937"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "llm_contrast"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "07943b6df1f9424be9b7c76cc32630f4c194b79e44b8ad00d9a89749aa0308e7"
+    },
+    {
+      "name": "T07_vit_llm_contrast__brightness_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "brightness_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "s760cb52ce82fb937"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "llm_contrast"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "07943b6df1f9424be9b7c76cc32630f4c194b79e44b8ad00d9a89749aa0308e7"
+    },
+    {
+      "name": "T07_vit_llm_contrast__elastic_transform_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "elastic_transform_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "s760cb52ce82fb937"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "llm_contrast"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "07943b6df1f9424be9b7c76cc32630f4c194b79e44b8ad00d9a89749aa0308e7"
+    },
+    {
+      "name": "T07_vit_llm_contrast__pixelate_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "pixelate_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "s760cb52ce82fb937"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "llm_contrast"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "07943b6df1f9424be9b7c76cc32630f4c194b79e44b8ad00d9a89749aa0308e7"
+    },
+    {
+      "name": "T07_vit_llm_contrast__jpeg_compression_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "jpeg_compression_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "s760cb52ce82fb937"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "llm_contrast"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "07943b6df1f9424be9b7c76cc32630f4c194b79e44b8ad00d9a89749aa0308e7"
+    },
+    {
+      "name": "T07_vit_llm_contrast__speckle_noise_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "speckle_noise_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "s760cb52ce82fb937"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "llm_contrast"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "07943b6df1f9424be9b7c76cc32630f4c194b79e44b8ad00d9a89749aa0308e7"
+    },
+    {
+      "name": "T07_vit_llm_contrast__spatter_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "spatter_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "s760cb52ce82fb937"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "llm_contrast"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "07943b6df1f9424be9b7c76cc32630f4c194b79e44b8ad00d9a89749aa0308e7"
+    },
+    {
+      "name": "T07_vit_llm_contrast__saturate_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "saturate_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "s760cb52ce82fb937"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "llm_contrast"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "07943b6df1f9424be9b7c76cc32630f4c194b79e44b8ad00d9a89749aa0308e7"
+    },
+    {
+      "name": "T07_vit_ft_gaussian_noise__gaussian_noise_s1",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "gaussian_noise_s1",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i00802425/lora_r4/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1_i00802425_gaussian_noise_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "ft_gaussian_noise"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "bed61accac2f72db1f40149aead73e8a8074ec6f81305583f836d5ec0878e310"
+    },
+    {
+      "name": "T07_vit_ft_gaussian_noise__gaussian_noise_s2",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "gaussian_noise_s2",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i00802425/lora_r4/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1_i00802425_gaussian_noise_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "ft_gaussian_noise"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "bed61accac2f72db1f40149aead73e8a8074ec6f81305583f836d5ec0878e310"
+    },
+    {
+      "name": "T07_vit_ft_gaussian_noise__gaussian_noise_s3",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "gaussian_noise_s3",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i00802425/lora_r4/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1_i00802425_gaussian_noise_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "ft_gaussian_noise"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "bed61accac2f72db1f40149aead73e8a8074ec6f81305583f836d5ec0878e310"
+    },
+    {
+      "name": "T07_vit_ft_gaussian_noise__gaussian_noise_s4",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "gaussian_noise_s4",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i00802425/lora_r4/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1_i00802425_gaussian_noise_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "ft_gaussian_noise"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "bed61accac2f72db1f40149aead73e8a8074ec6f81305583f836d5ec0878e310"
+    },
+    {
+      "name": "T07_vit_ft_gaussian_noise__contrast_s1",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "contrast_s1",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i00802425/lora_r4/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1_i00802425_gaussian_noise_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "ft_gaussian_noise"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "bed61accac2f72db1f40149aead73e8a8074ec6f81305583f836d5ec0878e310"
+    },
+    {
+      "name": "T07_vit_ft_gaussian_noise__contrast_s2",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "contrast_s2",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i00802425/lora_r4/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1_i00802425_gaussian_noise_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "ft_gaussian_noise"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "bed61accac2f72db1f40149aead73e8a8074ec6f81305583f836d5ec0878e310"
+    },
+    {
+      "name": "T07_vit_ft_gaussian_noise__contrast_s3",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "contrast_s3",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i00802425/lora_r4/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1_i00802425_gaussian_noise_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "ft_gaussian_noise"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "bed61accac2f72db1f40149aead73e8a8074ec6f81305583f836d5ec0878e310"
+    },
+    {
+      "name": "T07_vit_ft_gaussian_noise__contrast_s4",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "contrast_s4",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i00802425/lora_r4/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1_i00802425_gaussian_noise_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "ft_gaussian_noise"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "bed61accac2f72db1f40149aead73e8a8074ec6f81305583f836d5ec0878e310"
+    },
+    {
+      "name": "T07_vit_ft_gaussian_noise__contrast_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "contrast_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i00802425/lora_r4/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1_i00802425_gaussian_noise_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "ft_gaussian_noise"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "bed61accac2f72db1f40149aead73e8a8074ec6f81305583f836d5ec0878e310"
+    },
+    {
+      "name": "T07_vit_ft_gaussian_noise__defocus_blur_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "defocus_blur_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i00802425/lora_r4/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1_i00802425_gaussian_noise_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "ft_gaussian_noise"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "bed61accac2f72db1f40149aead73e8a8074ec6f81305583f836d5ec0878e310"
+    },
+    {
+      "name": "T07_vit_ft_gaussian_noise__snow_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "snow_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i00802425/lora_r4/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1_i00802425_gaussian_noise_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "ft_gaussian_noise"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "bed61accac2f72db1f40149aead73e8a8074ec6f81305583f836d5ec0878e310"
+    },
+    {
+      "name": "T07_vit_ft_gaussian_noise__shot_noise_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "shot_noise_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i00802425/lora_r4/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1_i00802425_gaussian_noise_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "ft_gaussian_noise"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "bed61accac2f72db1f40149aead73e8a8074ec6f81305583f836d5ec0878e310"
+    },
+    {
+      "name": "T07_vit_ft_gaussian_noise__impulse_noise_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "impulse_noise_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i00802425/lora_r4/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1_i00802425_gaussian_noise_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "ft_gaussian_noise"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "bed61accac2f72db1f40149aead73e8a8074ec6f81305583f836d5ec0878e310"
+    },
+    {
+      "name": "T07_vit_ft_gaussian_noise__motion_blur_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "motion_blur_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i00802425/lora_r4/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1_i00802425_gaussian_noise_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "ft_gaussian_noise"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "bed61accac2f72db1f40149aead73e8a8074ec6f81305583f836d5ec0878e310"
+    },
+    {
+      "name": "T07_vit_ft_gaussian_noise__zoom_blur_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "zoom_blur_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i00802425/lora_r4/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1_i00802425_gaussian_noise_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "ft_gaussian_noise"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "bed61accac2f72db1f40149aead73e8a8074ec6f81305583f836d5ec0878e310"
+    },
+    {
+      "name": "T07_vit_ft_gaussian_noise__frost_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "frost_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i00802425/lora_r4/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1_i00802425_gaussian_noise_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "ft_gaussian_noise"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "bed61accac2f72db1f40149aead73e8a8074ec6f81305583f836d5ec0878e310"
+    },
+    {
+      "name": "T07_vit_ft_gaussian_noise__fog_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "fog_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i00802425/lora_r4/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1_i00802425_gaussian_noise_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "ft_gaussian_noise"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "bed61accac2f72db1f40149aead73e8a8074ec6f81305583f836d5ec0878e310"
+    },
+    {
+      "name": "T07_vit_ft_gaussian_noise__brightness_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "brightness_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i00802425/lora_r4/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1_i00802425_gaussian_noise_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "ft_gaussian_noise"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "bed61accac2f72db1f40149aead73e8a8074ec6f81305583f836d5ec0878e310"
+    },
+    {
+      "name": "T07_vit_ft_gaussian_noise__elastic_transform_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "elastic_transform_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i00802425/lora_r4/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1_i00802425_gaussian_noise_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "ft_gaussian_noise"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "bed61accac2f72db1f40149aead73e8a8074ec6f81305583f836d5ec0878e310"
+    },
+    {
+      "name": "T07_vit_ft_gaussian_noise__pixelate_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "pixelate_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i00802425/lora_r4/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1_i00802425_gaussian_noise_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "ft_gaussian_noise"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "bed61accac2f72db1f40149aead73e8a8074ec6f81305583f836d5ec0878e310"
+    },
+    {
+      "name": "T07_vit_ft_gaussian_noise__jpeg_compression_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "jpeg_compression_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i00802425/lora_r4/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1_i00802425_gaussian_noise_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "ft_gaussian_noise"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "bed61accac2f72db1f40149aead73e8a8074ec6f81305583f836d5ec0878e310"
+    },
+    {
+      "name": "T07_vit_ft_gaussian_noise__speckle_noise_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "speckle_noise_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i00802425/lora_r4/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1_i00802425_gaussian_noise_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "ft_gaussian_noise"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "bed61accac2f72db1f40149aead73e8a8074ec6f81305583f836d5ec0878e310"
+    },
+    {
+      "name": "T07_vit_ft_gaussian_noise__spatter_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "spatter_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i00802425/lora_r4/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1_i00802425_gaussian_noise_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "ft_gaussian_noise"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "bed61accac2f72db1f40149aead73e8a8074ec6f81305583f836d5ec0878e310"
+    },
+    {
+      "name": "T07_vit_ft_gaussian_noise__saturate_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "saturate_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i00802425/lora_r4/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1_i00802425_gaussian_noise_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "ft_gaussian_noise"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "bed61accac2f72db1f40149aead73e8a8074ec6f81305583f836d5ec0878e310"
+    },
+    {
+      "name": "T07_vit_ft_contrast__gaussian_noise_s1",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "gaussian_noise_s1",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i3eb3fc78/ft_full_l2sp/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1_i3eb3fc78_contrast_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "ft_contrast"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "f5bd4352477c7cffcafde3ed52092ca96fd593e5fd31231c42a412593e95da90"
+    },
+    {
+      "name": "T07_vit_ft_contrast__gaussian_noise_s2",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "gaussian_noise_s2",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i3eb3fc78/ft_full_l2sp/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1_i3eb3fc78_contrast_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "ft_contrast"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "f5bd4352477c7cffcafde3ed52092ca96fd593e5fd31231c42a412593e95da90"
+    },
+    {
+      "name": "T07_vit_ft_contrast__gaussian_noise_s3",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "gaussian_noise_s3",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i3eb3fc78/ft_full_l2sp/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1_i3eb3fc78_contrast_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "ft_contrast"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "f5bd4352477c7cffcafde3ed52092ca96fd593e5fd31231c42a412593e95da90"
+    },
+    {
+      "name": "T07_vit_ft_contrast__gaussian_noise_s4",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "gaussian_noise_s4",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i3eb3fc78/ft_full_l2sp/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1_i3eb3fc78_contrast_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "ft_contrast"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "f5bd4352477c7cffcafde3ed52092ca96fd593e5fd31231c42a412593e95da90"
+    },
+    {
+      "name": "T07_vit_ft_contrast__gaussian_noise_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "gaussian_noise_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i3eb3fc78/ft_full_l2sp/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1_i3eb3fc78_contrast_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "ft_contrast"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "f5bd4352477c7cffcafde3ed52092ca96fd593e5fd31231c42a412593e95da90"
+    },
+    {
+      "name": "T07_vit_ft_contrast__contrast_s1",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "contrast_s1",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i3eb3fc78/ft_full_l2sp/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1_i3eb3fc78_contrast_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "ft_contrast"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "f5bd4352477c7cffcafde3ed52092ca96fd593e5fd31231c42a412593e95da90"
+    },
+    {
+      "name": "T07_vit_ft_contrast__contrast_s2",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "contrast_s2",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i3eb3fc78/ft_full_l2sp/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1_i3eb3fc78_contrast_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "ft_contrast"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "f5bd4352477c7cffcafde3ed52092ca96fd593e5fd31231c42a412593e95da90"
+    },
+    {
+      "name": "T07_vit_ft_contrast__contrast_s3",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "contrast_s3",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i3eb3fc78/ft_full_l2sp/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1_i3eb3fc78_contrast_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "ft_contrast"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "f5bd4352477c7cffcafde3ed52092ca96fd593e5fd31231c42a412593e95da90"
+    },
+    {
+      "name": "T07_vit_ft_contrast__contrast_s4",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "contrast_s4",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i3eb3fc78/ft_full_l2sp/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1_i3eb3fc78_contrast_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "ft_contrast"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "f5bd4352477c7cffcafde3ed52092ca96fd593e5fd31231c42a412593e95da90"
+    },
+    {
+      "name": "T07_vit_ft_contrast__defocus_blur_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "defocus_blur_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i3eb3fc78/ft_full_l2sp/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1_i3eb3fc78_contrast_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "ft_contrast"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "f5bd4352477c7cffcafde3ed52092ca96fd593e5fd31231c42a412593e95da90"
+    },
+    {
+      "name": "T07_vit_ft_contrast__snow_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "snow_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i3eb3fc78/ft_full_l2sp/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1_i3eb3fc78_contrast_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "ft_contrast"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "f5bd4352477c7cffcafde3ed52092ca96fd593e5fd31231c42a412593e95da90"
+    },
+    {
+      "name": "T07_vit_ft_contrast__shot_noise_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "shot_noise_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i3eb3fc78/ft_full_l2sp/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1_i3eb3fc78_contrast_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "ft_contrast"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "f5bd4352477c7cffcafde3ed52092ca96fd593e5fd31231c42a412593e95da90"
+    },
+    {
+      "name": "T07_vit_ft_contrast__impulse_noise_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "impulse_noise_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i3eb3fc78/ft_full_l2sp/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1_i3eb3fc78_contrast_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "ft_contrast"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "f5bd4352477c7cffcafde3ed52092ca96fd593e5fd31231c42a412593e95da90"
+    },
+    {
+      "name": "T07_vit_ft_contrast__motion_blur_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "motion_blur_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i3eb3fc78/ft_full_l2sp/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1_i3eb3fc78_contrast_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "ft_contrast"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "f5bd4352477c7cffcafde3ed52092ca96fd593e5fd31231c42a412593e95da90"
+    },
+    {
+      "name": "T07_vit_ft_contrast__zoom_blur_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "zoom_blur_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i3eb3fc78/ft_full_l2sp/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1_i3eb3fc78_contrast_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "ft_contrast"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "f5bd4352477c7cffcafde3ed52092ca96fd593e5fd31231c42a412593e95da90"
+    },
+    {
+      "name": "T07_vit_ft_contrast__frost_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "frost_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i3eb3fc78/ft_full_l2sp/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1_i3eb3fc78_contrast_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "ft_contrast"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "f5bd4352477c7cffcafde3ed52092ca96fd593e5fd31231c42a412593e95da90"
+    },
+    {
+      "name": "T07_vit_ft_contrast__fog_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "fog_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i3eb3fc78/ft_full_l2sp/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1_i3eb3fc78_contrast_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "ft_contrast"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "f5bd4352477c7cffcafde3ed52092ca96fd593e5fd31231c42a412593e95da90"
+    },
+    {
+      "name": "T07_vit_ft_contrast__brightness_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "brightness_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i3eb3fc78/ft_full_l2sp/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1_i3eb3fc78_contrast_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "ft_contrast"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "f5bd4352477c7cffcafde3ed52092ca96fd593e5fd31231c42a412593e95da90"
+    },
+    {
+      "name": "T07_vit_ft_contrast__elastic_transform_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "elastic_transform_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i3eb3fc78/ft_full_l2sp/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1_i3eb3fc78_contrast_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "ft_contrast"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "f5bd4352477c7cffcafde3ed52092ca96fd593e5fd31231c42a412593e95da90"
+    },
+    {
+      "name": "T07_vit_ft_contrast__pixelate_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "pixelate_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i3eb3fc78/ft_full_l2sp/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1_i3eb3fc78_contrast_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "ft_contrast"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "f5bd4352477c7cffcafde3ed52092ca96fd593e5fd31231c42a412593e95da90"
+    },
+    {
+      "name": "T07_vit_ft_contrast__jpeg_compression_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "jpeg_compression_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i3eb3fc78/ft_full_l2sp/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1_i3eb3fc78_contrast_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "ft_contrast"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "f5bd4352477c7cffcafde3ed52092ca96fd593e5fd31231c42a412593e95da90"
+    },
+    {
+      "name": "T07_vit_ft_contrast__speckle_noise_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "speckle_noise_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i3eb3fc78/ft_full_l2sp/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1_i3eb3fc78_contrast_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "ft_contrast"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "f5bd4352477c7cffcafde3ed52092ca96fd593e5fd31231c42a412593e95da90"
+    },
+    {
+      "name": "T07_vit_ft_contrast__spatter_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "spatter_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i3eb3fc78/ft_full_l2sp/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1_i3eb3fc78_contrast_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "ft_contrast"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "f5bd4352477c7cffcafde3ed52092ca96fd593e5fd31231c42a412593e95da90"
+    },
+    {
+      "name": "T07_vit_ft_contrast__saturate_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "saturate_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i3eb3fc78/ft_full_l2sp/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1_i3eb3fc78_contrast_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "vit",
+        "t07_network": "ft_contrast"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "f5bd4352477c7cffcafde3ed52092ca96fd593e5fd31231c42a412593e95da90"
+    },
+    {
+      "name": "T07_r18_llm_gaussian_noise__gaussian_noise_s1",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "gaussian_noise_s1",
+        "network": {
+          "kind": "session",
+          "session_id": "s2abaefab30d20b42"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "llm_gaussian_noise"
+      },
+      "instance_id": "i26d23d3e",
+      "child_sha256": "ab961aa19217aabbf6b3298ff5546a1cffa10c3406f6f9af26f6dbf240712713"
+    },
+    {
+      "name": "T07_r18_llm_gaussian_noise__gaussian_noise_s2",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "gaussian_noise_s2",
+        "network": {
+          "kind": "session",
+          "session_id": "s2abaefab30d20b42"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "llm_gaussian_noise"
+      },
+      "instance_id": "i26d23d3e",
+      "child_sha256": "ab961aa19217aabbf6b3298ff5546a1cffa10c3406f6f9af26f6dbf240712713"
+    },
+    {
+      "name": "T07_r18_llm_gaussian_noise__gaussian_noise_s3",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "gaussian_noise_s3",
+        "network": {
+          "kind": "session",
+          "session_id": "s2abaefab30d20b42"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "llm_gaussian_noise"
+      },
+      "instance_id": "i26d23d3e",
+      "child_sha256": "ab961aa19217aabbf6b3298ff5546a1cffa10c3406f6f9af26f6dbf240712713"
+    },
+    {
+      "name": "T07_r18_llm_gaussian_noise__gaussian_noise_s4",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "gaussian_noise_s4",
+        "network": {
+          "kind": "session",
+          "session_id": "s2abaefab30d20b42"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "llm_gaussian_noise"
+      },
+      "instance_id": "i26d23d3e",
+      "child_sha256": "ab961aa19217aabbf6b3298ff5546a1cffa10c3406f6f9af26f6dbf240712713"
+    },
+    {
+      "name": "T07_r18_llm_gaussian_noise__contrast_s1",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "contrast_s1",
+        "network": {
+          "kind": "session",
+          "session_id": "s2abaefab30d20b42"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "llm_gaussian_noise"
+      },
+      "instance_id": "i26d23d3e",
+      "child_sha256": "ab961aa19217aabbf6b3298ff5546a1cffa10c3406f6f9af26f6dbf240712713"
+    },
+    {
+      "name": "T07_r18_llm_gaussian_noise__contrast_s2",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "contrast_s2",
+        "network": {
+          "kind": "session",
+          "session_id": "s2abaefab30d20b42"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "llm_gaussian_noise"
+      },
+      "instance_id": "i26d23d3e",
+      "child_sha256": "ab961aa19217aabbf6b3298ff5546a1cffa10c3406f6f9af26f6dbf240712713"
+    },
+    {
+      "name": "T07_r18_llm_gaussian_noise__contrast_s3",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "contrast_s3",
+        "network": {
+          "kind": "session",
+          "session_id": "s2abaefab30d20b42"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "llm_gaussian_noise"
+      },
+      "instance_id": "i26d23d3e",
+      "child_sha256": "ab961aa19217aabbf6b3298ff5546a1cffa10c3406f6f9af26f6dbf240712713"
+    },
+    {
+      "name": "T07_r18_llm_gaussian_noise__contrast_s4",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "contrast_s4",
+        "network": {
+          "kind": "session",
+          "session_id": "s2abaefab30d20b42"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "llm_gaussian_noise"
+      },
+      "instance_id": "i26d23d3e",
+      "child_sha256": "ab961aa19217aabbf6b3298ff5546a1cffa10c3406f6f9af26f6dbf240712713"
+    },
+    {
+      "name": "T07_r18_llm_gaussian_noise__contrast_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "contrast_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "s2abaefab30d20b42"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "llm_gaussian_noise"
+      },
+      "instance_id": "i26d23d3e",
+      "child_sha256": "ab961aa19217aabbf6b3298ff5546a1cffa10c3406f6f9af26f6dbf240712713"
+    },
+    {
+      "name": "T07_r18_llm_gaussian_noise__defocus_blur_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "defocus_blur_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "s2abaefab30d20b42"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "llm_gaussian_noise"
+      },
+      "instance_id": "i26d23d3e",
+      "child_sha256": "ab961aa19217aabbf6b3298ff5546a1cffa10c3406f6f9af26f6dbf240712713"
+    },
+    {
+      "name": "T07_r18_llm_gaussian_noise__snow_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "snow_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "s2abaefab30d20b42"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "llm_gaussian_noise"
+      },
+      "instance_id": "i26d23d3e",
+      "child_sha256": "ab961aa19217aabbf6b3298ff5546a1cffa10c3406f6f9af26f6dbf240712713"
+    },
+    {
+      "name": "T07_r18_llm_gaussian_noise__shot_noise_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "shot_noise_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "s2abaefab30d20b42"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "llm_gaussian_noise"
+      },
+      "instance_id": "i26d23d3e",
+      "child_sha256": "ab961aa19217aabbf6b3298ff5546a1cffa10c3406f6f9af26f6dbf240712713"
+    },
+    {
+      "name": "T07_r18_llm_gaussian_noise__impulse_noise_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "impulse_noise_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "s2abaefab30d20b42"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "llm_gaussian_noise"
+      },
+      "instance_id": "i26d23d3e",
+      "child_sha256": "ab961aa19217aabbf6b3298ff5546a1cffa10c3406f6f9af26f6dbf240712713"
+    },
+    {
+      "name": "T07_r18_llm_gaussian_noise__motion_blur_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "motion_blur_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "s2abaefab30d20b42"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "llm_gaussian_noise"
+      },
+      "instance_id": "i26d23d3e",
+      "child_sha256": "ab961aa19217aabbf6b3298ff5546a1cffa10c3406f6f9af26f6dbf240712713"
+    },
+    {
+      "name": "T07_r18_llm_gaussian_noise__zoom_blur_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "zoom_blur_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "s2abaefab30d20b42"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "llm_gaussian_noise"
+      },
+      "instance_id": "i26d23d3e",
+      "child_sha256": "ab961aa19217aabbf6b3298ff5546a1cffa10c3406f6f9af26f6dbf240712713"
+    },
+    {
+      "name": "T07_r18_llm_gaussian_noise__frost_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "frost_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "s2abaefab30d20b42"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "llm_gaussian_noise"
+      },
+      "instance_id": "i26d23d3e",
+      "child_sha256": "ab961aa19217aabbf6b3298ff5546a1cffa10c3406f6f9af26f6dbf240712713"
+    },
+    {
+      "name": "T07_r18_llm_gaussian_noise__fog_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "fog_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "s2abaefab30d20b42"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "llm_gaussian_noise"
+      },
+      "instance_id": "i26d23d3e",
+      "child_sha256": "ab961aa19217aabbf6b3298ff5546a1cffa10c3406f6f9af26f6dbf240712713"
+    },
+    {
+      "name": "T07_r18_llm_gaussian_noise__brightness_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "brightness_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "s2abaefab30d20b42"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "llm_gaussian_noise"
+      },
+      "instance_id": "i26d23d3e",
+      "child_sha256": "ab961aa19217aabbf6b3298ff5546a1cffa10c3406f6f9af26f6dbf240712713"
+    },
+    {
+      "name": "T07_r18_llm_gaussian_noise__elastic_transform_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "elastic_transform_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "s2abaefab30d20b42"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "llm_gaussian_noise"
+      },
+      "instance_id": "i26d23d3e",
+      "child_sha256": "ab961aa19217aabbf6b3298ff5546a1cffa10c3406f6f9af26f6dbf240712713"
+    },
+    {
+      "name": "T07_r18_llm_gaussian_noise__pixelate_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "pixelate_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "s2abaefab30d20b42"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "llm_gaussian_noise"
+      },
+      "instance_id": "i26d23d3e",
+      "child_sha256": "ab961aa19217aabbf6b3298ff5546a1cffa10c3406f6f9af26f6dbf240712713"
+    },
+    {
+      "name": "T07_r18_llm_gaussian_noise__jpeg_compression_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "jpeg_compression_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "s2abaefab30d20b42"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "llm_gaussian_noise"
+      },
+      "instance_id": "i26d23d3e",
+      "child_sha256": "ab961aa19217aabbf6b3298ff5546a1cffa10c3406f6f9af26f6dbf240712713"
+    },
+    {
+      "name": "T07_r18_llm_gaussian_noise__speckle_noise_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "speckle_noise_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "s2abaefab30d20b42"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "llm_gaussian_noise"
+      },
+      "instance_id": "i26d23d3e",
+      "child_sha256": "ab961aa19217aabbf6b3298ff5546a1cffa10c3406f6f9af26f6dbf240712713"
+    },
+    {
+      "name": "T07_r18_llm_gaussian_noise__spatter_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "spatter_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "s2abaefab30d20b42"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "llm_gaussian_noise"
+      },
+      "instance_id": "i26d23d3e",
+      "child_sha256": "ab961aa19217aabbf6b3298ff5546a1cffa10c3406f6f9af26f6dbf240712713"
+    },
+    {
+      "name": "T07_r18_llm_gaussian_noise__saturate_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "saturate_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "s2abaefab30d20b42"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "llm_gaussian_noise"
+      },
+      "instance_id": "i26d23d3e",
+      "child_sha256": "ab961aa19217aabbf6b3298ff5546a1cffa10c3406f6f9af26f6dbf240712713"
+    },
+    {
+      "name": "T07_r18_llm_contrast__gaussian_noise_s1",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "gaussian_noise_s1",
+        "network": {
+          "kind": "session",
+          "session_id": "sccd12677dcdd125b"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "llm_contrast"
+      },
+      "instance_id": "ie3840b28",
+      "child_sha256": "9792a0d3d26ee935322c26c5df99cb32ceb083a46f930dc083732ca2ec1f50f5"
+    },
+    {
+      "name": "T07_r18_llm_contrast__gaussian_noise_s2",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "gaussian_noise_s2",
+        "network": {
+          "kind": "session",
+          "session_id": "sccd12677dcdd125b"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "llm_contrast"
+      },
+      "instance_id": "ie3840b28",
+      "child_sha256": "9792a0d3d26ee935322c26c5df99cb32ceb083a46f930dc083732ca2ec1f50f5"
+    },
+    {
+      "name": "T07_r18_llm_contrast__gaussian_noise_s3",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "gaussian_noise_s3",
+        "network": {
+          "kind": "session",
+          "session_id": "sccd12677dcdd125b"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "llm_contrast"
+      },
+      "instance_id": "ie3840b28",
+      "child_sha256": "9792a0d3d26ee935322c26c5df99cb32ceb083a46f930dc083732ca2ec1f50f5"
+    },
+    {
+      "name": "T07_r18_llm_contrast__gaussian_noise_s4",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "gaussian_noise_s4",
+        "network": {
+          "kind": "session",
+          "session_id": "sccd12677dcdd125b"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "llm_contrast"
+      },
+      "instance_id": "ie3840b28",
+      "child_sha256": "9792a0d3d26ee935322c26c5df99cb32ceb083a46f930dc083732ca2ec1f50f5"
+    },
+    {
+      "name": "T07_r18_llm_contrast__gaussian_noise_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "gaussian_noise_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "sccd12677dcdd125b"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "llm_contrast"
+      },
+      "instance_id": "ie3840b28",
+      "child_sha256": "9792a0d3d26ee935322c26c5df99cb32ceb083a46f930dc083732ca2ec1f50f5"
+    },
+    {
+      "name": "T07_r18_llm_contrast__contrast_s1",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "contrast_s1",
+        "network": {
+          "kind": "session",
+          "session_id": "sccd12677dcdd125b"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "llm_contrast"
+      },
+      "instance_id": "ie3840b28",
+      "child_sha256": "9792a0d3d26ee935322c26c5df99cb32ceb083a46f930dc083732ca2ec1f50f5"
+    },
+    {
+      "name": "T07_r18_llm_contrast__contrast_s2",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "contrast_s2",
+        "network": {
+          "kind": "session",
+          "session_id": "sccd12677dcdd125b"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "llm_contrast"
+      },
+      "instance_id": "ie3840b28",
+      "child_sha256": "9792a0d3d26ee935322c26c5df99cb32ceb083a46f930dc083732ca2ec1f50f5"
+    },
+    {
+      "name": "T07_r18_llm_contrast__contrast_s3",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "contrast_s3",
+        "network": {
+          "kind": "session",
+          "session_id": "sccd12677dcdd125b"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "llm_contrast"
+      },
+      "instance_id": "ie3840b28",
+      "child_sha256": "9792a0d3d26ee935322c26c5df99cb32ceb083a46f930dc083732ca2ec1f50f5"
+    },
+    {
+      "name": "T07_r18_llm_contrast__contrast_s4",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "contrast_s4",
+        "network": {
+          "kind": "session",
+          "session_id": "sccd12677dcdd125b"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "llm_contrast"
+      },
+      "instance_id": "ie3840b28",
+      "child_sha256": "9792a0d3d26ee935322c26c5df99cb32ceb083a46f930dc083732ca2ec1f50f5"
+    },
+    {
+      "name": "T07_r18_llm_contrast__defocus_blur_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "defocus_blur_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "sccd12677dcdd125b"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "llm_contrast"
+      },
+      "instance_id": "ie3840b28",
+      "child_sha256": "9792a0d3d26ee935322c26c5df99cb32ceb083a46f930dc083732ca2ec1f50f5"
+    },
+    {
+      "name": "T07_r18_llm_contrast__snow_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "snow_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "sccd12677dcdd125b"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "llm_contrast"
+      },
+      "instance_id": "ie3840b28",
+      "child_sha256": "9792a0d3d26ee935322c26c5df99cb32ceb083a46f930dc083732ca2ec1f50f5"
+    },
+    {
+      "name": "T07_r18_llm_contrast__shot_noise_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "shot_noise_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "sccd12677dcdd125b"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "llm_contrast"
+      },
+      "instance_id": "ie3840b28",
+      "child_sha256": "9792a0d3d26ee935322c26c5df99cb32ceb083a46f930dc083732ca2ec1f50f5"
+    },
+    {
+      "name": "T07_r18_llm_contrast__impulse_noise_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "impulse_noise_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "sccd12677dcdd125b"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "llm_contrast"
+      },
+      "instance_id": "ie3840b28",
+      "child_sha256": "9792a0d3d26ee935322c26c5df99cb32ceb083a46f930dc083732ca2ec1f50f5"
+    },
+    {
+      "name": "T07_r18_llm_contrast__motion_blur_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "motion_blur_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "sccd12677dcdd125b"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "llm_contrast"
+      },
+      "instance_id": "ie3840b28",
+      "child_sha256": "9792a0d3d26ee935322c26c5df99cb32ceb083a46f930dc083732ca2ec1f50f5"
+    },
+    {
+      "name": "T07_r18_llm_contrast__zoom_blur_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "zoom_blur_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "sccd12677dcdd125b"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "llm_contrast"
+      },
+      "instance_id": "ie3840b28",
+      "child_sha256": "9792a0d3d26ee935322c26c5df99cb32ceb083a46f930dc083732ca2ec1f50f5"
+    },
+    {
+      "name": "T07_r18_llm_contrast__frost_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "frost_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "sccd12677dcdd125b"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "llm_contrast"
+      },
+      "instance_id": "ie3840b28",
+      "child_sha256": "9792a0d3d26ee935322c26c5df99cb32ceb083a46f930dc083732ca2ec1f50f5"
+    },
+    {
+      "name": "T07_r18_llm_contrast__fog_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "fog_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "sccd12677dcdd125b"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "llm_contrast"
+      },
+      "instance_id": "ie3840b28",
+      "child_sha256": "9792a0d3d26ee935322c26c5df99cb32ceb083a46f930dc083732ca2ec1f50f5"
+    },
+    {
+      "name": "T07_r18_llm_contrast__brightness_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "brightness_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "sccd12677dcdd125b"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "llm_contrast"
+      },
+      "instance_id": "ie3840b28",
+      "child_sha256": "9792a0d3d26ee935322c26c5df99cb32ceb083a46f930dc083732ca2ec1f50f5"
+    },
+    {
+      "name": "T07_r18_llm_contrast__elastic_transform_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "elastic_transform_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "sccd12677dcdd125b"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "llm_contrast"
+      },
+      "instance_id": "ie3840b28",
+      "child_sha256": "9792a0d3d26ee935322c26c5df99cb32ceb083a46f930dc083732ca2ec1f50f5"
+    },
+    {
+      "name": "T07_r18_llm_contrast__pixelate_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "pixelate_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "sccd12677dcdd125b"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "llm_contrast"
+      },
+      "instance_id": "ie3840b28",
+      "child_sha256": "9792a0d3d26ee935322c26c5df99cb32ceb083a46f930dc083732ca2ec1f50f5"
+    },
+    {
+      "name": "T07_r18_llm_contrast__jpeg_compression_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "jpeg_compression_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "sccd12677dcdd125b"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "llm_contrast"
+      },
+      "instance_id": "ie3840b28",
+      "child_sha256": "9792a0d3d26ee935322c26c5df99cb32ceb083a46f930dc083732ca2ec1f50f5"
+    },
+    {
+      "name": "T07_r18_llm_contrast__speckle_noise_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "speckle_noise_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "sccd12677dcdd125b"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "llm_contrast"
+      },
+      "instance_id": "ie3840b28",
+      "child_sha256": "9792a0d3d26ee935322c26c5df99cb32ceb083a46f930dc083732ca2ec1f50f5"
+    },
+    {
+      "name": "T07_r18_llm_contrast__spatter_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "spatter_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "sccd12677dcdd125b"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "llm_contrast"
+      },
+      "instance_id": "ie3840b28",
+      "child_sha256": "9792a0d3d26ee935322c26c5df99cb32ceb083a46f930dc083732ca2ec1f50f5"
+    },
+    {
+      "name": "T07_r18_llm_contrast__saturate_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "saturate_s5",
+        "network": {
+          "kind": "session",
+          "session_id": "sccd12677dcdd125b"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "llm_contrast"
+      },
+      "instance_id": "ie3840b28",
+      "child_sha256": "9792a0d3d26ee935322c26c5df99cb32ceb083a46f930dc083732ca2ec1f50f5"
+    },
+    {
+      "name": "T07_r18_ft_gaussian_noise__gaussian_noise_s1",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "gaussian_noise_s1",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i26d23d3e/lora_r16/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1e12_i26d23d3e_gaussian_noise_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "ft_gaussian_noise"
+      },
+      "instance_id": "i26d23d3e",
+      "child_sha256": "c00a51488bf06b0d015df58c73be0f6defbc814cab6228f603bcde79a963f5a8"
+    },
+    {
+      "name": "T07_r18_ft_gaussian_noise__gaussian_noise_s2",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "gaussian_noise_s2",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i26d23d3e/lora_r16/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1e12_i26d23d3e_gaussian_noise_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "ft_gaussian_noise"
+      },
+      "instance_id": "i26d23d3e",
+      "child_sha256": "c00a51488bf06b0d015df58c73be0f6defbc814cab6228f603bcde79a963f5a8"
+    },
+    {
+      "name": "T07_r18_ft_gaussian_noise__gaussian_noise_s3",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "gaussian_noise_s3",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i26d23d3e/lora_r16/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1e12_i26d23d3e_gaussian_noise_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "ft_gaussian_noise"
+      },
+      "instance_id": "i26d23d3e",
+      "child_sha256": "c00a51488bf06b0d015df58c73be0f6defbc814cab6228f603bcde79a963f5a8"
+    },
+    {
+      "name": "T07_r18_ft_gaussian_noise__gaussian_noise_s4",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "gaussian_noise_s4",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i26d23d3e/lora_r16/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1e12_i26d23d3e_gaussian_noise_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "ft_gaussian_noise"
+      },
+      "instance_id": "i26d23d3e",
+      "child_sha256": "c00a51488bf06b0d015df58c73be0f6defbc814cab6228f603bcde79a963f5a8"
+    },
+    {
+      "name": "T07_r18_ft_gaussian_noise__contrast_s1",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "contrast_s1",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i26d23d3e/lora_r16/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1e12_i26d23d3e_gaussian_noise_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "ft_gaussian_noise"
+      },
+      "instance_id": "i26d23d3e",
+      "child_sha256": "c00a51488bf06b0d015df58c73be0f6defbc814cab6228f603bcde79a963f5a8"
+    },
+    {
+      "name": "T07_r18_ft_gaussian_noise__contrast_s2",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "contrast_s2",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i26d23d3e/lora_r16/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1e12_i26d23d3e_gaussian_noise_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "ft_gaussian_noise"
+      },
+      "instance_id": "i26d23d3e",
+      "child_sha256": "c00a51488bf06b0d015df58c73be0f6defbc814cab6228f603bcde79a963f5a8"
+    },
+    {
+      "name": "T07_r18_ft_gaussian_noise__contrast_s3",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "contrast_s3",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i26d23d3e/lora_r16/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1e12_i26d23d3e_gaussian_noise_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "ft_gaussian_noise"
+      },
+      "instance_id": "i26d23d3e",
+      "child_sha256": "c00a51488bf06b0d015df58c73be0f6defbc814cab6228f603bcde79a963f5a8"
+    },
+    {
+      "name": "T07_r18_ft_gaussian_noise__contrast_s4",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "contrast_s4",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i26d23d3e/lora_r16/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1e12_i26d23d3e_gaussian_noise_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "ft_gaussian_noise"
+      },
+      "instance_id": "i26d23d3e",
+      "child_sha256": "c00a51488bf06b0d015df58c73be0f6defbc814cab6228f603bcde79a963f5a8"
+    },
+    {
+      "name": "T07_r18_ft_gaussian_noise__contrast_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "contrast_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i26d23d3e/lora_r16/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1e12_i26d23d3e_gaussian_noise_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "ft_gaussian_noise"
+      },
+      "instance_id": "i26d23d3e",
+      "child_sha256": "c00a51488bf06b0d015df58c73be0f6defbc814cab6228f603bcde79a963f5a8"
+    },
+    {
+      "name": "T07_r18_ft_gaussian_noise__defocus_blur_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "defocus_blur_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i26d23d3e/lora_r16/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1e12_i26d23d3e_gaussian_noise_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "ft_gaussian_noise"
+      },
+      "instance_id": "i26d23d3e",
+      "child_sha256": "c00a51488bf06b0d015df58c73be0f6defbc814cab6228f603bcde79a963f5a8"
+    },
+    {
+      "name": "T07_r18_ft_gaussian_noise__snow_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "snow_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i26d23d3e/lora_r16/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1e12_i26d23d3e_gaussian_noise_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "ft_gaussian_noise"
+      },
+      "instance_id": "i26d23d3e",
+      "child_sha256": "c00a51488bf06b0d015df58c73be0f6defbc814cab6228f603bcde79a963f5a8"
+    },
+    {
+      "name": "T07_r18_ft_gaussian_noise__shot_noise_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "shot_noise_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i26d23d3e/lora_r16/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1e12_i26d23d3e_gaussian_noise_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "ft_gaussian_noise"
+      },
+      "instance_id": "i26d23d3e",
+      "child_sha256": "c00a51488bf06b0d015df58c73be0f6defbc814cab6228f603bcde79a963f5a8"
+    },
+    {
+      "name": "T07_r18_ft_gaussian_noise__impulse_noise_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "impulse_noise_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i26d23d3e/lora_r16/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1e12_i26d23d3e_gaussian_noise_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "ft_gaussian_noise"
+      },
+      "instance_id": "i26d23d3e",
+      "child_sha256": "c00a51488bf06b0d015df58c73be0f6defbc814cab6228f603bcde79a963f5a8"
+    },
+    {
+      "name": "T07_r18_ft_gaussian_noise__motion_blur_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "motion_blur_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i26d23d3e/lora_r16/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1e12_i26d23d3e_gaussian_noise_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "ft_gaussian_noise"
+      },
+      "instance_id": "i26d23d3e",
+      "child_sha256": "c00a51488bf06b0d015df58c73be0f6defbc814cab6228f603bcde79a963f5a8"
+    },
+    {
+      "name": "T07_r18_ft_gaussian_noise__zoom_blur_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "zoom_blur_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i26d23d3e/lora_r16/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1e12_i26d23d3e_gaussian_noise_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "ft_gaussian_noise"
+      },
+      "instance_id": "i26d23d3e",
+      "child_sha256": "c00a51488bf06b0d015df58c73be0f6defbc814cab6228f603bcde79a963f5a8"
+    },
+    {
+      "name": "T07_r18_ft_gaussian_noise__frost_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "frost_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i26d23d3e/lora_r16/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1e12_i26d23d3e_gaussian_noise_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "ft_gaussian_noise"
+      },
+      "instance_id": "i26d23d3e",
+      "child_sha256": "c00a51488bf06b0d015df58c73be0f6defbc814cab6228f603bcde79a963f5a8"
+    },
+    {
+      "name": "T07_r18_ft_gaussian_noise__fog_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "fog_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i26d23d3e/lora_r16/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1e12_i26d23d3e_gaussian_noise_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "ft_gaussian_noise"
+      },
+      "instance_id": "i26d23d3e",
+      "child_sha256": "c00a51488bf06b0d015df58c73be0f6defbc814cab6228f603bcde79a963f5a8"
+    },
+    {
+      "name": "T07_r18_ft_gaussian_noise__brightness_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "brightness_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i26d23d3e/lora_r16/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1e12_i26d23d3e_gaussian_noise_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "ft_gaussian_noise"
+      },
+      "instance_id": "i26d23d3e",
+      "child_sha256": "c00a51488bf06b0d015df58c73be0f6defbc814cab6228f603bcde79a963f5a8"
+    },
+    {
+      "name": "T07_r18_ft_gaussian_noise__elastic_transform_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "elastic_transform_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i26d23d3e/lora_r16/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1e12_i26d23d3e_gaussian_noise_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "ft_gaussian_noise"
+      },
+      "instance_id": "i26d23d3e",
+      "child_sha256": "c00a51488bf06b0d015df58c73be0f6defbc814cab6228f603bcde79a963f5a8"
+    },
+    {
+      "name": "T07_r18_ft_gaussian_noise__pixelate_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "pixelate_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i26d23d3e/lora_r16/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1e12_i26d23d3e_gaussian_noise_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "ft_gaussian_noise"
+      },
+      "instance_id": "i26d23d3e",
+      "child_sha256": "c00a51488bf06b0d015df58c73be0f6defbc814cab6228f603bcde79a963f5a8"
+    },
+    {
+      "name": "T07_r18_ft_gaussian_noise__jpeg_compression_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "jpeg_compression_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i26d23d3e/lora_r16/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1e12_i26d23d3e_gaussian_noise_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "ft_gaussian_noise"
+      },
+      "instance_id": "i26d23d3e",
+      "child_sha256": "c00a51488bf06b0d015df58c73be0f6defbc814cab6228f603bcde79a963f5a8"
+    },
+    {
+      "name": "T07_r18_ft_gaussian_noise__speckle_noise_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "speckle_noise_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i26d23d3e/lora_r16/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1e12_i26d23d3e_gaussian_noise_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "ft_gaussian_noise"
+      },
+      "instance_id": "i26d23d3e",
+      "child_sha256": "c00a51488bf06b0d015df58c73be0f6defbc814cab6228f603bcde79a963f5a8"
+    },
+    {
+      "name": "T07_r18_ft_gaussian_noise__spatter_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "spatter_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i26d23d3e/lora_r16/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1e12_i26d23d3e_gaussian_noise_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "ft_gaussian_noise"
+      },
+      "instance_id": "i26d23d3e",
+      "child_sha256": "c00a51488bf06b0d015df58c73be0f6defbc814cab6228f603bcde79a963f5a8"
+    },
+    {
+      "name": "T07_r18_ft_gaussian_noise__saturate_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "saturate_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/i26d23d3e/lora_r16/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1e12_i26d23d3e_gaussian_noise_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "ft_gaussian_noise"
+      },
+      "instance_id": "i26d23d3e",
+      "child_sha256": "c00a51488bf06b0d015df58c73be0f6defbc814cab6228f603bcde79a963f5a8"
+    },
+    {
+      "name": "T07_r18_ft_contrast__gaussian_noise_s1",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "gaussian_noise_s1",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/ie3840b28/lora_r16/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1e12_ie3840b28_contrast_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "ft_contrast"
+      },
+      "instance_id": "ie3840b28",
+      "child_sha256": "b932ef1dcbb1b19b13159d21899b69fe09fa40ff00050dce4ae0ba6eef4e2915"
+    },
+    {
+      "name": "T07_r18_ft_contrast__gaussian_noise_s2",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "gaussian_noise_s2",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/ie3840b28/lora_r16/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1e12_ie3840b28_contrast_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "ft_contrast"
+      },
+      "instance_id": "ie3840b28",
+      "child_sha256": "b932ef1dcbb1b19b13159d21899b69fe09fa40ff00050dce4ae0ba6eef4e2915"
+    },
+    {
+      "name": "T07_r18_ft_contrast__gaussian_noise_s3",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "gaussian_noise_s3",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/ie3840b28/lora_r16/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1e12_ie3840b28_contrast_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "ft_contrast"
+      },
+      "instance_id": "ie3840b28",
+      "child_sha256": "b932ef1dcbb1b19b13159d21899b69fe09fa40ff00050dce4ae0ba6eef4e2915"
+    },
+    {
+      "name": "T07_r18_ft_contrast__gaussian_noise_s4",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "gaussian_noise_s4",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/ie3840b28/lora_r16/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1e12_ie3840b28_contrast_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "ft_contrast"
+      },
+      "instance_id": "ie3840b28",
+      "child_sha256": "b932ef1dcbb1b19b13159d21899b69fe09fa40ff00050dce4ae0ba6eef4e2915"
+    },
+    {
+      "name": "T07_r18_ft_contrast__gaussian_noise_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "gaussian_noise_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/ie3840b28/lora_r16/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1e12_ie3840b28_contrast_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "ft_contrast"
+      },
+      "instance_id": "ie3840b28",
+      "child_sha256": "b932ef1dcbb1b19b13159d21899b69fe09fa40ff00050dce4ae0ba6eef4e2915"
+    },
+    {
+      "name": "T07_r18_ft_contrast__contrast_s1",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "contrast_s1",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/ie3840b28/lora_r16/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1e12_ie3840b28_contrast_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "ft_contrast"
+      },
+      "instance_id": "ie3840b28",
+      "child_sha256": "b932ef1dcbb1b19b13159d21899b69fe09fa40ff00050dce4ae0ba6eef4e2915"
+    },
+    {
+      "name": "T07_r18_ft_contrast__contrast_s2",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "contrast_s2",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/ie3840b28/lora_r16/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1e12_ie3840b28_contrast_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "ft_contrast"
+      },
+      "instance_id": "ie3840b28",
+      "child_sha256": "b932ef1dcbb1b19b13159d21899b69fe09fa40ff00050dce4ae0ba6eef4e2915"
+    },
+    {
+      "name": "T07_r18_ft_contrast__contrast_s3",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "contrast_s3",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/ie3840b28/lora_r16/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1e12_ie3840b28_contrast_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "ft_contrast"
+      },
+      "instance_id": "ie3840b28",
+      "child_sha256": "b932ef1dcbb1b19b13159d21899b69fe09fa40ff00050dce4ae0ba6eef4e2915"
+    },
+    {
+      "name": "T07_r18_ft_contrast__contrast_s4",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "contrast_s4",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/ie3840b28/lora_r16/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1e12_ie3840b28_contrast_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "ft_contrast"
+      },
+      "instance_id": "ie3840b28",
+      "child_sha256": "b932ef1dcbb1b19b13159d21899b69fe09fa40ff00050dce4ae0ba6eef4e2915"
+    },
+    {
+      "name": "T07_r18_ft_contrast__defocus_blur_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "defocus_blur_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/ie3840b28/lora_r16/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1e12_ie3840b28_contrast_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "ft_contrast"
+      },
+      "instance_id": "ie3840b28",
+      "child_sha256": "b932ef1dcbb1b19b13159d21899b69fe09fa40ff00050dce4ae0ba6eef4e2915"
+    },
+    {
+      "name": "T07_r18_ft_contrast__snow_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "snow_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/ie3840b28/lora_r16/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1e12_ie3840b28_contrast_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "ft_contrast"
+      },
+      "instance_id": "ie3840b28",
+      "child_sha256": "b932ef1dcbb1b19b13159d21899b69fe09fa40ff00050dce4ae0ba6eef4e2915"
+    },
+    {
+      "name": "T07_r18_ft_contrast__shot_noise_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "shot_noise_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/ie3840b28/lora_r16/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1e12_ie3840b28_contrast_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "ft_contrast"
+      },
+      "instance_id": "ie3840b28",
+      "child_sha256": "b932ef1dcbb1b19b13159d21899b69fe09fa40ff00050dce4ae0ba6eef4e2915"
+    },
+    {
+      "name": "T07_r18_ft_contrast__impulse_noise_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "impulse_noise_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/ie3840b28/lora_r16/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1e12_ie3840b28_contrast_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "ft_contrast"
+      },
+      "instance_id": "ie3840b28",
+      "child_sha256": "b932ef1dcbb1b19b13159d21899b69fe09fa40ff00050dce4ae0ba6eef4e2915"
+    },
+    {
+      "name": "T07_r18_ft_contrast__motion_blur_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "motion_blur_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/ie3840b28/lora_r16/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1e12_ie3840b28_contrast_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "ft_contrast"
+      },
+      "instance_id": "ie3840b28",
+      "child_sha256": "b932ef1dcbb1b19b13159d21899b69fe09fa40ff00050dce4ae0ba6eef4e2915"
+    },
+    {
+      "name": "T07_r18_ft_contrast__zoom_blur_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "zoom_blur_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/ie3840b28/lora_r16/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1e12_ie3840b28_contrast_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "ft_contrast"
+      },
+      "instance_id": "ie3840b28",
+      "child_sha256": "b932ef1dcbb1b19b13159d21899b69fe09fa40ff00050dce4ae0ba6eef4e2915"
+    },
+    {
+      "name": "T07_r18_ft_contrast__frost_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "frost_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/ie3840b28/lora_r16/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1e12_ie3840b28_contrast_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "ft_contrast"
+      },
+      "instance_id": "ie3840b28",
+      "child_sha256": "b932ef1dcbb1b19b13159d21899b69fe09fa40ff00050dce4ae0ba6eef4e2915"
+    },
+    {
+      "name": "T07_r18_ft_contrast__fog_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "fog_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/ie3840b28/lora_r16/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1e12_ie3840b28_contrast_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "ft_contrast"
+      },
+      "instance_id": "ie3840b28",
+      "child_sha256": "b932ef1dcbb1b19b13159d21899b69fe09fa40ff00050dce4ae0ba6eef4e2915"
+    },
+    {
+      "name": "T07_r18_ft_contrast__brightness_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "brightness_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/ie3840b28/lora_r16/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1e12_ie3840b28_contrast_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "ft_contrast"
+      },
+      "instance_id": "ie3840b28",
+      "child_sha256": "b932ef1dcbb1b19b13159d21899b69fe09fa40ff00050dce4ae0ba6eef4e2915"
+    },
+    {
+      "name": "T07_r18_ft_contrast__elastic_transform_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "elastic_transform_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/ie3840b28/lora_r16/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1e12_ie3840b28_contrast_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "ft_contrast"
+      },
+      "instance_id": "ie3840b28",
+      "child_sha256": "b932ef1dcbb1b19b13159d21899b69fe09fa40ff00050dce4ae0ba6eef4e2915"
+    },
+    {
+      "name": "T07_r18_ft_contrast__pixelate_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "pixelate_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/ie3840b28/lora_r16/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1e12_ie3840b28_contrast_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "ft_contrast"
+      },
+      "instance_id": "ie3840b28",
+      "child_sha256": "b932ef1dcbb1b19b13159d21899b69fe09fa40ff00050dce4ae0ba6eef4e2915"
+    },
+    {
+      "name": "T07_r18_ft_contrast__jpeg_compression_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "jpeg_compression_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/ie3840b28/lora_r16/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1e12_ie3840b28_contrast_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "ft_contrast"
+      },
+      "instance_id": "ie3840b28",
+      "child_sha256": "b932ef1dcbb1b19b13159d21899b69fe09fa40ff00050dce4ae0ba6eef4e2915"
+    },
+    {
+      "name": "T07_r18_ft_contrast__speckle_noise_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "speckle_noise_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/ie3840b28/lora_r16/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1e12_ie3840b28_contrast_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "ft_contrast"
+      },
+      "instance_id": "ie3840b28",
+      "child_sha256": "b932ef1dcbb1b19b13159d21899b69fe09fa40ff00050dce4ae0ba6eef4e2915"
+    },
+    {
+      "name": "T07_r18_ft_contrast__spatter_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "spatter_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/ie3840b28/lora_r16/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1e12_ie3840b28_contrast_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "ft_contrast"
+      },
+      "instance_id": "ie3840b28",
+      "child_sha256": "b932ef1dcbb1b19b13159d21899b69fe09fa40ff00050dce4ae0ba6eef4e2915"
+    },
+    {
+      "name": "T07_r18_ft_contrast__saturate_s5",
+      "readout": "vision_range",
+      "source": {
+        "kind": "range",
+        "set": "saturate_s5",
+        "network": {
+          "kind": "reference",
+          "run": "baselines/ie3840b28/lora_r16/f1/0/run.json",
+          "pick": "kept",
+          "s_old_floor": -20,
+          "dev_record": "devreadouts/f1e12_ie3840b28_contrast_s5_floor20_dev_nscc_20261105.jsonl"
+        },
+        "dev_record": "t07/r38_20261107_124729_t07_r38_main_e4e638836a15/t07_table.json",
+        "t07_arch": "r18",
+        "t07_network": "ft_contrast"
+      },
+      "instance_id": "ie3840b28",
+      "child_sha256": "b932ef1dcbb1b19b13159d21899b69fe09fa40ff00050dce4ae0ba6eef4e2915"
+    }
+  ],
+  "references": []
+}

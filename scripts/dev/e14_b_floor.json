@@ -1,0 +1,6 @@
+{
+  "prereg": "E14",
+  "source": "docs/PREREG_v0_DRAFT.md, entry E14, Checks: kept rule joint-retain-v1 with S_old >= -3 of 500 (0.6%; E13's floor rounded up to a whole episode)",
+  "n_old": 500,
+  "s_old_floor": -3
+}

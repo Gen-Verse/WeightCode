@@ -1,0 +1,1 @@
+"""WeightCode package."""

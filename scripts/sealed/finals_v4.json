@@ -1,0 +1,140 @@
+{
+  "schema": "weightcode.sealed_finals_list.v1",
+  "status": "approved",
+  "approval": "User approved list v4 (13 entries: the six T16 streams' W2 on i00802425 and i3eb3fc78, and W1 on i3eb3fc78; draft canonical 81dd4006312b03c4...) for one sealed read: the composition, AskUserQuestion 2026-11-06 about 23:15 Beijing (\"批准 v4\"), PREREG main b5b3083, fixed before any T16 result; the built list is that composition with no entry added or dropped (no W2 repeats W1 or another stream, none repeats lists v1 to v3). Dev-checked 13 of 13 equal to the readouts of record (NSCC R35 job 241782). Read locally once, after the v3 read ends, with --workers 5 at 4 threads, or 4 if less than 11 GB is available at launch.",
+  "note": "List v4 of the sealed read (PREREG T16 \"List v4\", main b5b3083: user 2026-11-06 about 23:15 Beijing, AskUserQuestion \"批准 v4\", composition fixed before any T16 result), built by WEIGHTCODE-main from the stream records (scripts/sealed/make_finals_v4.py). The six T16 streams of the E11 two-round stream (base fd7f6d4b..., W1 = the gaussian B final's child e40c2078...; round 2 one contrast_s5 LEARN session), met or missed alike: N1 sa651245fee587200 (loop_streams/loop_teacher_92b6e2bd54be_fd7f6d4b8014.json, W2 3cdacbc028ed...); L1 s670677d50f56a3fb (loop_streams/loop_teacher_4faa2a151525_fd7f6d4b8014.json, W2 4b1c0c204265...); N2 s4a37d11ba3e4af41 (loop_streams/loop_teacher_323c1aa9235d_fd7f6d4b8014.json, W2 e6302d095715...); L2 s0584871aa91e23bd (loop_streams/loop_teacher_62ac27d2e118_fd7f6d4b8014.json, W2 48d0300e4351...); N3 s4bacdfaae7c4e1e2 (loop_streams/loop_teacher_baec788a548f_fd7f6d4b8014.json, W2 9b3b38600437...); L3 sd95e120bd2ff8d62 (loop_streams/loop_teacher_f65280060452_fd7f6d4b8014.json, W2 5dd351ce4955...). Arm N is the protocol of record (N1 is the session of record), arm L adds the edit log. Each stream's W2 is read on both instances (gaussian i00802425, contrast i3eb3fc78), and W1 on i3eb3fc78 (W1 on i00802425 is list v2's E11_B_gaussian_s100). 13 entries. Each entry is dev-checked equal to its record on NSCC before the read. Read once, locally, after the v3 read ends; the follow-up's sessions are not on this list.",
+  "finals": [
+    {
+      "name": "E11_stream_W1_contrast",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "stream_round",
+        "record": "loop_streams/loop_teacher_92b6e2bd54be_fd7f6d4b8014.json",
+        "round": 1
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "e40c20786ae91c904cfd7a195addb7e03b6601b955d731518da1ff54bc01c251"
+    },
+    {
+      "name": "E11_stream_T16_N1_W2_gaussian",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "stream_final",
+        "record": "loop_streams/loop_teacher_92b6e2bd54be_fd7f6d4b8014.json"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "3cdacbc028edde9e8904c2bccba3fcc6fbc232a53f4b6f77db8f6d6b1baa04a7"
+    },
+    {
+      "name": "E11_stream_T16_N1_W2_contrast",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "stream_final",
+        "record": "loop_streams/loop_teacher_92b6e2bd54be_fd7f6d4b8014.json"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "3cdacbc028edde9e8904c2bccba3fcc6fbc232a53f4b6f77db8f6d6b1baa04a7"
+    },
+    {
+      "name": "E11_stream_T16_L1_W2_gaussian",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "stream_final",
+        "record": "loop_streams/loop_teacher_4faa2a151525_fd7f6d4b8014.json"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "4b1c0c20426528f11bb39cdeb6d01b0e88e0e05d596c6a964ac9b0812b3479c3"
+    },
+    {
+      "name": "E11_stream_T16_L1_W2_contrast",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "stream_final",
+        "record": "loop_streams/loop_teacher_4faa2a151525_fd7f6d4b8014.json"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "4b1c0c20426528f11bb39cdeb6d01b0e88e0e05d596c6a964ac9b0812b3479c3"
+    },
+    {
+      "name": "E11_stream_T16_N2_W2_gaussian",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "stream_final",
+        "record": "loop_streams/loop_teacher_323c1aa9235d_fd7f6d4b8014.json"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "e6302d095715f79c11b722bd299e44307db84294db4ddd17e5793b47ecf8ff9c"
+    },
+    {
+      "name": "E11_stream_T16_N2_W2_contrast",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "stream_final",
+        "record": "loop_streams/loop_teacher_323c1aa9235d_fd7f6d4b8014.json"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "e6302d095715f79c11b722bd299e44307db84294db4ddd17e5793b47ecf8ff9c"
+    },
+    {
+      "name": "E11_stream_T16_L2_W2_gaussian",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "stream_final",
+        "record": "loop_streams/loop_teacher_62ac27d2e118_fd7f6d4b8014.json"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "48d0300e4351683296f5c9566007653e39abca7bba83890afa4b23657ef414a7"
+    },
+    {
+      "name": "E11_stream_T16_L2_W2_contrast",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "stream_final",
+        "record": "loop_streams/loop_teacher_62ac27d2e118_fd7f6d4b8014.json"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "48d0300e4351683296f5c9566007653e39abca7bba83890afa4b23657ef414a7"
+    },
+    {
+      "name": "E11_stream_T16_N3_W2_gaussian",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "stream_final",
+        "record": "loop_streams/loop_teacher_baec788a548f_fd7f6d4b8014.json"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "9b3b38600437148daf53597891fbd1a276b0e86785ff60e414cf75f342c641c6"
+    },
+    {
+      "name": "E11_stream_T16_N3_W2_contrast",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "stream_final",
+        "record": "loop_streams/loop_teacher_baec788a548f_fd7f6d4b8014.json"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "9b3b38600437148daf53597891fbd1a276b0e86785ff60e414cf75f342c641c6"
+    },
+    {
+      "name": "E11_stream_T16_L3_W2_gaussian",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "stream_final",
+        "record": "loop_streams/loop_teacher_f65280060452_fd7f6d4b8014.json"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "5dd351ce4955d307f1d060575eda45c7ddeb6933c1aa565f7063b775843783ef"
+    },
+    {
+      "name": "E11_stream_T16_L3_W2_contrast",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "stream_final",
+        "record": "loop_streams/loop_teacher_f65280060452_fd7f6d4b8014.json"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "5dd351ce4955d307f1d060575eda45c7ddeb6933c1aa565f7063b775843783ef"
+    }
+  ],
+  "references": []
+}

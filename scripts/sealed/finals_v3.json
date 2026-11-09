@@ -1,0 +1,602 @@
+{
+  "schema": "weightcode.sealed_finals_list.v1",
+  "status": "approved",
+  "approval": "User approved list v3 (56 entries: 48 finals, being the 8 T01/T02 finals and the 40 T08 program-arm children, and 8 seed-101/102 references; draft canonical 4f8f9c2f3b380483...) for one sealed read: the composition, AskUserQuestion 2026-11-06 about 22:20 Beijing (\"全部，约 56 条\"), PREREG main 0119883; the built list is that composition with no entry added or dropped. Dev-checked 56 of 56 equal to the readouts of record (NSCC R32 job 241276). Read locally once, after the v2 read ends, with --workers 5 at 4 threads, or 4 if less than 11 GB is available at launch.",
+  "note": "List v3 of the sealed read (PREREG Sealed read, \"List v3\", main 0119883: user 2026-11-06 about 17:45 Beijing, \"单独预注册 v3，读一次\"; composition about 22:20 Beijing, \"全部，约 56 条\", written after T01, T02 and T08 ended and before this list was built), drafted by the list-v3 subagent of WEIGHTCODE-main from the store's run records (scripts/sealed/make_finals_v3.py). (1) The eight T01 and T02 finals, met or missed alike: T02 repeats 1 and 2 on the seed-100 students (gaussian s4253319a365b126a, scb92c3eb5d5226cc; contrast s7ae7d105d7655ed5, sfeb1cbc77d6a6042) and T01 on seeds 101 and 102 (gaussian scf16f7fb35855c03, sf45990dee41ac233; contrast s3db14093bc6c3538, s037ead942a4cc8aa). (2) The T08 program-arm children of these eight sources on their five non-own students (NSCC R31, runs/t08/program/), 40 entries, every cell whatever its dev reading; the copy arm is not read, and the two B finals of record are not sources here (their children are list v2's E11 C entries). (3) For seeds 101 and 102 and each condition, the kept reference that sets the B bar (PREREG 92a96af) and the best kept F1 pick (DEV_RESULTS \"E11 replication references and F1 on seeds 101 and 102\"), joint-retain-v1 at S_old >= -20, each paired with the T01 final on its instance: i905213a3 interp and lora_r16; iab18c0aa interp e11g2 and grad_last e11g2 (F1's last-layer method is the e11g2 grad_last run); i4a486d70 grad_sparse19_sal e11g2 and ft_full_lwf; i5d76f25c grad_full e11g2 and lora_r16. The table's one tie: baselines/i905213a3/interp/e11/0/run.json (q0) and baselines/i905213a3/interp/e11g2/0/run.json (q7) keep the same child (82165c6942da38dd...) with the same readouts; it is listed once, from the first grid, as the table's bar names it. No entry repeats an (instance, child) of list v1 or v2. 56 entries (8 session finals, 40 transfer children, 8 references). Each entry is dev-checked equal to its readout of record (NSCC R32) before the read. Read once, locally, after the v2 read ends, only once the user has approved the list and it is committed with status approved.",
+  "finals": [
+    {
+      "name": "T02_B_gaussian_s100_r1",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "session",
+        "session_id": "s4253319a365b126a"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "ccce72a5728f8b35d991378025296166fd919a176d1235b6e2eb8c3cedab9f7e"
+    },
+    {
+      "name": "T02_B_gaussian_s100_r2",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "session",
+        "session_id": "scb92c3eb5d5226cc"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "13b8b08b618ce5be247472750e9fc1e7925b88637f81c96894b5c045b852848f"
+    },
+    {
+      "name": "T01_B_gaussian_s101",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "session",
+        "session_id": "scf16f7fb35855c03"
+      },
+      "instance_id": "i905213a3",
+      "child_sha256": "2a4a4b72bf6f1f858b265cf5fe90b2d23854b0f0ce5eb7fc2fb55275c55c0f3b"
+    },
+    {
+      "name": "T01_B_gaussian_s102",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "session",
+        "session_id": "sf45990dee41ac233"
+      },
+      "instance_id": "iab18c0aa",
+      "child_sha256": "bb01f175c01bb3dcac42c6c2120b5e232c974afe30c2a8b535135c089c419f50"
+    },
+    {
+      "name": "T02_B_contrast_s100_r1",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "session",
+        "session_id": "s7ae7d105d7655ed5"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "513def7f85d3c4ae79bfec73d065bcc6d25cbaaf60604270d2a5526ceb07e1e2"
+    },
+    {
+      "name": "T02_B_contrast_s100_r2",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "session",
+        "session_id": "sfeb1cbc77d6a6042"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "c0668833fad9d0cdaee9eb0056b38d1bfe402a6ce4dc7141e087903266e5a3ca"
+    },
+    {
+      "name": "T01_B_contrast_s101",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "session",
+        "session_id": "s3db14093bc6c3538"
+      },
+      "instance_id": "i4a486d70",
+      "child_sha256": "38e3f12a2dae5ba9a5a187409d0543382f8059e7922e86e86b2081f7cb97adf8"
+    },
+    {
+      "name": "T01_B_contrast_s102",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "session",
+        "session_id": "s037ead942a4cc8aa"
+      },
+      "instance_id": "i5d76f25c",
+      "child_sha256": "9b0cd0ccecb40554d7002fef124f3055c381b4659c0ac090786287c587431000"
+    },
+    {
+      "name": "T08_T02_gaussian_s100_r1_on_s101",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "transfer",
+        "record": "t08/program/s4253319a365b126a/transfer_84485bd2b252_i905213a3.json"
+      },
+      "instance_id": "i905213a3",
+      "child_sha256": "ddbec4fc19cff7e1bdf317d9dd7b7447a1df22e9096bf6a81ec86b5599d36b6b"
+    },
+    {
+      "name": "T08_T02_gaussian_s100_r1_on_s102",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "transfer",
+        "record": "t08/program/s4253319a365b126a/transfer_84485bd2b252_iab18c0aa.json"
+      },
+      "instance_id": "iab18c0aa",
+      "child_sha256": "c4d5fc5cf345299a140c19ef759f25bb6fff829c0f01d9c039b905c7f3719532"
+    },
+    {
+      "name": "T08_T02_gaussian_s100_r1_on_s103",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "transfer",
+        "record": "t08/program/s4253319a365b126a/transfer_84485bd2b252_ib1b195f6.json"
+      },
+      "instance_id": "ib1b195f6",
+      "child_sha256": "c8bd599ac7ca29050695eef66540c46581f75f4de31607a9eb3306a64ba1f6ba"
+    },
+    {
+      "name": "T08_T02_gaussian_s100_r1_on_s104",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "transfer",
+        "record": "t08/program/s4253319a365b126a/transfer_84485bd2b252_ie1be7cd9.json"
+      },
+      "instance_id": "ie1be7cd9",
+      "child_sha256": "2b1596f981061547e0bd5e74b49fdad9d93be66669f327f5f31f4bf7f2f5cb68"
+    },
+    {
+      "name": "T08_T02_gaussian_s100_r1_on_s105",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "transfer",
+        "record": "t08/program/s4253319a365b126a/transfer_84485bd2b252_i36df1f8f.json"
+      },
+      "instance_id": "i36df1f8f",
+      "child_sha256": "98e04e4ffe507f3d9ad42d7b25b27522e0b8872941d3aa168e5054157b6bfc1f"
+    },
+    {
+      "name": "T08_T02_gaussian_s100_r2_on_s101",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "transfer",
+        "record": "t08/program/scb92c3eb5d5226cc/transfer_da27a6aa2d4b_i905213a3.json"
+      },
+      "instance_id": "i905213a3",
+      "child_sha256": "58152bce144db10764d9242a2a3228688132c678739ce82c8c01e74ed41ce808"
+    },
+    {
+      "name": "T08_T02_gaussian_s100_r2_on_s102",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "transfer",
+        "record": "t08/program/scb92c3eb5d5226cc/transfer_da27a6aa2d4b_iab18c0aa.json"
+      },
+      "instance_id": "iab18c0aa",
+      "child_sha256": "9c36892bbd686832de02e06a35a5b1bba54bc6519ce219b85ab24bb72820cd9e"
+    },
+    {
+      "name": "T08_T02_gaussian_s100_r2_on_s103",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "transfer",
+        "record": "t08/program/scb92c3eb5d5226cc/transfer_da27a6aa2d4b_ib1b195f6.json"
+      },
+      "instance_id": "ib1b195f6",
+      "child_sha256": "783e99d3bf0cc59e6c565c21462813645378f11ba6f3e090761e9f96b136ff9e"
+    },
+    {
+      "name": "T08_T02_gaussian_s100_r2_on_s104",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "transfer",
+        "record": "t08/program/scb92c3eb5d5226cc/transfer_da27a6aa2d4b_ie1be7cd9.json"
+      },
+      "instance_id": "ie1be7cd9",
+      "child_sha256": "c74b37594bbe83a6fc1f5b2beff6618f01e515149270ea954769c87ff8960143"
+    },
+    {
+      "name": "T08_T02_gaussian_s100_r2_on_s105",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "transfer",
+        "record": "t08/program/scb92c3eb5d5226cc/transfer_da27a6aa2d4b_i36df1f8f.json"
+      },
+      "instance_id": "i36df1f8f",
+      "child_sha256": "1ae58bbd374cae163f2c40d03f183c37c7945a36f3066a5616c60e86e090ac3a"
+    },
+    {
+      "name": "T08_T01_gaussian_s101_on_s100",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "transfer",
+        "record": "t08/program/scf16f7fb35855c03/transfer_f2a0e80f08bf_i00802425.json"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "58ab8e34c0c15b109cd8c649af10c3c7bd71999e6ec0cd6c309d26e30f93f8b0"
+    },
+    {
+      "name": "T08_T01_gaussian_s101_on_s102",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "transfer",
+        "record": "t08/program/scf16f7fb35855c03/transfer_f2a0e80f08bf_iab18c0aa.json"
+      },
+      "instance_id": "iab18c0aa",
+      "child_sha256": "100d9ee3ddf2448fab46c78ad05fb87c34075f19e7d250304c9dbe7e3443d9b7"
+    },
+    {
+      "name": "T08_T01_gaussian_s101_on_s103",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "transfer",
+        "record": "t08/program/scf16f7fb35855c03/transfer_f2a0e80f08bf_ib1b195f6.json"
+      },
+      "instance_id": "ib1b195f6",
+      "child_sha256": "4d469e76fb12df85a7f3453f34a0778e18a49c2b156b73000f927d6d523158f3"
+    },
+    {
+      "name": "T08_T01_gaussian_s101_on_s104",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "transfer",
+        "record": "t08/program/scf16f7fb35855c03/transfer_f2a0e80f08bf_ie1be7cd9.json"
+      },
+      "instance_id": "ie1be7cd9",
+      "child_sha256": "98efac5f0d0478396e59130b09d85e84bbc07047d038098ab58688c933957694"
+    },
+    {
+      "name": "T08_T01_gaussian_s101_on_s105",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "transfer",
+        "record": "t08/program/scf16f7fb35855c03/transfer_f2a0e80f08bf_i36df1f8f.json"
+      },
+      "instance_id": "i36df1f8f",
+      "child_sha256": "8e43ddad57decec0299382cb78b63905a118fd878d71e2c0ad69c54ef34edf47"
+    },
+    {
+      "name": "T08_T01_gaussian_s102_on_s100",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "transfer",
+        "record": "t08/program/sf45990dee41ac233/transfer_cc9d01a12455_i00802425.json"
+      },
+      "instance_id": "i00802425",
+      "child_sha256": "7bd42affbeb9fca9cc7a9dba400d341da7747e3efec61234d34c4f0812e9c78d"
+    },
+    {
+      "name": "T08_T01_gaussian_s102_on_s101",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "transfer",
+        "record": "t08/program/sf45990dee41ac233/transfer_cc9d01a12455_i905213a3.json"
+      },
+      "instance_id": "i905213a3",
+      "child_sha256": "a010f93484dc92282e6a32c18a03e95f591d7ac24948b8206a95787c9cc44b8a"
+    },
+    {
+      "name": "T08_T01_gaussian_s102_on_s103",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "transfer",
+        "record": "t08/program/sf45990dee41ac233/transfer_cc9d01a12455_ib1b195f6.json"
+      },
+      "instance_id": "ib1b195f6",
+      "child_sha256": "8d2befa2ee4975be7d3a136c13c29fb297fa16473e814619bffb64b300cb9946"
+    },
+    {
+      "name": "T08_T01_gaussian_s102_on_s104",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "transfer",
+        "record": "t08/program/sf45990dee41ac233/transfer_cc9d01a12455_ie1be7cd9.json"
+      },
+      "instance_id": "ie1be7cd9",
+      "child_sha256": "71dbf2abc85ee768f437dd37bd1176807d3956f6cc3ea776445e46de016d7ff2"
+    },
+    {
+      "name": "T08_T01_gaussian_s102_on_s105",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "transfer",
+        "record": "t08/program/sf45990dee41ac233/transfer_cc9d01a12455_i36df1f8f.json"
+      },
+      "instance_id": "i36df1f8f",
+      "child_sha256": "51224f25effb495aa9d2bae9a64760c377a68186c13fc24484b6be9f60e55e19"
+    },
+    {
+      "name": "T08_T02_contrast_s100_r1_on_s101",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "transfer",
+        "record": "t08/program/s7ae7d105d7655ed5/transfer_6441d4c1e6e0_i4a486d70.json"
+      },
+      "instance_id": "i4a486d70",
+      "child_sha256": "fb4167d959c310e744245146b5e316ba6f0fb1350dcd799114b64c96c2551459"
+    },
+    {
+      "name": "T08_T02_contrast_s100_r1_on_s102",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "transfer",
+        "record": "t08/program/s7ae7d105d7655ed5/transfer_6441d4c1e6e0_i5d76f25c.json"
+      },
+      "instance_id": "i5d76f25c",
+      "child_sha256": "347b427139f1b7734f56420eaa6c3ac8c943fed5eae7f32177dd5600851d44b6"
+    },
+    {
+      "name": "T08_T02_contrast_s100_r1_on_s103",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "transfer",
+        "record": "t08/program/s7ae7d105d7655ed5/transfer_6441d4c1e6e0_id83bf155.json"
+      },
+      "instance_id": "id83bf155",
+      "child_sha256": "03c5022a1fdd80856ef942f5165614020c0192f50c0c47414bd1ffc1f4145e53"
+    },
+    {
+      "name": "T08_T02_contrast_s100_r1_on_s104",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "transfer",
+        "record": "t08/program/s7ae7d105d7655ed5/transfer_6441d4c1e6e0_ib1e4e794.json"
+      },
+      "instance_id": "ib1e4e794",
+      "child_sha256": "d9eab70abf3ab73fd22e0ce3029a896652cd470dc5c970c158f7d7f37646a08d"
+    },
+    {
+      "name": "T08_T02_contrast_s100_r1_on_s105",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "transfer",
+        "record": "t08/program/s7ae7d105d7655ed5/transfer_6441d4c1e6e0_iecf07b07.json"
+      },
+      "instance_id": "iecf07b07",
+      "child_sha256": "715d19d546e5bbfaca5321277208beb5f16dea688d351adb22eb24cac0482645"
+    },
+    {
+      "name": "T08_T02_contrast_s100_r2_on_s101",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "transfer",
+        "record": "t08/program/sfeb1cbc77d6a6042/transfer_1553bcf83e74_i4a486d70.json"
+      },
+      "instance_id": "i4a486d70",
+      "child_sha256": "07b67001f0f3fe998debc60e7c2e7ecb003ca7dd5e804c6048843f013b220d9e"
+    },
+    {
+      "name": "T08_T02_contrast_s100_r2_on_s102",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "transfer",
+        "record": "t08/program/sfeb1cbc77d6a6042/transfer_1553bcf83e74_i5d76f25c.json"
+      },
+      "instance_id": "i5d76f25c",
+      "child_sha256": "8fea4cf2bdbe9d66e671019baf14c19cf7edc9b69b2016064c2e7ee0120078c4"
+    },
+    {
+      "name": "T08_T02_contrast_s100_r2_on_s103",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "transfer",
+        "record": "t08/program/sfeb1cbc77d6a6042/transfer_1553bcf83e74_id83bf155.json"
+      },
+      "instance_id": "id83bf155",
+      "child_sha256": "71099498b7459c1c7aaf3b805d953ee29b767f6abb4e51da3f2b931f55e890df"
+    },
+    {
+      "name": "T08_T02_contrast_s100_r2_on_s104",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "transfer",
+        "record": "t08/program/sfeb1cbc77d6a6042/transfer_1553bcf83e74_ib1e4e794.json"
+      },
+      "instance_id": "ib1e4e794",
+      "child_sha256": "c2f883a90ef751f7ae4ba350ddd5aec268694cef8ba91618e5cebed6c440f5b9"
+    },
+    {
+      "name": "T08_T02_contrast_s100_r2_on_s105",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "transfer",
+        "record": "t08/program/sfeb1cbc77d6a6042/transfer_1553bcf83e74_iecf07b07.json"
+      },
+      "instance_id": "iecf07b07",
+      "child_sha256": "a4673295799f5a8c13842c68b9306124141f591b543e1c38b578b1de3fc8e9c3"
+    },
+    {
+      "name": "T08_T01_contrast_s101_on_s100",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "transfer",
+        "record": "t08/program/s3db14093bc6c3538/transfer_da207a4a4fbc_i3eb3fc78.json"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "bc8f5541e300ac24e371430a99ff79600534d6a47039da38517c8e1da0b24cc6"
+    },
+    {
+      "name": "T08_T01_contrast_s101_on_s102",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "transfer",
+        "record": "t08/program/s3db14093bc6c3538/transfer_da207a4a4fbc_i5d76f25c.json"
+      },
+      "instance_id": "i5d76f25c",
+      "child_sha256": "fa8e29f2127111dbca047ce51b40bb002f04002eae6dae82b23a0e3d25b62af1"
+    },
+    {
+      "name": "T08_T01_contrast_s101_on_s103",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "transfer",
+        "record": "t08/program/s3db14093bc6c3538/transfer_da207a4a4fbc_id83bf155.json"
+      },
+      "instance_id": "id83bf155",
+      "child_sha256": "d933aaa18e5406ad7483e131c27d2b11212322bd750f718798483aab2787f188"
+    },
+    {
+      "name": "T08_T01_contrast_s101_on_s104",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "transfer",
+        "record": "t08/program/s3db14093bc6c3538/transfer_da207a4a4fbc_ib1e4e794.json"
+      },
+      "instance_id": "ib1e4e794",
+      "child_sha256": "782c23a68a93f802226d01251752c2fe5abbe929ad12fa63489947e2d40a9409"
+    },
+    {
+      "name": "T08_T01_contrast_s101_on_s105",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "transfer",
+        "record": "t08/program/s3db14093bc6c3538/transfer_da207a4a4fbc_iecf07b07.json"
+      },
+      "instance_id": "iecf07b07",
+      "child_sha256": "bbe13b8aff51c7de3cac2452b3ab68223aabe0cef8c7ac20ca502e507449040b"
+    },
+    {
+      "name": "T08_T01_contrast_s102_on_s100",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "transfer",
+        "record": "t08/program/s037ead942a4cc8aa/transfer_ff60f7ab8d1c_i3eb3fc78.json"
+      },
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "ad671e8c47a2eafe375c904e8a75718aecc5f104dda46971bb05ae7b94f2e1c8"
+    },
+    {
+      "name": "T08_T01_contrast_s102_on_s101",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "transfer",
+        "record": "t08/program/s037ead942a4cc8aa/transfer_ff60f7ab8d1c_i4a486d70.json"
+      },
+      "instance_id": "i4a486d70",
+      "child_sha256": "b28ce6f830f67308f2e4cf38149e1a7e46d687245871ff73e480d61d1d418b7c"
+    },
+    {
+      "name": "T08_T01_contrast_s102_on_s103",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "transfer",
+        "record": "t08/program/s037ead942a4cc8aa/transfer_ff60f7ab8d1c_id83bf155.json"
+      },
+      "instance_id": "id83bf155",
+      "child_sha256": "ebe50b55c669db68635e97861806d5b34f332895442b81264237287c2d61599a"
+    },
+    {
+      "name": "T08_T01_contrast_s102_on_s104",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "transfer",
+        "record": "t08/program/s037ead942a4cc8aa/transfer_ff60f7ab8d1c_ib1e4e794.json"
+      },
+      "instance_id": "ib1e4e794",
+      "child_sha256": "f5ceb17bb2a2b0782d973da3d24c15c487b8163dd57338ac4aa8c13fd4c7493a"
+    },
+    {
+      "name": "T08_T01_contrast_s102_on_s105",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "transfer",
+        "record": "t08/program/s037ead942a4cc8aa/transfer_ff60f7ab8d1c_iecf07b07.json"
+      },
+      "instance_id": "iecf07b07",
+      "child_sha256": "61506c3de7f5f09b8d621aefbb617533e4f29bdf0563d33bb10a1b2c307a6ee3"
+    }
+  ],
+  "references": [
+    {
+      "name": "ref_E11_gaussian_s101_bar_interp",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "reference",
+        "run": "baselines/i905213a3/interp/e11/0/run.json",
+        "pick": "kept",
+        "s_old_floor": -20,
+        "dev_record": "devreadouts/e11_refs_i905213a3_gaussian_noise_s5_floor20_dev_20261105.jsonl"
+      },
+      "instance_id": "i905213a3",
+      "child_sha256": "82165c6942da38dd7ad4938e2add96c9c58ff5272bdb46782a08498deff075ec",
+      "pairs_with": "T01_B_gaussian_s101"
+    },
+    {
+      "name": "ref_E11_gaussian_s101_F1_lora_r16",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "reference",
+        "run": "baselines/i905213a3/lora_r16/f1/0/run.json",
+        "pick": "kept",
+        "s_old_floor": -20,
+        "dev_record": "devreadouts/f1_i905213a3_gaussian_noise_s5_floor20_dev_nscc_20261106.jsonl"
+      },
+      "instance_id": "i905213a3",
+      "child_sha256": "37eae6794c4cbad1bd40aad9ae36a5eaa818caa7a779093bf62195258a125f24",
+      "pairs_with": "T01_B_gaussian_s101"
+    },
+    {
+      "name": "ref_E11_gaussian_s102_bar_interp_e11g2",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "reference",
+        "run": "baselines/iab18c0aa/interp/e11g2/0/run.json",
+        "pick": "kept",
+        "s_old_floor": -20,
+        "dev_record": "devreadouts/e11g2_refs_iab18c0aa_gaussian_noise_s5_floor20_dev_nscc_20261106.jsonl"
+      },
+      "instance_id": "iab18c0aa",
+      "child_sha256": "15aafce3fda253ba1f75c890bfc15c38c4997d96d47d47dbd222f737192feb4f",
+      "pairs_with": "T01_B_gaussian_s102"
+    },
+    {
+      "name": "ref_E11_gaussian_s102_F1_grad_last_e11g2",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "reference",
+        "run": "baselines/iab18c0aa/grad_last/e11g2/0/run.json",
+        "pick": "kept",
+        "s_old_floor": -20,
+        "dev_record": "devreadouts/e11g2_refs_iab18c0aa_gaussian_noise_s5_floor20_dev_nscc_20261106.jsonl"
+      },
+      "instance_id": "iab18c0aa",
+      "child_sha256": "5e118f62448d3ad0e3c184ff8a35c7cdb0a4038e5857b8859ce7057c7fb4da05",
+      "pairs_with": "T01_B_gaussian_s102"
+    },
+    {
+      "name": "ref_E11_contrast_s101_bar_grad_sparse19_sal_e11g2",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "reference",
+        "run": "baselines/i4a486d70/grad_sparse19_sal/e11g2/0/run.json",
+        "pick": "kept",
+        "s_old_floor": -20,
+        "dev_record": "devreadouts/e11g2_refs_i4a486d70_contrast_s5_floor20_dev_nscc_20261106.jsonl"
+      },
+      "instance_id": "i4a486d70",
+      "child_sha256": "71d3c1688ed403c40b6980ec1ef2fb3c708c2a90920da8201a51277f2565daeb",
+      "pairs_with": "T01_B_contrast_s101"
+    },
+    {
+      "name": "ref_E11_contrast_s101_F1_ft_full_lwf",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "reference",
+        "run": "baselines/i4a486d70/ft_full_lwf/f1/0/run.json",
+        "pick": "kept",
+        "s_old_floor": -20,
+        "dev_record": "devreadouts/f1_i4a486d70_contrast_s5_floor20_dev_nscc_20261106.jsonl"
+      },
+      "instance_id": "i4a486d70",
+      "child_sha256": "5dd154ec5f495e84d39b4204b2ae777b53a4d247a02408f1c17cec56f152e653",
+      "pairs_with": "T01_B_contrast_s101"
+    },
+    {
+      "name": "ref_E11_contrast_s102_bar_grad_full_e11g2",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "reference",
+        "run": "baselines/i5d76f25c/grad_full/e11g2/0/run.json",
+        "pick": "kept",
+        "s_old_floor": -20,
+        "dev_record": "devreadouts/e11g2_refs_i5d76f25c_contrast_s5_floor20_dev_nscc_20261106.jsonl"
+      },
+      "instance_id": "i5d76f25c",
+      "child_sha256": "8d85f88ba64fd42c886e712e5fec5e218a5af75b1c335172734e3e486f9c23a8",
+      "pairs_with": "T01_B_contrast_s102"
+    },
+    {
+      "name": "ref_E11_contrast_s102_F1_lora_r16",
+      "readout": "vision_joint",
+      "source": {
+        "kind": "reference",
+        "run": "baselines/i5d76f25c/lora_r16/f1/0/run.json",
+        "pick": "kept",
+        "s_old_floor": -20,
+        "dev_record": "devreadouts/f1_i5d76f25c_contrast_s5_floor20_dev_nscc_20261106.jsonl"
+      },
+      "instance_id": "i5d76f25c",
+      "child_sha256": "14056cfd7c0c3452dd585089a6d3a593ccc2a8e329ebdf5476b11d4475fe06b7",
+      "pairs_with": "T01_B_contrast_s102"
+    }
+  ]
+}

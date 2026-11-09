@@ -1,0 +1,504 @@
+{
+  "schema": "weightcode.t00.session_readings.v1",
+  "source": "docs/DEV_RESULTS.md (sha256 921adcbde885c8d26c0981bedabccda9ea69311041627da63ddf489b008f9896), read by hand on 2026-11-06; E5 v2 bar from docs/PREREG_v0_DRAFT.md",
+  "fields": {
+    "experiment": "experiment label as DEV_RESULTS names it (records-derived name where DEV_RESULTS has no entry)",
+    "bar": "the frozen criterion as DEV_RESULTS (or PREREG) states it; null when none applies",
+    "met": "true / false as DEV_RESULTS reads the frozen criterion; null when DEV_RESULTS gives no reading for this session",
+    "met_scope": "session: the criterion is read on this session's final; stream: the criterion is read on the stream this session is one round of",
+    "reading": "the outcome words of DEV_RESULTS, shortened",
+    "null_kind": "only when met is null. no_reading: a criterion applies but DEV_RESULTS gives no reading (the table counts the field as missing). not_applicable: no criterion applies to this session (a stop before launch, a gate DEV_RESULTS reads as not applicable, a lineage session that carries no criterion)",
+    "reason": "why met is null, or how met was derived when DEV_RESULTS does not say met or missed in those words",
+    "dev_results_heading": "the exact DEV_RESULTS heading of the reading (the table script checks it exists and finds its line)",
+    "session_named_under": "the heading whose section names the session id, when it differs from the reading's heading",
+    "secondary": "other readings DEV_RESULTS gives for the same final (E3, C, B beside another mark)",
+    "notes": "facts from DEV_RESULTS or PREREG that a reader of the row needs"
+  },
+  "sessions": {
+    "s8965de35e9ae7407": {
+      "experiment": "E1", "condition": "gaussian_noise_s3",
+      "bar": "joint >= 10.55, gain >= 10, clean >= -1.0",
+      "met": true, "met_scope": "session", "reading": "supported (joint +26.88)",
+      "dev_results_heading": "## E1, add without replacing (CIFAR-10 cnn, seed-100 student)",
+      "secondary": [{"reading": "E3", "met": true, "text": "supported, reuse ratio 0.705, clean >= -1.0 on 5 of 5"}],
+      "notes": ["The same final is round 1 of every E4 stream, E4-loop included (no new session)."]
+    },
+    "sfec4c90b6287d2be": {
+      "experiment": "E1", "condition": "contrast_s3",
+      "bar": "joint >= 13.25, gain >= 10, clean >= -1.0",
+      "met": false, "met_scope": "session", "reading": "not supported (clean)",
+      "dev_results_heading": "## E1, add without replacing (CIFAR-10 cnn, seed-100 student)",
+      "secondary": [{"reading": "E3", "met": false, "text": "not supported (clean), reuse ratio 0.969, clean >= -1.0 on 0 of 5"}]
+    },
+    "s8ea5ff537b5734c2": {
+      "experiment": "E1", "condition": "blur5_d1",
+      "bar": "joint >= 14.93, gain >= 10, clean >= -1.0",
+      "met": false, "met_scope": "session", "reading": "not supported (joint)",
+      "dev_results_heading": "## E1, add without replacing (CIFAR-10 cnn, seed-100 student)",
+      "secondary": [{"reading": "E3", "met": false, "text": "not supported (clean), reuse ratio 0.719, clean >= -1.0 on 0 of 5"}]
+    },
+    "s7ae6525eb6e14490": {
+      "experiment": "E1", "condition": "gamma_d1",
+      "bar": "joint >= 15.08, gain >= 10, clean >= -1.0",
+      "met": false, "met_scope": "session", "reading": "not supported (clean)",
+      "dev_results_heading": "## E1, add without replacing (CIFAR-10 cnn, seed-100 student)",
+      "secondary": [{"reading": "E3", "met": false, "text": "not supported (clean), reuse ratio 1.090, clean >= -1.0 on 0 of 5"}]
+    },
+    "s4ac29455dd93902f": {
+      "experiment": "E1", "condition": "colormix_d1",
+      "bar": "joint >= 2.20, clean >= -1.0 (no gain floor on colormix_d1)",
+      "met": false, "met_scope": "session", "reading": "not supported (joint)",
+      "dev_results_heading": "## E1, add without replacing (CIFAR-10 cnn, seed-100 student)",
+      "secondary": [{"reading": "E3", "met": true, "text": "met as written, no transfer claim (own gain +0.45)"}]
+    },
+    "sc48902eb7f5fa18c": {
+      "experiment": "E2", "condition": "fb042b73d (CIFAR-10 cnn)",
+      "bar": "all-class >= 52.75% and old >= -1.00",
+      "met": false, "met_scope": "session", "reading": "not supported (old)",
+      "dev_results_heading": "## E2, new classes from few examples (fewshot-v1, seed-100 students, classes 5 to 9 new)"
+    },
+    "s60488d6e08fa32d9": {
+      "experiment": "E2", "condition": "f02ae1415 (FashionMNIST mlp)",
+      "bar": "all-class >= 77.08% and old >= -1.00",
+      "met": false, "met_scope": "session", "reading": "not supported (all, old)",
+      "dev_results_heading": "## E2, new classes from few examples (fewshot-v1, seed-100 students, classes 5 to 9 new)"
+    },
+    "sb410fe729b41234a": {
+      "experiment": "LEARN v2", "condition": "contrast_s3",
+      "bar": "joint >= 13.25 (the E1 v1 gate as written)",
+      "met": false, "met_scope": "session", "reading": "not supported (joint); outcome (ii)",
+      "dev_results_heading": "## LEARN v2, the retention kept rule (dev iteration, PREREG section 0, launched 06:06 from main 8b1160a)"
+    },
+    "s93c1bda80ae82274": {
+      "experiment": "LEARN v2", "condition": "f02ae1415 (E2)",
+      "bar": "all >= 77.08%, old >= -1.00 (the E2 v1 gate as written)",
+      "met": false, "met_scope": "session", "reading": "not supported (all, old)",
+      "dev_results_heading": "## LEARN v2, the retention kept rule (dev iteration, PREREG section 0, launched 06:06 from main 8b1160a)"
+    },
+    "s42c42e6ce98514df": {
+      "experiment": "LEARN v2", "condition": "gamma_d1",
+      "bar": "joint >= 15.08 (the E1 v1 gate as written)",
+      "met": false, "met_scope": "session", "reading": "not supported (joint, gain, clean by 0.05)",
+      "dev_results_heading": "## LEARN v2, the retention kept rule (dev iteration, PREREG section 0, launched 06:06 from main 8b1160a)"
+    },
+    "s202e2aff748d6720": {
+      "experiment": "LEARN v2", "condition": "fb042b73d (E2)",
+      "bar": "all >= 52.75%, old >= -1.00 (the E2 v1 gate as written)",
+      "met": false, "met_scope": "session", "reading": "not supported (all, old by 0.05)",
+      "dev_results_heading": "## LEARN v2, the retention kept rule (dev iteration, PREREG section 0, launched 06:06 from main 8b1160a)"
+    },
+    "s9fb466f75fa0cc21": {
+      "experiment": "LEARN v3", "condition": "contrast_s3",
+      "bar": "joint >= 13.25 (the E1 gate as written)",
+      "met": false, "met_scope": "session", "reading": "not supported (joint, gain); outcome (ii)",
+      "dev_results_heading": "## LEARN v3, the program library (dev iteration, PREREG section 0, launched 07:03 from learn-library 9df277b)"
+    },
+    "sb949d0f6b540c0c6": {
+      "experiment": "LEARN v3", "condition": "gamma_d1",
+      "bar": "joint >= 15.08 (the E1 gate as written)",
+      "met": false, "met_scope": "session", "reading": "not supported (joint); outcome (ii)",
+      "dev_results_heading": "## LEARN v3, the program library (dev iteration, PREREG section 0, launched 07:03 from learn-library 9df277b)"
+    },
+    "s051c4db55d8a4ae7": {
+      "experiment": "E4-loop", "round": 2, "condition": "contrast_s3",
+      "bar": "E4 criteria on the stream: mean gain >= 10, clean >= -2.0, largest forgetting <= 3, and +15.67 at clean >= -9.53 against grad_full cumulative",
+      "met": false, "met_scope": "stream", "reading": "outcome (ii): mean, clean and forgetting met; the grad_full comparison missed by 3.39 points",
+      "dev_results_heading": "## E4-loop, the teacher in the loop (seed-100 student, launched 09:40 Beijing from WeightCode-loop c2a9d18)"
+    },
+    "sf1058d4f0a6d772c": {
+      "experiment": "E4-loop", "round": 3, "condition": "blur5_d1",
+      "bar": "E4 criteria on the stream: mean gain >= 10, clean >= -2.0, largest forgetting <= 3, and +15.67 at clean >= -9.53 against grad_full cumulative",
+      "met": false, "met_scope": "stream", "reading": "outcome (ii): mean, clean and forgetting met; the grad_full comparison missed by 3.39 points",
+      "dev_results_heading": "## E4-loop, the teacher in the loop (seed-100 student, launched 09:40 Beijing from WeightCode-loop c2a9d18)"
+    },
+    "se3f3a264ea34bdf0": {
+      "experiment": "E4-loop", "round": 4, "condition": "gamma_d1",
+      "bar": null, "met": null, "null_kind": "not_applicable", "met_scope": null,
+      "reading": "killed by systemd-oomd before any check",
+      "reason": "Not a launched session: the PREREG amendment of about 13:05 treats the two oomd kills of round 4 as stops before launch; round 4 ran as s413aa6145bc5269d.",
+      "dev_results_heading": "## E4-loop, the teacher in the loop (seed-100 student, launched 09:40 Beijing from WeightCode-loop c2a9d18)"
+    },
+    "s6b54e9d476f5c4c6": {
+      "experiment": "E4-loop", "round": 4, "condition": "gamma_d1",
+      "bar": null, "met": null, "null_kind": "not_applicable", "met_scope": null,
+      "reading": "killed by systemd-oomd before any check",
+      "reason": "Not a launched session: the PREREG amendment of about 13:05 treats the two oomd kills of round 4 as stops before launch; round 4 ran as s413aa6145bc5269d.",
+      "dev_results_heading": "## E4-loop, the teacher in the loop (seed-100 student, launched 09:40 Beijing from WeightCode-loop c2a9d18)"
+    },
+    "s413aa6145bc5269d": {
+      "experiment": "E4-loop", "round": 4, "condition": "gamma_d1",
+      "bar": "E4 criteria on the stream: mean gain >= 10, clean >= -2.0, largest forgetting <= 3, and +15.67 at clean >= -9.53 against grad_full cumulative",
+      "met": false, "met_scope": "stream", "reading": "outcome (ii): mean, clean and forgetting met; the grad_full comparison missed by 3.39 points",
+      "dev_results_heading": "## E4-loop, the teacher in the loop (seed-100 student, launched 09:40 Beijing from WeightCode-loop c2a9d18)"
+    },
+    "s2dbfdcb8cb5408d8": {
+      "experiment": "E4-loop", "round": 5, "condition": "colormix_d1",
+      "bar": "E4 criteria on the stream: mean gain >= 10, clean >= -2.0, largest forgetting <= 3, and +15.67 at clean >= -9.53 against grad_full cumulative",
+      "met": false, "met_scope": "stream", "reading": "outcome (ii); round 5 declared the base without a check (no-op round)",
+      "dev_results_heading": "## E4-loop, the teacher in the loop (seed-100 student, launched 09:40 Beijing from WeightCode-loop c2a9d18)"
+    },
+    "sc5732a5ca92decfe": {
+      "experiment": "E5", "condition": "new0 (seqskill-v1)",
+      "bar": null, "met": null, "null_kind": "not_applicable", "met_scope": null,
+      "reading": "killed by systemd-oomd at 11:41 after 12 cells and before any check",
+      "reason": "Not a launched session: DEV_RESULTS says it saw no check score, so it counts as a stop before launch.",
+      "dev_results_heading": "## E5, a new operator for a sequence model (seqskill-v1, instance qa000f6cd, NSCC base ma1f1959f, seed 100)"
+    },
+    "s92c8b990b661d23a": {
+      "experiment": "E5", "condition": "new0 (seqskill-v1)",
+      "bar": null, "met": null, "null_kind": "not_applicable", "met_scope": null,
+      "reading": "outcome (e): the final is the base by the teacher's declaration",
+      "reason": "DEV_RESULTS: the gate reads not applicable, because seq_grad_full reaches EM(i) 100%.",
+      "dev_results_heading": "## E5, a new operator for a sequence model (seqskill-v1, instance qa000f6cd, NSCC base ma1f1959f, seed 100)"
+    },
+    "se105522107f4e476": {
+      "experiment": "E5 v2", "condition": "new0 (seqskill-v1)",
+      "bar": "PREREG E5 v2, supported on dev: EM(i) >= 50%, (iv) change >= -1.0, EM(iii) >= 3.70%, EM(ii) >= 44.25%",
+      "met": false, "met_scope": "session", "reading": "outcome (g): the final is the base by the teacher's declaration",
+      "reason": "DEV_RESULTS gives outcome (g), not the words met or missed. Derived: the final is the base, so every V_select delta is 0 and EM(i) stays at the base 0.00%, below 50%.",
+      "dev_results_heading": "## E5 v2, the same design gated on composition and length (instance qa000f6cd, seed 100)"
+    },
+    "s61aea209f86a26f0": {
+      "experiment": "E8", "condition": "new0 rule_only (seqskill-v1)",
+      "bar": "EM(i) >= 50% and (iv) >= -1.0",
+      "met": true, "met_scope": "session", "reading": "outcome (a): both gate criteria met (EM(i) 100%, (iv) 0.00)",
+      "dev_results_heading": "## E8, a rule given as knowledge, no example (seqskill-v1 rule_only, instance qa000f6cd, seed 100)",
+      "notes": ["The per-tensor rel-Frob limit was lifted for E8 (PREREG E8 amendment of 15:37)."]
+    },
+    "s6e028237bb87fc55": {
+      "experiment": "E9 T", "round": 2, "condition": "FSCIL session 2 (c652a4af0)",
+      "bar": "B: all-seen >= 65.95 and base-class change >= -1.0",
+      "met": false, "met_scope": "session", "reading": "B missed: all-seen 64.53 misses the bar 65.95 by 1.42 points; base change 0.00 met",
+      "dev_results_heading": "## E9 T session 2, B on FSCIL (CIFAR-100, ResNet-20 cosine head, instance c652a4af0, seed 100)"
+    },
+    "sc3ff7a546609d203": {
+      "experiment": "E9 T", "round": 3, "condition": "FSCIL session 3 (c119bf224)",
+      "bar": null, "met": null, "null_kind": "not_applicable", "met_scope": null,
+      "reading": "a defect of E9's check design (objective and evaluation), not evidence about the teacher's capability; T's session 4 paused",
+      "reason": "No criterion is read at session 3: E is read at session 4, which was paused for T.",
+      "dev_results_heading": "## E9 T session 3 (instance c119bf224, floor_3 0)"
+    },
+    "s86e754910c5122d6": {
+      "experiment": "E9 v2 T2", "round": 2, "condition": "FSCIL session 2 (c652a4af0)",
+      "bar": "B (PREREG 24538e0): base >= -1.0, new >= 26.70 and all-seen >= 65.11",
+      "met": false, "met_scope": "session", "reading": "B missed: base met; new and all-seen missed",
+      "dev_results_heading": "## E9 v2 T2 session 2, B with the class-balanced check (instance c652a4af0, seed 100)"
+    },
+    "sfd7dca506a47ea48": {
+      "experiment": "E9 v2 T2", "round": 3, "condition": "FSCIL session 3 (c7b9f8f39)",
+      "bar": null, "met": null, "null_kind": "not_applicable", "met_scope": null,
+      "reading": "session 3 carries no criterion",
+      "reason": "DEV_RESULTS: Session 3 carries no criterion; E is read at session 4 (all-seen >= 58.35, base >= -3.0).",
+      "dev_results_heading": "## E9 v2 T2 session 3 (instance c7b9f8f39, seed 100)"
+    },
+    "s90887d9dfdf4d318": {
+      "experiment": "E9 v2 T2", "round": 4, "condition": "FSCIL session 4",
+      "bar": "E at session 4 (PREREG e8b8c32): all-seen >= 58.35, base >= -3.0",
+      "met": false, "met_scope": "session", "reading": "E missed: all-seen 56.97 below 58.35; base -1.33 met",
+      "dev_results_heading": "## E9 v2 T2 session 4, E read (seed 100)"
+    },
+    "s4b9279f1c5c35117": {
+      "experiment": "E10 B", "condition": "gaussian_noise_s5",
+      "bar": "B, joint bar +19.275 (interp)",
+      "met": false, "met_scope": "session", "reading": "joint missed (gain +11.80, clean -0.45, joint +11.35)",
+      "session_named_under": "## E10 B, gaussian_noise_s5 (CIFAR-10-C severity 5, ResNet-20, instance id14b4f0b, seed 100)",
+      "dev_results_heading": "## E10 B over the four conditions (seed 100, dev)",
+      "secondary": [{"reading": "C", "met": true, "text": "reuse 0.992, 5/5"}],
+      "notes": ["Round 1 of E10 stream v1 and v2 (no new session); v2 reran the program in the stream (524 of 688 units swept).",
+                "Known defect: this final program reads the wall clock (DEV_RESULTS section 'Known defect: a final program that reads the wall clock')."]
+    },
+    "s64cf7c2ec9d83ba5": {
+      "experiment": "E10 B", "condition": "defocus_blur_s5",
+      "bar": "B, joint bar +4.275 (prior_shift)",
+      "met": false, "met_scope": "session", "reading": "gain missed (gain +8.48, clean -0.15, joint +8.33)",
+      "session_named_under": "## E10 B, defocus_blur_s5 (instance id64b2abc, seed 100)",
+      "dev_results_heading": "## E10 B over the four conditions (seed 100, dev)",
+      "secondary": [{"reading": "C", "met": true, "text": "reuse 1.263, 5/5"}]
+    },
+    "s3e240b5019aae380": {
+      "experiment": "E10 B", "condition": "snow_s5",
+      "bar": "B, joint bar +2.55 (interp)",
+      "met": false, "met_scope": "session", "reading": "gain missed (gain +2.95, clean -0.38, joint +2.57)",
+      "session_named_under": "## E10 B, snow_s5 (instance if90033fc, seed 100)",
+      "dev_results_heading": "## E10 B over the four conditions (seed 100, dev)",
+      "secondary": [{"reading": "C", "met": true, "text": "reuse 0.912, 5/5"}]
+    },
+    "s4c4a32470ed3f470": {
+      "experiment": "E10 B", "condition": "contrast_s5",
+      "bar": "B, joint bar +11.15 (interp)",
+      "met": false, "met_scope": "session", "reading": "joint missed by 0.90 (gain +10.72, clean -0.47, joint +10.25)",
+      "session_named_under": "## E10 B, contrast_s5 (instance i1bf0c953, seed 100)",
+      "dev_results_heading": "## E10 B over the four conditions (seed 100, dev)",
+      "secondary": [{"reading": "C", "met": true, "text": "reuse 1.226, 5/5"}]
+    },
+    "sd29d4b6bceb24d07": {
+      "experiment": "E10 stream v1", "round": 2, "condition": "defocus_blur_s5",
+      "bar": "stream criterion (PREREG E10 E): mean gain >= 10",
+      "met": false, "met_scope": "stream", "reading": "outcome (ii), mean gain +9.82 against 10",
+      "dev_results_heading": "## E10 stream, teacher in the loop (seed 100): outcome (ii), mean gain +9.82 against 10"
+    },
+    "s76903c2857dec004": {
+      "experiment": "E10 stream v1", "round": 3, "condition": "snow_s5",
+      "bar": "stream criterion (PREREG E10 E): mean gain >= 10",
+      "met": false, "met_scope": "stream", "reading": "outcome (ii), mean gain +9.82 against 10",
+      "dev_results_heading": "## E10 stream, teacher in the loop (seed 100): outcome (ii), mean gain +9.82 against 10"
+    },
+    "sdce15dae99a6bf24": {
+      "experiment": "E10 stream v1", "round": 4, "condition": "contrast_s5",
+      "bar": "stream criterion (PREREG E10 E): mean gain >= 10",
+      "met": false, "met_scope": "stream", "reading": "outcome (ii), mean gain +9.82 against 10",
+      "dev_results_heading": "## E10 stream, teacher in the loop (seed 100): outcome (ii), mean gain +9.82 against 10"
+    },
+    "sc94b3a2f766728df": {
+      "experiment": "E10 stream v2", "round": 2, "condition": "defocus_blur_s5",
+      "bar": "absolute criteria (mean gain >= 10, clean >= -2.0, maximum forgetting <= 3) and the joint-reading comparisons",
+      "met": true, "met_scope": "stream", "reading": "absolute criteria and every comparison met (joint reading); mean +10.22 clears 10 by 0.22",
+      "dev_results_heading": "## E10 stream v2, teacher in the loop (seed 100, loop-retain-v2): absolute criteria and every comparison met (joint reading)",
+      "notes": ["W1 deviation: the absolute pass partly rests on the rerun round-1 student (DEV_RESULTS).",
+                "Round 2 audit VIOLATION on V-SEARCH-COUNT (30 label-scored settings, cap 8): not training-free under the literal cap (DEV_RESULTS)."]
+    },
+    "s88f109537feb3661": {
+      "experiment": "E10 stream v2", "round": 3, "condition": "snow_s5",
+      "bar": "absolute criteria (mean gain >= 10, clean >= -2.0, maximum forgetting <= 3) and the joint-reading comparisons",
+      "met": true, "met_scope": "stream", "reading": "absolute criteria and every comparison met (joint reading); mean +10.22 clears 10 by 0.22",
+      "dev_results_heading": "## E10 stream v2, teacher in the loop (seed 100, loop-retain-v2): absolute criteria and every comparison met (joint reading)",
+      "notes": ["W1 deviation: the absolute pass partly rests on the rerun round-1 student (DEV_RESULTS)."]
+    },
+    "s0f472f12537042e7": {
+      "experiment": "E10 stream v2", "round": 4, "condition": "contrast_s5",
+      "bar": "absolute criteria (mean gain >= 10, clean >= -2.0, maximum forgetting <= 3) and the joint-reading comparisons",
+      "met": true, "met_scope": "stream", "reading": "absolute criteria and every comparison met (joint reading); mean +10.22 clears 10 by 0.22",
+      "dev_results_heading": "## E10 stream v2, teacher in the loop (seed 100, loop-retain-v2): absolute criteria and every comparison met (joint reading)",
+      "notes": ["W1 deviation: the absolute pass partly rests on the rerun round-1 student (DEV_RESULTS)."]
+    },
+    "sc918e11dceef637a": {
+      "experiment": "E11 B", "condition": "gaussian_noise_s5",
+      "bar": "B (PREREG cf157e0): gain >= 10, clean >= -1.0 and joint >= +17.075",
+      "met": true, "met_scope": "session", "reading": "B met (joint +31.75)",
+      "dev_results_heading": "## E11 B, gaussian_noise_s5 (CIFAR-10-C severity 5, ViT-Lite-7/4, instance i00802425, seed 100): B met",
+      "secondary": [{"reading": "C", "met": true, "text": "reuse ratio 0.890, clean >= -1.0 on 5 of 5"}],
+      "notes": ["Audit VIOLATION by the auditor (9 settings against the cap of 8); hand count 7 (DEV_RESULTS). audit.json unchanged.",
+                "Round 1 of the E11 two-round stream (--round1-from-final)."]
+    },
+    "s760cb52ce82fb937": {
+      "experiment": "E11 B", "condition": "contrast_s5",
+      "bar": "B (PREREG cf157e0): gain >= 10, clean >= -1.0 and joint >= +10.475",
+      "met": true, "met_scope": "session", "reading": "B met (joint +17.98)",
+      "dev_results_heading": "## E11 B, contrast_s5 (CIFAR-10-C severity 5, ViT-Lite-7/4, instance i3eb3fc78, seed 100): B met, C not supported",
+      "secondary": [{"reading": "C", "met": false, "text": "reuse ratio 0.956, clean >= -1.0 on 2 of 5 (needs 4)"}]
+    },
+    "sa651245fee587200": {
+      "experiment": "E11 two-round stream", "round": 2, "condition": "contrast_s5",
+      "bar": "formal criteria (mean gain >= 10, clean >= -2.0, forgetting <= 3) and the marginal-gain condition (contrast W1 to W2 >= 10)",
+      "met": false, "met_scope": "stream", "reading": "formal criteria met; marginal gain +9.475 against >= 10, missed by 0.525; the second capability is not counted as accumulated",
+      "reason": "met false follows the marginal-gain condition, which DEV_RESULTS applies by the letter; the formal criteria alone are met.",
+      "dev_results_heading": "## E11 two-round stream, teacher in the loop (ViT-Lite-7/4, seed 100, loop-retain-v2): retention met, contrast's marginal gain 0.53 short"
+    },
+    "s63b6ad75d137a090": {
+      "experiment": "K1", "condition": "gaussian_noise_s5 (rule view)",
+      "bar": "gain >= 10 and clean >= -1.0 on V_select, and joint >= 1 above k1_ft_rule's kept pick (the base, joint 0)",
+      "met": true, "met_scope": "session", "reading": "met (joint +18.15 against 0)",
+      "dev_results_heading": "## K1, the LLM given the rule and no condition image (E11 gaussian, i00802425, seed 100): met (joint +18.15 against 0)"
+    },
+    "s92ca011539abdbea": {
+      "experiment": "Ladder U", "condition": "gaussian_noise_s5 (unlabelled view)",
+      "bar": "B-style: joint >= +17.075, gain >= 10, clean >= -1.0",
+      "met": true, "met_scope": "session", "reading": "met (joint +33.37 against +17.075)",
+      "dev_results_heading": "## Ladder U, unlabelled condition rows (E11 gaussian, i00802425, seed 100): met (joint +33.37 against +17.075)"
+    },
+    "s6b35512774f3c584": {
+      "experiment": "Ladder K0b", "condition": "gaussian_noise_s5 (named view, checks)",
+      "bar": "B-style: joint >= +17.075, gain >= 10, clean >= -1.0",
+      "met": false, "met_scope": "session", "reading": "missed: gain +9.925 is 0.075 below 10, joint +9.425 below +17.075",
+      "dev_results_heading": "## Ladder K0b, the capability's name and checks, no data (E11 gaussian, i00802425, seed 100): missed (joint +9.43)"
+    },
+    "s33d938a94f4e622d": {
+      "experiment": "Ladder K0a", "condition": "gaussian_noise_s5 (named view, no check)",
+      "bar": "B-style: joint >= +17.075, gain >= 10, clean >= -1.0",
+      "met": false, "met_scope": "session", "reading": "missed: joint +15.10 is 1.975 below +17.075",
+      "dev_results_heading": "## Ladder K0a, the capability's name alone, no data and no check (E11 gaussian, i00802425, seed 100): missed (joint +15.10)",
+      "notes": ["No patch_check tool: the one check is hidden-check-v1, run by the harness after the session on the declared program."]
+    },
+    "s2abaefab30d20b42": {
+      "experiment": "E12 B", "condition": "gaussian_noise_s5 (ImageNet ResNet-18)",
+      "bar": "gain >= 10, clean >= -1.0, joint >= +10.100",
+      "met": true, "met_scope": "session", "reading": "B met (joint +34.60 against +10.100)",
+      "dev_results_heading": "## E12 B gaussian, the ImageNet-pretrained ResNet-18 (i26d23d3e, seed 100): met (joint +34.60 against +10.100)",
+      "secondary": [{"reading": "C (E12 C)", "met": true, "text": "supported on both conditions"}]
+    },
+    "sccd12677dcdd125b": {
+      "experiment": "E12 B", "condition": "contrast_s5 (ImageNet ResNet-18)",
+      "bar": "gain >= 10, clean >= -1.0, joint >= +14.450",
+      "met": true, "met_scope": "session", "reading": "met (joint +21.15 against +14.450; 6 label-scored settings by hand under the 11-06 counting ruling)",
+      "dev_results_heading": "## E12 B contrast, the ImageNet-pretrained ResNet-18 (ie3840b28, seed 100): met (joint +21.15 against +14.450; 6 label-scored settings by hand under the 11-06 counting ruling)",
+      "secondary": [{"reading": "C (E12 C)", "met": true, "text": "supported on both conditions"}],
+      "notes": ["Audit VIOLATION (auditor count 9 against the cap of 8); hand count 6 candidate patches plus 3 nearest-class-mean probes that set no student parameter (DEV_RESULTS)."]
+    },
+    "s9be29c2c302e4daa": {
+      "experiment": "E13", "condition": "addprim_jump (SCAN, rule given)",
+      "bar": "graded reading: new EM >= 50% with clean >= -1.0 (B not testable)",
+      "met": true, "met_scope": "session", "reading": "graded reading met (new EM 99.84%, clean +0.00)",
+      "dev_results_heading": "## E13 addprim_jump, the rule given (ncc5c260f, seed 100): graded reading met (new EM 99.84%, clean +0.00, 257 entries)"
+    },
+    "s41876e82b0843c53": {
+      "experiment": "E13", "condition": "around_right (SCAN, rule given)",
+      "bar": "graded reading: new EM >= 50% with clean >= -1.0 (B not testable)",
+      "met": true, "met_scope": "session", "reading": "graded reading met (new EM 88.54%, clean -0.10)",
+      "dev_results_heading": "## E13 around_right, the rule given (n8826c49e, seed 100): graded reading met (new EM 88.54%, clean -0.10, 25,056 entries)"
+    },
+    "s2502912e3f1b2c04": {
+      "experiment": "E14 B", "condition": "BabyAI pickup from 8 demonstrations",
+      "bar": "gain >= 10, clean >= -1.0 and joint >= +1.20",
+      "met": true, "met_scope": "session", "reading": "met (joint +98.9 against +1.20)",
+      "dev_results_heading": "## E14 B, BabyAI pickup from 8 demonstrations (p6ce8ad67, seed 100): met (joint +98.9 against +1.20)"
+    },
+    "s91f190ded64af770": {
+      "experiment": "A4a", "condition": "gaussian_noise_s5 (no weight values)",
+      "bar": "A4 mark: joint >= +23.81 (75% of the B final's +31.75) at clean >= -1.0",
+      "met": false, "met_scope": "session", "reading": "missed (joint +10.78 against +23.81)",
+      "dev_results_heading": "## A4a gaussian, the LLM without weight values (E11, i00802425, seed 100): missed (joint +10.78 against +23.81)",
+      "secondary": [{"reading": "B beside", "met": false, "text": "gain >= 10 met, clean >= -1.0 met, joint >= +17.075 missed"}]
+    },
+    "s0ff673c6147db0e4": {
+      "experiment": "A4a", "condition": "contrast_s5 (no weight values)",
+      "bar": "A4 mark: joint >= +13.49 (75% of the B final's +17.98) at clean >= -1.0",
+      "met": false, "met_scope": "session", "reading": "A4 mark missed (+11.18 against +13.49)",
+      "dev_results_heading": "## A4a contrast, the LLM without weight values (E11, i3eb3fc78, seed 100): A4 mark missed (+11.18 against +13.49), B met",
+      "secondary": [{"reading": "B beside", "met": true, "text": "B met (heading)"}]
+    },
+    "s60d9b1ea1c428b93": {
+      "experiment": "A4b", "condition": "gaussian_noise_s5 (two checks)",
+      "bar": "A4 mark: joint >= +23.81 (75% of the B final's +31.75) at clean >= -1.0",
+      "met": false, "met_scope": "session", "reading": "missed (joint +4.275 against the A4 mark +23.81; B gain not met)",
+      "dev_results_heading": "## A4b gaussian, two checks (E11, i00802425, seed 100): missed (joint +4.275 against the A4 mark +23.81; B gain not met)"
+    },
+    "sac08e9e118a25235": {
+      "experiment": "A4b", "condition": "contrast_s5 (two checks)",
+      "bar": "A4 mark: joint >= +13.49 (75% of the B final's +17.98) at clean >= -1.0",
+      "met": false, "met_scope": "session", "reading": "missed (joint +9.65 against the A4 mark +13.49; B gain not met)",
+      "dev_results_heading": "## A4b contrast, two checks (E11, i3eb3fc78, seed 100): missed (joint +9.65 against the A4 mark +13.49; B gain not met)"
+    },
+    "s5385e6440ac967bf": {
+      "experiment": "wave1", "condition": "contrast_s3 (arm M2)",
+      "bar": null, "met": null, "null_kind": "no_reading", "met_scope": null, "reading": null,
+      "reason": "No reading in DEV_RESULTS. Readout runs/devreadouts/wave1_s5385e6440ac967bf.jsonl exists; PREREG audit amendments A1/A2 name this session.",
+      "dev_results_heading": null
+    },
+    "sb77dd2c07fb68078": {
+      "experiment": "wave1", "condition": "gaussian_noise_s3 (arm M2)",
+      "bar": null, "met": null, "null_kind": "no_reading", "met_scope": null, "reading": null,
+      "reason": "No reading in DEV_RESULTS. Readout runs/devreadouts/wave1_sb77dd2c07fb68078.jsonl exists.",
+      "dev_results_heading": null
+    },
+    "sf103e7a473f72769": {
+      "experiment": "wave1", "condition": "deploy colored_mnist seed 101 (arm M2)",
+      "bar": null, "met": null, "null_kind": "no_reading", "met_scope": null, "reading": null,
+      "reason": "No reading in DEV_RESULTS. Readout runs/devreadouts/wave1_sf103e7a473f72769.jsonl exists; PREREG audit amendments A1/A2 name this session.",
+      "dev_results_heading": null
+    },
+    "s3b31760368486852": {
+      "experiment": "wave1", "condition": "deploy colored_mnist (arm DECOY)",
+      "bar": null, "met": null, "null_kind": "no_reading", "met_scope": null, "reading": null,
+      "reason": "No reading in DEV_RESULTS. Readout runs/devreadouts/wave1_s3b31760368486852.jsonl exists; PREREG audit amendments A1/A2 name this session.",
+      "dev_results_heading": null
+    },
+    "s86144836ceeb6e94": {
+      "experiment": "wave1", "condition": "contrast_s3 (arm DECOY)",
+      "bar": null, "met": null, "null_kind": "no_reading", "met_scope": null, "reading": null,
+      "reason": "No reading in DEV_RESULTS. Readout runs/devreadouts/wave1_s86144836ceeb6e94.jsonl exists.",
+      "dev_results_heading": null
+    },
+    "s5d211e8b0f916b20": {
+      "experiment": "wave1", "condition": "gaussian_noise_s3 (arm DECOY)",
+      "bar": null, "met": null, "null_kind": "no_reading", "met_scope": null, "reading": null,
+      "reason": "No reading in DEV_RESULTS. Readout runs/devreadouts/wave1_s5d211e8b0f916b20.jsonl exists.",
+      "dev_results_heading": null
+    },
+    "sda4453234af1036c": {
+      "experiment": "wave1", "condition": "deploy colored_mnist (arm NOWEIGHT)",
+      "bar": null, "met": null, "null_kind": "no_reading", "met_scope": null, "reading": null,
+      "reason": "No reading in DEV_RESULTS. Readout runs/devreadouts/wave1_sda4453234af1036c.jsonl exists.",
+      "dev_results_heading": null
+    },
+    "s3acb4d7b68eb7f2b": {
+      "experiment": "wave1", "condition": "contrast_s3 (arm NOWEIGHT)",
+      "bar": null, "met": null, "null_kind": "no_reading", "met_scope": null, "reading": null,
+      "reason": "No reading in DEV_RESULTS. Readout runs/devreadouts/wave1_s3acb4d7b68eb7f2b.jsonl exists.",
+      "dev_results_heading": null
+    },
+    "s330301ef547cb7dd": {
+      "experiment": "wave1", "condition": "gaussian_noise_s3 (arm NOWEIGHT)",
+      "bar": null, "met": null, "null_kind": "no_reading", "met_scope": null, "reading": null,
+      "reason": "No reading in DEV_RESULTS. Readout runs/devreadouts/wave1_s330301ef547cb7dd.jsonl exists.",
+      "dev_results_heading": null
+    },
+    "s70d918e75805bb13": {
+      "experiment": "M2 pilot", "condition": "deploy colored_mnist (arm M2)",
+      "bar": null, "met": null, "null_kind": "no_reading", "met_scope": null, "reading": null,
+      "reason": "No reading in DEV_RESULTS. Readout runs/devreadouts/m2_pilot_s70d918e75805bb13.jsonl exists; PREREG audit amendments A1/A2 name this session.",
+      "dev_results_heading": null
+    },
+    "s5f8a82be3bc2eef2": {
+      "experiment": "M2 effort-low run", "condition": "deploy colored_mnist (arm M2)",
+      "bar": null, "met": null, "null_kind": "no_reading", "met_scope": null, "reading": null,
+      "reason": "No reading in DEV_RESULTS and no readout file. The records show effort low, repeat 99, a 900 s wall budget and 53 s of use; its purpose is not recorded.",
+      "dev_results_heading": null
+    },
+    "s4253319a365b126a": {
+      "experiment": "E11 B T02", "condition": "gaussian_noise_s5",
+      "bar": "B (PREREG 30f5068): gain >= 10, clean >= -1.0 and joint >= +17.075",
+      "met": false, "met_scope": "session", "reading": "B missed (joint +13.15)",
+      "dev_results_heading": "## T01 and T02, eight new E11 B sessions on NSCC: 3 of 8 met (T02 seed 100: 2 of 4; T01 seeds 101, 102: 1 of 4)",
+      "notes": ["i00802425 seed 100, repeat 1. Run on NSCC (R28 job 6). The harness wrote its manifest row there; copied to runs/manifest.jsonl on 2026-11-06 (job copy runs/nscc_r28/r28j6/store_runs/manifest.jsonl)."]
+    },
+    "scb92c3eb5d5226cc": {
+      "experiment": "E11 B T02", "condition": "gaussian_noise_s5",
+      "bar": "B (PREREG 30f5068): gain >= 10, clean >= -1.0 and joint >= +17.075",
+      "met": true, "met_scope": "session", "reading": "B met (joint +30.275)",
+      "dev_results_heading": "## T01 and T02, eight new E11 B sessions on NSCC: 3 of 8 met (T02 seed 100: 2 of 4; T01 seeds 101, 102: 1 of 4)",
+      "notes": ["i00802425 seed 100, repeat 2. Run on NSCC (R28 job 7). The harness wrote its manifest row there; copied to runs/manifest.jsonl on 2026-11-06 (job copy runs/nscc_r28/r28j7/store_runs/manifest.jsonl)."]
+    },
+    "s7ae7d105d7655ed5": {
+      "experiment": "E11 B T02", "condition": "contrast_s5",
+      "bar": "B (PREREG 30f5068): gain >= 10, clean >= -1.0 and joint >= +10.475",
+      "met": false, "met_scope": "session", "reading": "B missed (gain +8.65)",
+      "dev_results_heading": "## T01 and T02, eight new E11 B sessions on NSCC: 3 of 8 met (T02 seed 100: 2 of 4; T01 seeds 101, 102: 1 of 4)",
+      "notes": ["i3eb3fc78 seed 100, repeat 1. Run on NSCC (R28 job 8). The harness wrote its manifest row there; copied to runs/manifest.jsonl on 2026-11-06 (job copy runs/nscc_r28/r28j8/store_runs/manifest.jsonl)."]
+    },
+    "sfeb1cbc77d6a6042": {
+      "experiment": "E11 B T02", "condition": "contrast_s5",
+      "bar": "B (PREREG 30f5068): gain >= 10, clean >= -1.0 and joint >= +10.475",
+      "met": true, "met_scope": "session", "reading": "B met (joint +12.075)",
+      "dev_results_heading": "## T01 and T02, eight new E11 B sessions on NSCC: 3 of 8 met (T02 seed 100: 2 of 4; T01 seeds 101, 102: 1 of 4)",
+      "notes": ["i3eb3fc78 seed 100, repeat 2. Run on NSCC (R28 job 9). The harness wrote its manifest row there; copied to runs/manifest.jsonl on 2026-11-06 (job copy runs/nscc_r28/r28j9/store_runs/manifest.jsonl)."]
+    },
+    "scf16f7fb35855c03": {
+      "experiment": "E11 B T01", "condition": "gaussian_noise_s5",
+      "bar": "B (PREREG 30f5068, bars 92a96af): gain >= 10, clean >= -1.0 and joint >= +28.175",
+      "met": true, "met_scope": "session", "reading": "B met (joint +30.675)",
+      "dev_results_heading": "## T01 and T02, eight new E11 B sessions on NSCC: 3 of 8 met (T02 seed 100: 2 of 4; T01 seeds 101, 102: 1 of 4)",
+      "notes": ["i905213a3 seed 101. Run on NSCC (R28 job 10). The harness wrote its manifest row there; copied to runs/manifest.jsonl on 2026-11-06 (job copy runs/nscc_r28/r28j10/store_runs/manifest.jsonl)."]
+    },
+    "sf45990dee41ac233": {
+      "experiment": "E11 B T01", "condition": "gaussian_noise_s5",
+      "bar": "B (PREREG 30f5068, bars 92a96af): gain >= 10, clean >= -1.0 and joint >= +22.000",
+      "met": false, "met_scope": "session", "reading": "B missed (joint +18.50)",
+      "dev_results_heading": "## T01 and T02, eight new E11 B sessions on NSCC: 3 of 8 met (T02 seed 100: 2 of 4; T01 seeds 101, 102: 1 of 4)",
+      "notes": ["iab18c0aa seed 102. Run on NSCC (R28 job 11). The harness wrote its manifest row there; copied to runs/manifest.jsonl on 2026-11-06 (job copy runs/nscc_r28/r28j11/store_runs/manifest.jsonl)."]
+    },
+    "s3db14093bc6c3538": {
+      "experiment": "E11 B T01", "condition": "contrast_s5",
+      "bar": "B (PREREG 30f5068, bars 92a96af): gain >= 10, clean >= -1.0 and joint >= +7.925",
+      "met": false, "met_scope": "session", "reading": "B missed (gain +8.20)",
+      "dev_results_heading": "## T01 and T02, eight new E11 B sessions on NSCC: 3 of 8 met (T02 seed 100: 2 of 4; T01 seeds 101, 102: 1 of 4)",
+      "notes": ["i4a486d70 seed 101. Run on NSCC (R28 job 12). The harness wrote its manifest row there; copied to runs/manifest.jsonl on 2026-11-06 (job copy runs/nscc_r28/r28j12/store_runs/manifest.jsonl)."]
+    },
+    "s037ead942a4cc8aa": {
+      "experiment": "E11 B T01", "condition": "contrast_s5",
+      "bar": "B (PREREG 30f5068, bars 92a96af): gain >= 10, clean >= -1.0 and joint >= +10.500",
+      "met": false, "met_scope": "session", "reading": "B missed (gain +8.475, joint +7.90)",
+      "dev_results_heading": "## T01 and T02, eight new E11 B sessions on NSCC: 3 of 8 met (T02 seed 100: 2 of 4; T01 seeds 101, 102: 1 of 4)",
+      "notes": ["i5d76f25c seed 102. Run on NSCC (R28 job 13). The harness wrote its manifest row there; copied to runs/manifest.jsonl on 2026-11-06 (job copy runs/nscc_r28/r28j13/store_runs/manifest.jsonl)."]
+    }
+  }
+}

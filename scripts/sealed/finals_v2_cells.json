@@ -1,0 +1,186 @@
+{
+  "about": "Table cell -> sealed-list entry name for list v2 (scripts/sealed/finals_v2_draft.json); cells of Paper/manuscript/tables/table_data.json. A shared child maps to one entry.",
+  "list": "scripts/sealed/finals_v2_draft.json",
+  "tables": {
+    "main": {
+      "vit_gaussian": {
+        "program": "E11_B_gaussian_s100",
+        "f1_kept": "ref_E11_gaussian_F1_lora_r4",
+        "f1_own": "ref_E11_gaussian_F1_lora_r16_own",
+        "fixed": "ref_E11_gaussian_bar_grad_sparse19_sal"
+      },
+      "vit_contrast": {
+        "program": "E11_B_contrast_s100",
+        "f1_kept": "ref_E11_contrast_F1_ft_full_l2sp",
+        "f1_own": "ref_E11_contrast_F1_ft_full_l2sp",
+        "fixed": "ref_E11_contrast_bar_grad_sparse19_traj"
+      },
+      "r18_gaussian": {
+        "program": "E12_B_gaussian_s100",
+        "f1_kept": "ref_E12_gaussian_F1_lora_r16",
+        "f1_own": "ref_E12_gaussian_F1_ft_full_l2sp_own",
+        "fixed": "ref_E12_gaussian_bar_grad_sparse19_traj"
+      },
+      "r18_contrast": {
+        "program": "E12_B_contrast_s100",
+        "f1_kept": "ref_E12_contrast_F1_lora_r16",
+        "f1_own": "ref_E12_contrast_F1_lora_r16_own",
+        "fixed": "ref_E12_contrast_bar_bn_adapt"
+      },
+      "babyai": {
+        "program": "E14_B_pickup_s100",
+        "f1_kept": "base no-op (gain 0, clean 0 by construction; no entry)",
+        "f1_own": "base no-op (gain 0, clean 0 by construction; no entry)",
+        "fixed": "ref_E14_pickup_bar_bc_emb_head"
+      }
+    },
+    "examples": {
+      "gaussian": {
+        "program": "E11_B_gaussian_s100",
+        "kept_best8": "ref_E11_gaussian_F1_lora_r4",
+        "kept_tuned": "ref_E11_gaussian_F1s_s3_lora_aug_kept",
+        "nobound_best8": "ref_E11_gaussian_F1_lora_r16_own",
+        "nobound_tuned": "ref_E11_gaussian_F1s_s3_lora_aug_own",
+        "nobound_true": "ref_E11_gaussian_F1s_s5_oracle_prior_own",
+        "fixed": "ref_E11_gaussian_bar_grad_sparse19_sal",
+        "kept_est": "unchanged network (g_unchanged; no entry)",
+        "kept_true": "unchanged network (g_unchanged; no entry)"
+      },
+      "contrast": {
+        "program": "E11_B_contrast_s100",
+        "kept_best8": "ref_E11_contrast_F1_ft_full_l2sp",
+        "kept_tuned": "ref_E11_contrast_F1s_s1_gentle_kept",
+        "nobound_best8": "ref_E11_contrast_F1_ft_full_l2sp",
+        "nobound_tuned": "ref_E11_contrast_F1s_s1_gentle_kept",
+        "nobound_true": "ref_E11_contrast_F1s_s5_oracle_prior_own",
+        "fixed": "ref_E11_contrast_bar_grad_sparse19_traj",
+        "kept_est": "ref_E11_contrast_F1s_s4_est_prior_kept",
+        "kept_true": "ref_E11_contrast_F1s_s5_oracle_prior_kept"
+      }
+    },
+    "reuse": {
+      "gaussian": {
+        "101": {
+          "instance_id": "i905213a3",
+          "program": "E11_C_gaussian_s101",
+          "recipe": "ref_E11_C_gaussian_s101_F3_recipe_lora_r4",
+          "reselect": "ref_E11_C_gaussian_s101_F3_reselect_lora_r4"
+        },
+        "102": {
+          "instance_id": "iab18c0aa",
+          "program": "E11_C_gaussian_s102",
+          "recipe": "ref_E11_C_gaussian_s102_F3_recipe_lora_r4",
+          "reselect": "ref_E11_C_gaussian_s102_F3_reselect_lora_r4"
+        },
+        "103": {
+          "instance_id": "ib1b195f6",
+          "program": "E11_C_gaussian_s103",
+          "recipe": "ref_E11_C_gaussian_s103_F3_recipe_lora_r4",
+          "reselect": "ref_E11_C_gaussian_s103_F3_recipe_lora_r4"
+        },
+        "104": {
+          "instance_id": "ie1be7cd9",
+          "program": "E11_C_gaussian_s104",
+          "recipe": "ref_E11_C_gaussian_s104_F3_recipe_lora_r4",
+          "reselect": "ref_E11_C_gaussian_s104_F3_reselect_lora_r4"
+        },
+        "105": {
+          "instance_id": "i36df1f8f",
+          "program": "E11_C_gaussian_s105",
+          "recipe": "ref_E11_C_gaussian_s105_F3_recipe_lora_r4",
+          "reselect": "ref_E11_C_gaussian_s105_F3_recipe_lora_r4"
+        }
+      },
+      "contrast": {
+        "101": {
+          "instance_id": "i4a486d70",
+          "program": "E11_C_contrast_s101",
+          "recipe": "ref_E11_C_contrast_s101_F3_recipe_ft_full_l2sp",
+          "reselect": "ref_E11_C_contrast_s101_F3_reselect_ft_full_l2sp"
+        },
+        "102": {
+          "instance_id": "i5d76f25c",
+          "program": "E11_C_contrast_s102",
+          "recipe": "ref_E11_C_contrast_s102_F3_recipe_ft_full_l2sp",
+          "reselect": "ref_E11_C_contrast_s102_F3_reselect_ft_full_l2sp"
+        },
+        "103": {
+          "instance_id": "id83bf155",
+          "program": "E11_C_contrast_s103",
+          "recipe": "ref_E11_C_contrast_s103_F3_recipe_ft_full_l2sp",
+          "reselect": "ref_E11_C_contrast_s103_F3_recipe_ft_full_l2sp"
+        },
+        "104": {
+          "instance_id": "ib1e4e794",
+          "program": "E11_C_contrast_s104",
+          "recipe": "ref_E11_C_contrast_s104_F3_recipe_ft_full_l2sp",
+          "reselect": "base no-op (gain 0, clean 0 by construction; no entry)"
+        },
+        "105": {
+          "instance_id": "iecf07b07",
+          "program": "E11_C_contrast_s105",
+          "recipe": "ref_E11_C_contrast_s105_F3_recipe_ft_full_l2sp",
+          "reselect": "ref_E11_C_contrast_s105_F3_reselect_ft_full_l2sp"
+        }
+      }
+    },
+    "stack": {
+      "program": {
+        "W1": {
+          "gaussian": "E10_stream_v2_W1_gaussian",
+          "defocus": "E10_stream_v2_W1_defocus",
+          "snow": "E10_stream_v2_W1_snow",
+          "contrast": "E10_stream_v2_W1_contrast"
+        },
+        "W2": {
+          "gaussian": "E10_stream_v2_W2_gaussian",
+          "defocus": "E10_stream_v2_W2_defocus",
+          "snow": "E10_stream_v2_W2_snow",
+          "contrast": "E10_stream_v2_W2_contrast"
+        },
+        "W3": {
+          "gaussian": "E10_stream_v2_W3_gaussian",
+          "defocus": "E10_stream_v2_W3_defocus",
+          "snow": "E10_stream_v2_W3_snow",
+          "contrast": "E10_stream_v2_W3_contrast"
+        },
+        "W4": {
+          "gaussian": "E10_stream_v2_W4_gaussian",
+          "defocus": "E10_stream_v2_W4_defocus",
+          "snow": "E10_stream_v2_W4_snow",
+          "contrast": "E10_stream_v2_W4_contrast"
+        }
+      },
+      "ft": {
+        "W1": {
+          "gaussian": "ref_E10_stream_F4_ft_replay_W1_gaussian",
+          "defocus": "ref_E10_stream_F4_ft_replay_W1_defocus",
+          "snow": "ref_E10_stream_F4_ft_replay_W1_snow",
+          "contrast": "ref_E10_stream_F4_ft_replay_W1_contrast"
+        },
+        "W2": {
+          "gaussian": "ref_E10_stream_F4_ft_replay_W2_gaussian",
+          "defocus": "ref_E10_stream_F4_ft_replay_W2_defocus",
+          "snow": "ref_E10_stream_F4_ft_replay_W2_snow",
+          "contrast": "ref_E10_stream_F4_ft_replay_W2_contrast"
+        },
+        "W3": {
+          "gaussian": "ref_E10_stream_F4_ft_replay_W3_gaussian",
+          "defocus": "ref_E10_stream_F4_ft_replay_W3_defocus",
+          "snow": "ref_E10_stream_F4_ft_replay_W3_snow",
+          "contrast": "ref_E10_stream_F4_ft_replay_W3_contrast"
+        },
+        "W4": {
+          "gaussian": "ref_E10_stream_F4_ft_replay_W4_gaussian",
+          "defocus": "ref_E10_stream_F4_ft_replay_W4_defocus",
+          "snow": "ref_E10_stream_F4_ft_replay_W4_snow",
+          "contrast": "ref_E10_stream_F4_ft_replay_W4_contrast"
+        }
+      }
+    }
+  },
+  "base_noops": [
+    "tab:main BabyAI F1 kept and own: all 8 F1 methods on p6ce8ad67 keep the base no-op, as their own final and at S_old >= -3",
+    "tab:reuse reselect contrast s104: ft_full_l2sp on ib1e4e794 keeps the base no-op at S_old >= -20"
+  ]
+}

@@ -1,0 +1,161 @@
+"""Numpy reference forward pass of a ResNet-20 image classifier (model_spec.json describes it).
+
+Requires numpy only. Call ``forward(params, x_uint8)``:
+
+* ``params``: dict of float arrays keyed by parameter name, PyTorch layout (conv weight [out, in, kh, kw]).
+* ``x_uint8``: raw uint8 images of shape [N, *INPUT_SHAPE] (NCHW).
+* returns float32 logits [N, N_CLASSES]; the prediction is the argmax over axis 1.
+
+Preprocessing: x / 255, then per channel (x - MEAN[c]) / STD[c].
+
+Architecture (fixed; ``expected_shapes()`` lists every parameter, and any other name or shape is refused):
+
+* stem: ``conv1`` (3x3, stride 1, padding 1, no bias), batch norm ``bn1``, ReLU.
+* three stages ``layer1`` .. ``layer3`` of BLOCKS_PER_STAGE basic blocks each, with STAGE_CHANNELS channels. The first
+  block of ``layer2`` and of ``layer3`` has stride 2; every other convolution has stride 1. A basic block ``layerL.i``
+  computes out = ReLU(bn2(conv2(ReLU(bn1(conv1(x))))) + shortcut(x)), with 3x3 convolutions (padding 1, no bias).
+  The shortcut has no parameters. It is the identity, except in ``layer2.0`` and ``layer3.0``, where it keeps every
+  second row and column (x[:, :, ::2, ::2]) and pads the channels with zeros, out_channels // 4 on each side.
+* global average pooling over the spatial positions gives the features f [N, 64].
+* linear head: logits = f @ ``fc.weight``.T + ``fc.bias``, ``fc.weight`` [N_CLASSES, 64] and ``fc.bias``
+  [N_CLASSES].
+
+Convolution is 2-D cross-correlation as in torch.nn.functional.conv2d: out[n, o, i, j] = sum_{c, u, v} weight[o, c, u,
+v] * xpad[n, c, i * stride + u, j * stride + v], with xpad zero-padded on each spatial side. Batch norm is in
+evaluation mode: (x - running_mean) / sqrt(running_var + BN_EPS) * weight + bias, per channel. Convolutions use im2col.
+All arithmetic runs in float64 and the logits are cast once to float32. Inputs are processed in chunks of at most
+CHUNK images, which bounds memory (about 0.6 GB).
+"""
+
+from __future__ import annotations
+
+import numpy as np
+
+INPUT_SHAPE = @@INPUT_SHAPE@@
+MEAN = np.array(@@MEAN@@, dtype=np.float64)
+STD = np.array(@@STD@@, dtype=np.float64)
+N_CLASSES = @@N_CLASSES@@
+BN_EPS = @@BN_EPS@@
+STEM_CHANNELS = 16
+STAGE_CHANNELS = (16, 32, 64)
+STAGE_STRIDES = (1, 2, 2)
+BLOCKS_PER_STAGE = 3
+BN_FIELDS = ("weight", "bias", "running_mean", "running_var")
+CHUNK = 256
+
+
+def _bn_shapes(name: str, channels: int) -> dict[str, tuple[int, ...]]:
+    return {f"{name}.{field}": (channels,) for field in BN_FIELDS}
+
+
+def _blocks() -> list[tuple[str, int, int, int, bool]]:
+    """(name, in channels, out channels, stride, has the subsampling shortcut) of every basic block in forward order."""
+    blocks, channels_in = [], STEM_CHANNELS
+    for stage, (channels, stride) in enumerate(zip(STAGE_CHANNELS, STAGE_STRIDES), start=1):
+        for index in range(BLOCKS_PER_STAGE):
+            block_stride = stride if index == 0 else 1
+            subsample = block_stride != 1 or channels_in != channels
+            blocks.append((f"layer{stage}.{index}", channels_in, channels, block_stride, subsample))
+            channels_in = channels
+    return blocks
+
+
+def expected_shapes() -> dict[str, tuple[int, ...]]:
+    """Every parameter name of the model with its shape, in forward order."""
+    shapes: dict[str, tuple[int, ...]] = {"conv1.weight": (STEM_CHANNELS, INPUT_SHAPE[0], 3, 3)}
+    shapes.update(_bn_shapes("bn1", STEM_CHANNELS))
+    for name, channels_in, channels, _stride, _subsample in _blocks():
+        shapes[f"{name}.conv1.weight"] = (channels, channels_in, 3, 3)
+        shapes.update(_bn_shapes(f"{name}.bn1", channels))
+        shapes[f"{name}.conv2.weight"] = (channels, channels, 3, 3)
+        shapes.update(_bn_shapes(f"{name}.bn2", channels))
+    shapes["fc.weight"] = (N_CLASSES, STAGE_CHANNELS[-1])
+    shapes["fc.bias"] = (N_CLASSES,)
+    return shapes
+
+
+def _checked(params: dict) -> dict[str, np.ndarray]:
+    expected = expected_shapes()
+    names = {str(key) for key in params}
+    if names != set(expected):
+        missing, extra = sorted(set(expected) - names), sorted(names - set(expected))
+        raise KeyError(f"parameter names differ from the architecture: missing {missing}, unexpected {extra}")
+    tensors = {}
+    for name, shape in expected.items():
+        value = np.asarray(params[name])
+        if not np.issubdtype(value.dtype, np.floating):
+            raise TypeError(f"{name} must be a float array, got {value.dtype}")
+        if tuple(value.shape) != shape:
+            raise ValueError(f"{name} has shape {tuple(value.shape)}, expected {shape}")
+        tensors[name] = value.astype(np.float64)
+    return tensors
+
+
+def _conv2d(h: np.ndarray, weight: np.ndarray, stride: int) -> np.ndarray:
+    n, channels, height, width = h.shape
+    out_channels, in_channels, kh, kw = weight.shape
+    if in_channels != channels:
+        raise ValueError(f"conv weight {weight.shape} does not fit input {h.shape}")
+    pad = kh // 2
+    padded = np.pad(h, ((0, 0), (0, 0), (pad, pad), (pad, pad))) if pad else h
+    h_out = (height + 2 * pad - kh) // stride + 1
+    w_out = (width + 2 * pad - kw) // stride + 1
+    windows = np.lib.stride_tricks.sliding_window_view(padded, (kh, kw), axis=(2, 3))
+    windows = windows[:, :, : (h_out - 1) * stride + 1 : stride, : (w_out - 1) * stride + 1 : stride]
+    cols = windows.transpose(0, 2, 3, 1, 4, 5).reshape(n * h_out * w_out, channels * kh * kw)
+    out = cols @ weight.reshape(out_channels, channels * kh * kw).T
+    return out.reshape(n, h_out, w_out, out_channels).transpose(0, 3, 1, 2)
+
+
+def _bn(h: np.ndarray, tensors: dict[str, np.ndarray], name: str) -> np.ndarray:
+    scale = tensors[f"{name}.weight"] / np.sqrt(tensors[f"{name}.running_var"] + BN_EPS)
+    shift = tensors[f"{name}.bias"] - tensors[f"{name}.running_mean"] * scale
+    return h * scale.reshape(1, -1, 1, 1) + shift.reshape(1, -1, 1, 1)
+
+
+def _subsample(h: np.ndarray, channels: int) -> np.ndarray:
+    pad = channels // 4
+    return np.pad(h[:, :, ::2, ::2], ((0, 0), (pad, pad), (0, 0), (0, 0)))
+
+
+def features(params: dict[str, np.ndarray], x_uint8: np.ndarray) -> np.ndarray:
+    """float64 features f [N, 64] (the pooled encoder output, before the head) for raw uint8 images."""
+    x = _images(x_uint8)
+    tensors = _checked(params)
+    if x.shape[0] == 0:
+        return np.zeros((0, STAGE_CHANNELS[-1]), dtype=np.float64)
+    return np.concatenate([_features(tensors, x[start : start + CHUNK]) for start in range(0, x.shape[0], CHUNK)])
+
+
+def _features(tensors: dict[str, np.ndarray], x: np.ndarray) -> np.ndarray:
+    h = x.astype(np.float64) / 255.0
+    h = (h - MEAN.reshape(1, -1, 1, 1)) / STD.reshape(1, -1, 1, 1)
+    h = np.maximum(_bn(_conv2d(h, tensors["conv1.weight"], 1), tensors, "bn1"), 0.0)
+    for name, _channels_in, channels, stride, subsample in _blocks():
+        shortcut = _subsample(h, channels) if subsample else h
+        out = np.maximum(_bn(_conv2d(h, tensors[f"{name}.conv1.weight"], stride), tensors, f"{name}.bn1"), 0.0)
+        out = _bn(_conv2d(out, tensors[f"{name}.conv2.weight"], 1), tensors, f"{name}.bn2")
+        h = np.maximum(out + shortcut, 0.0)
+    return h.mean(axis=(2, 3))
+
+
+def _images(x_uint8: np.ndarray) -> np.ndarray:
+    x = np.asarray(x_uint8)
+    if x.dtype != np.uint8:
+        raise TypeError(f"images must be uint8, got {x.dtype}")
+    if x.ndim != 4 or tuple(x.shape[1:]) != INPUT_SHAPE:
+        raise ValueError(f"images must have shape [N, {', '.join(map(str, INPUT_SHAPE))}], got {list(x.shape)}")
+    return x
+
+
+def forward(params: dict[str, np.ndarray], x_uint8: np.ndarray) -> np.ndarray:
+    """Logits float32 [N, N_CLASSES] for raw uint8 images [N, *INPUT_SHAPE]."""
+    x = _images(x_uint8)
+    tensors = _checked(params)
+    if x.shape[0] == 0:
+        return np.zeros((0, N_CLASSES), dtype=np.float32)
+    chunks = []
+    for start in range(0, x.shape[0], CHUNK):
+        f = _features(tensors, x[start : start + CHUNK])
+        chunks.append((f @ tensors["fc.weight"].T + tensors["fc.bias"]).astype(np.float32))
+    return np.concatenate(chunks, axis=0)

@@ -1,0 +1,130 @@
+"""Numpy reference forward pass of a model described by model_spec.json (schema weightcode.model_spec.v0).
+
+Requires numpy only. Call ``forward(params, x_uint8)``:
+
+* ``params``: dict of float arrays keyed by parameter name, PyTorch layout (linear weight [out, in], conv weight
+  [out, in, kh, kw]).
+* ``x_uint8``: raw uint8 images of shape [N, *INPUT_SHAPE] (NCHW).
+* returns float32 logits [N, N_CLASSES]; the prediction is the argmax over axis 1.
+
+Preprocessing: x / 255, then per channel (x - MEAN[c]) / STD[c].
+
+The architecture is read from the parameter names:
+
+* ``conv1`` .. ``convK`` (``convk.weight``, ``convk.bias``; K may be 0): 2-D cross-correlation as in
+  torch.nn.functional.conv2d, out[n, o, i, j] = bias[o] + sum_{c, u, v} weight[o, c, u, v] *
+  xpad[n, c, i * CONV_STRIDE + u, j * CONV_STRIDE + v], where xpad is x zero-padded by CONV_PADDING on each
+  spatial side; then ReLU; then max pooling over POOL_KERNEL x POOL_KERNEL windows with stride POOL_STRIDE
+  (rows and columns that do not fill a window are dropped).
+* flatten in C, H, W (row-major) order.
+* ``fc1`` .. ``fcM`` (``fcm.weight``, ``fcm.bias``): h @ weight.T + bias, with ReLU after every layer except fcM.
+
+Convolutions use im2col. All arithmetic runs in float64 and the logits are cast once to float32. Inputs are
+processed in chunks of at most CHUNK images, which bounds memory (about 0.4 GB for the largest model).
+"""
+
+from __future__ import annotations
+
+import numpy as np
+
+INPUT_SHAPE = @@INPUT_SHAPE@@
+MEAN = np.array(@@MEAN@@, dtype=np.float64)
+STD = np.array(@@STD@@, dtype=np.float64)
+N_CLASSES = @@N_CLASSES@@
+CONV_STRIDE = 1
+CONV_PADDING = 1
+POOL_KERNEL = 2
+POOL_STRIDE = 2
+CHUNK = 256
+
+
+def _numbered(prefix: str, numbers: set[int]) -> list[str]:
+    ordered = sorted(numbers)
+    if ordered != list(range(1, len(ordered) + 1)):
+        raise KeyError(f"{prefix} layers must be numbered 1..K without gaps, got {ordered}")
+    return [f"{prefix}{number}" for number in ordered]
+
+
+def _layers(params: dict) -> tuple[list[str], list[str]]:
+    """Conv and fc layer names in forward order, inferred from the parameter names."""
+    found: dict[str, dict[int, set[str]]] = {"conv": {}, "fc": {}}
+    for key in params:
+        name, dot, kind = str(key).partition(".")
+        prefix = "conv" if name.startswith("conv") else "fc" if name.startswith("fc") else ""
+        digits = name[len(prefix) :]
+        if not prefix or not dot or kind not in ("weight", "bias") or not digits.isdigit() or digits[0] == "0":
+            raise KeyError(f"unexpected parameter name {key!r}")
+        found[prefix].setdefault(int(digits), set()).add(kind)
+    for prefix, layers in found.items():
+        for number, kinds in layers.items():
+            if kinds != {"weight", "bias"}:
+                raise KeyError(f"{prefix}{number} needs both weight and bias, found {sorted(kinds)}")
+    if not found["fc"]:
+        raise KeyError("no fc layers found")
+    return _numbered("conv", set(found["conv"])), _numbered("fc", set(found["fc"]))
+
+
+def _tensor(params: dict, key: str) -> np.ndarray:
+    value = np.asarray(params[key])
+    if not np.issubdtype(value.dtype, np.floating):
+        raise TypeError(f"{key} must be a float array, got {value.dtype}")
+    return value.astype(np.float64)
+
+
+def _conv2d(h: np.ndarray, weight: np.ndarray, bias: np.ndarray) -> np.ndarray:
+    n, channels, height, width = h.shape
+    out_channels, in_channels, kh, kw = weight.shape
+    if in_channels != channels or bias.shape != (out_channels,):
+        raise ValueError(f"conv weight {weight.shape} / bias {bias.shape} do not fit input {h.shape}")
+    pad, stride = CONV_PADDING, CONV_STRIDE
+    padded = np.pad(h, ((0, 0), (0, 0), (pad, pad), (pad, pad)))
+    h_out = (height + 2 * pad - kh) // stride + 1
+    w_out = (width + 2 * pad - kw) // stride + 1
+    windows = np.lib.stride_tricks.sliding_window_view(padded, (kh, kw), axis=(2, 3))
+    windows = windows[:, :, : (h_out - 1) * stride + 1 : stride, : (w_out - 1) * stride + 1 : stride]
+    cols = windows.transpose(0, 2, 3, 1, 4, 5).reshape(n * h_out * w_out, channels * kh * kw)
+    out = cols @ weight.reshape(out_channels, channels * kh * kw).T + bias
+    return out.reshape(n, h_out, w_out, out_channels).transpose(0, 3, 1, 2)
+
+
+def _maxpool(h: np.ndarray) -> np.ndarray:
+    if POOL_KERNEL != POOL_STRIDE:
+        raise ValueError("this forward implements non-overlapping pooling only")
+    n, channels, height, width = h.shape
+    h_out = (height - POOL_KERNEL) // POOL_STRIDE + 1
+    w_out = (width - POOL_KERNEL) // POOL_STRIDE + 1
+    trimmed = h[:, :, : h_out * POOL_KERNEL, : w_out * POOL_KERNEL]
+    return trimmed.reshape(n, channels, h_out, POOL_KERNEL, w_out, POOL_KERNEL).max(axis=(3, 5))
+
+
+def _forward_chunk(params: dict, convs: list[str], fcs: list[str], x: np.ndarray) -> np.ndarray:
+    h = x.astype(np.float64) / 255.0
+    h = (h - MEAN.reshape(1, -1, 1, 1)) / STD.reshape(1, -1, 1, 1)
+    for name in convs:
+        h = _maxpool(np.maximum(_conv2d(h, _tensor(params, name + ".weight"), _tensor(params, name + ".bias")), 0.0))
+    h = h.reshape(h.shape[0], int(np.prod(h.shape[1:])))
+    for position, name in enumerate(fcs):
+        weight = _tensor(params, name + ".weight")
+        bias = _tensor(params, name + ".bias")
+        if weight.ndim != 2 or weight.shape[1] != h.shape[1] or bias.shape != (weight.shape[0],):
+            raise ValueError(f"{name} weight {weight.shape} / bias {bias.shape} do not fit input width {h.shape[1]}")
+        h = h @ weight.T + bias
+        if position < len(fcs) - 1:
+            h = np.maximum(h, 0.0)
+    if h.shape[1] != N_CLASSES:
+        raise ValueError(f"model produces {h.shape[1]} logits, expected {N_CLASSES}")
+    return h.astype(np.float32)
+
+
+def forward(params: dict[str, np.ndarray], x_uint8: np.ndarray) -> np.ndarray:
+    """Logits float32 [N, N_CLASSES] for raw uint8 images [N, *INPUT_SHAPE]."""
+    x = np.asarray(x_uint8)
+    if x.dtype != np.uint8:
+        raise TypeError(f"images must be uint8, got {x.dtype}")
+    if x.ndim != 4 or tuple(x.shape[1:]) != INPUT_SHAPE:
+        raise ValueError(f"images must have shape [N, {', '.join(map(str, INPUT_SHAPE))}], got {list(x.shape)}")
+    convs, fcs = _layers(params)
+    if x.shape[0] == 0:
+        return np.zeros((0, N_CLASSES), dtype=np.float32)
+    chunks = [_forward_chunk(params, convs, fcs, x[start : start + CHUNK]) for start in range(0, x.shape[0], CHUNK)]
+    return np.concatenate(chunks, axis=0)

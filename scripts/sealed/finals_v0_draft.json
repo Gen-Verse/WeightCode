@@ -1,0 +1,78 @@
+{
+  "schema": "weightcode.sealed_finals_list.v0",
+  "status": "draft",
+  "approval": null,
+  "note": "Draft v0 of the sealed-read list (PREREG Sealed read, main 6d186d4; scenario plan M6), drafted 2026-11-06 by session weightcode-0e for WEIGHTCODE-main from the store's run records. Seed 100 finals only: E11 B both conditions, E12 B both conditions, the E10 stream v2 final student (four finals, one per condition instance), information ladder U and K1. Not yet in it: the E11 replication finals (s101, s102, both conditions), whose sessions have not run, and E13 and E14 if they enter the main text. Read once, after the last LLM session of the paper, only once the user has approved the list and it is committed with status approved.",
+  "finals": [
+    {
+      "name": "E11_B_gaussian_s100",
+      "readout": "vision_joint",
+      "source": {"kind": "session", "session_id": "sc918e11dceef637a"},
+      "instance_id": "i00802425",
+      "child_sha256": "e40c20786ae91c904cfd7a195addb7e03b6601b955d731518da1ff54bc01c251"
+    },
+    {
+      "name": "E11_B_contrast_s100",
+      "readout": "vision_joint",
+      "source": {"kind": "session", "session_id": "s760cb52ce82fb937"},
+      "instance_id": "i3eb3fc78",
+      "child_sha256": "07943b6df1f9424be9b7c76cc32630f4c194b79e44b8ad00d9a89749aa0308e7"
+    },
+    {
+      "name": "E12_B_gaussian_s100",
+      "readout": "vision_joint",
+      "source": {"kind": "session", "session_id": "s2abaefab30d20b42"},
+      "instance_id": "i26d23d3e",
+      "child_sha256": "ab961aa19217aabbf6b3298ff5546a1cffa10c3406f6f9af26f6dbf240712713"
+    },
+    {
+      "name": "E12_B_contrast_s100",
+      "readout": "vision_joint",
+      "source": {"kind": "session", "session_id": "sccd12677dcdd125b"},
+      "instance_id": "ie3840b28",
+      "child_sha256": "9792a0d3d26ee935322c26c5df99cb32ceb083a46f930dc083732ca2ec1f50f5"
+    },
+    {
+      "name": "E10_stream_v2_W4_gaussian",
+      "readout": "vision_joint",
+      "source": {"kind": "stream_final", "record": "loop_streams/loop_teacher_88d4ae0edeaf_4dacc6c42bfa.json"},
+      "instance_id": "id14b4f0b",
+      "child_sha256": "82907acacc44719cdc41a61ade43213100bb3c7dffb3c1189dc7c4ab3ab07e7f"
+    },
+    {
+      "name": "E10_stream_v2_W4_defocus",
+      "readout": "vision_joint",
+      "source": {"kind": "stream_final", "record": "loop_streams/loop_teacher_88d4ae0edeaf_4dacc6c42bfa.json"},
+      "instance_id": "id64b2abc",
+      "child_sha256": "82907acacc44719cdc41a61ade43213100bb3c7dffb3c1189dc7c4ab3ab07e7f"
+    },
+    {
+      "name": "E10_stream_v2_W4_snow",
+      "readout": "vision_joint",
+      "source": {"kind": "stream_final", "record": "loop_streams/loop_teacher_88d4ae0edeaf_4dacc6c42bfa.json"},
+      "instance_id": "if90033fc",
+      "child_sha256": "82907acacc44719cdc41a61ade43213100bb3c7dffb3c1189dc7c4ab3ab07e7f"
+    },
+    {
+      "name": "E10_stream_v2_W4_contrast",
+      "readout": "vision_joint",
+      "source": {"kind": "stream_final", "record": "loop_streams/loop_teacher_88d4ae0edeaf_4dacc6c42bfa.json"},
+      "instance_id": "i1bf0c953",
+      "child_sha256": "82907acacc44719cdc41a61ade43213100bb3c7dffb3c1189dc7c4ab3ab07e7f"
+    },
+    {
+      "name": "ladder_U_gaussian_s100",
+      "readout": "vision_joint",
+      "source": {"kind": "session", "session_id": "s92ca011539abdbea"},
+      "instance_id": "i00802425",
+      "child_sha256": "54d6ce162668e3c5ad6a8e4c032c24aa58fcfd136a4a67827b9e9bf432915d60"
+    },
+    {
+      "name": "ladder_K1_gaussian_s100",
+      "readout": "vision_joint",
+      "source": {"kind": "session", "session_id": "s63b6ad75d137a090"},
+      "instance_id": "i00802425",
+      "child_sha256": "59d12e14c5a7954bbb02750bcf001fa4f907f7503b9ee24ab64df38bfa2639d7"
+    }
+  ]
+}

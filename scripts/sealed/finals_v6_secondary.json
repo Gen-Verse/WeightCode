@@ -1,0 +1,47 @@
+{
+ "schema": "weightcode.t04.secondary_plan.v1",
+ "list": "scripts/sealed/finals_v6.json",
+ "entries_sha256": "0754a1a6c0266badc48eb65f5a17b919d5365f950137e04ee7b490da53c4002c",
+ "rows": "test rows with row % 25 in [6, 7, 8, 9, 10, 11, 12, 13, 14, 15]",
+ "rule": "PREREG T04 sealed test, secondary (descriptive): the target corruption at severities 1 to 5 and the other corruption at its chosen severity, for the base, the LEARN finals and the main control",
+ "groups": [
+  {
+   "tag": "gaussian",
+   "condition": "gaussian_noise_s3",
+   "instance_id": "i4c8c63bd",
+   "entries": [
+    "T04_gaussian_base",
+    "T04_gaussian_LEARN_r1",
+    "T04_gaussian_LEARN_r2",
+    "T04_gaussian_main_ft_bn"
+   ],
+   "sets": [
+    "gaussian_noise_s1",
+    "gaussian_noise_s2",
+    "gaussian_noise_s3",
+    "gaussian_noise_s4",
+    "gaussian_noise_s5",
+    "contrast_s4"
+   ]
+  },
+  {
+   "tag": "contrast",
+   "condition": "contrast_s4",
+   "instance_id": "i62cbf956",
+   "entries": [
+    "T04_contrast_base",
+    "T04_contrast_LEARN_r1",
+    "T04_contrast_LEARN_r2",
+    "T04_contrast_main_grad_full"
+   ],
+   "sets": [
+    "contrast_s1",
+    "contrast_s2",
+    "contrast_s3",
+    "contrast_s4",
+    "contrast_s5",
+    "gaussian_noise_s3"
+   ]
+  }
+ ]
+}

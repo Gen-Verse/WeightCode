@@ -1,0 +1,216 @@
+"""Numpy reference forward pass of a ResNet-18 image classifier on upsampled images (model_spec.json describes it).
+
+Requires numpy only. Call ``forward(params, x_uint8)``:
+
+* ``params``: dict of float arrays keyed by parameter name, PyTorch layout (conv weight [out, in, kh, kw]).
+* ``x_uint8``: raw uint8 images of shape [N, *INPUT_SHAPE] (NCHW).
+* returns float32 logits [N, N_CLASSES]; the prediction is the argmax over axis 1.
+
+Preprocessing: x / 255, then per channel (x - MEAN[c]) / STD[c], then bilinear upsampling of each channel from 32 x 32
+to RESIZE x RESIZE, as torch.nn.functional.interpolate(mode="bilinear", align_corners=False, antialias=False): along
+each axis, output position i reads the input at s = (i + 0.5) * 32 / RESIZE - 0.5, clamped below at 0, from positions
+floor(s) and min(floor(s) + 1, 31) with weights 1 - (s - floor(s)) and s - floor(s). The upsampling has no parameters.
+
+Architecture (fixed; ``expected_shapes()`` lists every parameter, and any other name or shape is refused):
+
+* stem: ``conv1`` (7x7, stride 2, padding 3, no bias, 3 -> 64), batch norm ``bn1``, ReLU, then max pooling over 3x3
+  windows with stride 2 and padding 1 (padded positions never win).
+* four stages ``layer1`` .. ``layer4`` of BLOCKS_PER_STAGE basic blocks each, with STAGE_CHANNELS channels. The first
+  block of ``layer2``, ``layer3`` and ``layer4`` has stride 2; every other convolution has stride 1. A basic block
+  ``layerL.i`` computes out = ReLU(bn2(conv2(ReLU(bn1(conv1(x))))) + shortcut(x)), with 3x3 convolutions (padding 1,
+  no bias). The shortcut is the identity, except in ``layer2.0``, ``layer3.0`` and ``layer4.0``, where it is
+  ``downsample.1(downsample.0(x))``: a 1x1 convolution with stride 2 (no bias) and a batch norm.
+* global average pooling over the spatial positions gives the features f [N, 512].
+* linear head: logits = f @ ``fc.weight``.T + ``fc.bias``, ``fc.weight`` [N_CLASSES, 512] and ``fc.bias``
+  [N_CLASSES].
+
+Convolution is 2-D cross-correlation as in torch.nn.functional.conv2d: out[n, o, i, j] = sum_{c, u, v} weight[o, c, u,
+v] * xpad[n, c, i * stride + u, j * stride + v], with xpad zero-padded on each spatial side. Batch norm is in
+evaluation mode: (x - running_mean) / sqrt(running_var + BN_EPS) * weight + bias, per channel. Internally the
+activations are kept channels-last ([N, H, W, C]) and convolutions use im2col (columns ordered kernel row, kernel
+column, input channel). All arithmetic runs in float64 and the logits are cast once to float32. Inputs are processed
+in chunks of at most CHUNK images, which bounds memory (below 1 GB at RESIZE 128).
+"""
+
+from __future__ import annotations
+
+import numpy as np
+
+INPUT_SHAPE = @@INPUT_SHAPE@@
+MEAN = np.array(@@MEAN@@, dtype=np.float64)
+STD = np.array(@@STD@@, dtype=np.float64)
+N_CLASSES = @@N_CLASSES@@
+BN_EPS = @@BN_EPS@@
+RESIZE = @@RESIZE@@
+STEM_CHANNELS = 64
+STAGE_CHANNELS = (64, 128, 256, 512)
+STAGE_STRIDES = (1, 2, 2, 2)
+BLOCKS_PER_STAGE = 2
+BN_FIELDS = ("weight", "bias", "running_mean", "running_var")
+CHUNK = 64
+
+
+def _bn_shapes(name: str, channels: int) -> dict[str, tuple[int, ...]]:
+    return {f"{name}.{field}": (channels,) for field in BN_FIELDS}
+
+
+def _blocks() -> list[tuple[str, int, int, int, bool]]:
+    """(name, in channels, out channels, stride, has the projection shortcut) of every basic block in forward order."""
+    blocks, channels_in = [], STEM_CHANNELS
+    for stage, (channels, stride) in enumerate(zip(STAGE_CHANNELS, STAGE_STRIDES), start=1):
+        for index in range(BLOCKS_PER_STAGE):
+            block_stride = stride if index == 0 else 1
+            projection = block_stride != 1 or channels_in != channels
+            blocks.append((f"layer{stage}.{index}", channels_in, channels, block_stride, projection))
+            channels_in = channels
+    return blocks
+
+
+def expected_shapes() -> dict[str, tuple[int, ...]]:
+    """Every parameter name of the model with its shape, in forward order."""
+    shapes: dict[str, tuple[int, ...]] = {"conv1.weight": (STEM_CHANNELS, INPUT_SHAPE[0], 7, 7)}
+    shapes.update(_bn_shapes("bn1", STEM_CHANNELS))
+    for name, channels_in, channels, _stride, projection in _blocks():
+        shapes[f"{name}.conv1.weight"] = (channels, channels_in, 3, 3)
+        shapes.update(_bn_shapes(f"{name}.bn1", channels))
+        shapes[f"{name}.conv2.weight"] = (channels, channels, 3, 3)
+        shapes.update(_bn_shapes(f"{name}.bn2", channels))
+        if projection:
+            shapes[f"{name}.downsample.0.weight"] = (channels, channels_in, 1, 1)
+            shapes.update(_bn_shapes(f"{name}.downsample.1", channels))
+    shapes["fc.weight"] = (N_CLASSES, STAGE_CHANNELS[-1])
+    shapes["fc.bias"] = (N_CLASSES,)
+    return shapes
+
+
+def _checked(params: dict) -> dict[str, np.ndarray]:
+    expected = expected_shapes()
+    names = {str(key) for key in params}
+    if names != set(expected):
+        missing, extra = sorted(set(expected) - names), sorted(names - set(expected))
+        raise KeyError(f"parameter names differ from the architecture: missing {missing}, unexpected {extra}")
+    tensors = {}
+    for name, shape in expected.items():
+        value = np.asarray(params[name])
+        if not np.issubdtype(value.dtype, np.floating):
+            raise TypeError(f"{name} must be a float array, got {value.dtype}")
+        if tuple(value.shape) != shape:
+            raise ValueError(f"{name} has shape {tuple(value.shape)}, expected {shape}")
+        tensors[name] = value.astype(np.float64)
+    return tensors
+
+
+def resize_matrix(size_in: int, size_out: int) -> np.ndarray:
+    """[size_out, size_in] matrix of the bilinear weights along one axis (module docstring)."""
+    scale = size_in / size_out
+    matrix = np.zeros((size_out, size_in), dtype=np.float64)
+    for i in range(size_out):
+        s = max(scale * (i + 0.5) - 0.5, 0.0)
+        i0 = int(np.floor(s))
+        i1 = min(i0 + 1, size_in - 1)
+        lam = s - i0
+        matrix[i, i0] += 1.0 - lam
+        matrix[i, i1] += lam
+    return matrix
+
+
+def _conv2d(h: np.ndarray, weight: np.ndarray, stride: int, pad: int) -> np.ndarray:
+    """Convolution of channels-last activations h [N, H, W, C] by im2col; returns [N, Ho, Wo, out]."""
+    n, height, width, channels = h.shape
+    out_channels, in_channels, kh, kw = weight.shape
+    if in_channels != channels:
+        raise ValueError(f"conv weight {weight.shape} does not fit input {h.shape}")
+    padded = np.pad(h, ((0, 0), (pad, pad), (pad, pad), (0, 0))) if pad else h
+    h_out = (height + 2 * pad - kh) // stride + 1
+    w_out = (width + 2 * pad - kw) // stride + 1
+    cols = np.empty((n, h_out, w_out, kh, kw, channels), dtype=np.float64)
+    for u in range(kh):
+        for v in range(kw):
+            cols[:, :, :, u, v, :] = padded[:, u : u + (h_out - 1) * stride + 1 : stride,
+                                            v : v + (w_out - 1) * stride + 1 : stride, :]
+    matrix = weight.transpose(2, 3, 1, 0).reshape(kh * kw * channels, out_channels)
+    out = cols.reshape(n * h_out * w_out, kh * kw * channels) @ matrix
+    return out.reshape(n, h_out, w_out, out_channels)
+
+
+def _bn(h: np.ndarray, tensors: dict[str, np.ndarray], name: str, relu: bool = False) -> np.ndarray:
+    """Batch norm in evaluation mode on [N, H, W, C], in place on ``h`` (a fresh convolution output), then ReLU if
+    ``relu``."""
+    scale = tensors[f"{name}.weight"] / np.sqrt(tensors[f"{name}.running_var"] + BN_EPS)
+    shift = tensors[f"{name}.bias"] - tensors[f"{name}.running_mean"] * scale
+    h *= scale
+    h += shift
+    if relu:
+        np.maximum(h, 0.0, out=h)
+    return h
+
+
+def _maxpool(h: np.ndarray) -> np.ndarray:
+    """3x3 max pooling with stride 2 and padding 1 on [N, H, W, C]."""
+    n, height, width, channels = h.shape
+    padded = np.pad(h, ((0, 0), (1, 1), (1, 1), (0, 0)), constant_values=-np.inf)
+    h_out, w_out = (height - 1) // 2 + 1, (width - 1) // 2 + 1
+    out = None
+    for u in range(3):
+        for v in range(3):
+            window = padded[:, u : u + 2 * (h_out - 1) + 1 : 2, v : v + 2 * (w_out - 1) + 1 : 2, :]
+            out = window.copy() if out is None else np.maximum(out, window)
+    return out
+
+
+def _upsampled(x: np.ndarray) -> np.ndarray:
+    """Normalised and upsampled channels-last images [N, RESIZE, RESIZE, C] from uint8 [N, C, 32, 32]."""
+    h = x.astype(np.float64) / 255.0
+    h = (h - MEAN.reshape(1, -1, 1, 1)) / STD.reshape(1, -1, 1, 1)
+    rows = resize_matrix(INPUT_SHAPE[1], RESIZE)
+    cols = resize_matrix(INPUT_SHAPE[2], RESIZE)
+    up = rows @ h @ cols.T
+    return np.ascontiguousarray(up.transpose(0, 2, 3, 1))
+
+
+def _features(tensors: dict[str, np.ndarray], x: np.ndarray) -> np.ndarray:
+    h = _upsampled(x)
+    h = _bn(_conv2d(h, tensors["conv1.weight"], 2, 3), tensors, "bn1", relu=True)
+    h = _maxpool(h)
+    for name, _channels_in, _channels, stride, projection in _blocks():
+        if projection:
+            shortcut = _bn(_conv2d(h, tensors[f"{name}.downsample.0.weight"], stride, 0), tensors,
+                           f"{name}.downsample.1")
+        else:
+            shortcut = h
+        out = _bn(_conv2d(h, tensors[f"{name}.conv1.weight"], stride, 1), tensors, f"{name}.bn1", relu=True)
+        out = _bn(_conv2d(out, tensors[f"{name}.conv2.weight"], 1, 1), tensors, f"{name}.bn2")
+        out += shortcut
+        h = np.maximum(out, 0.0, out=out)
+    return h.mean(axis=(1, 2))
+
+
+def _images(x_uint8: np.ndarray) -> np.ndarray:
+    x = np.asarray(x_uint8)
+    if x.dtype != np.uint8:
+        raise TypeError(f"images must be uint8, got {x.dtype}")
+    if x.ndim != 4 or tuple(x.shape[1:]) != INPUT_SHAPE:
+        raise ValueError(f"images must have shape [N, {', '.join(map(str, INPUT_SHAPE))}], got {list(x.shape)}")
+    return x
+
+
+def features(params: dict[str, np.ndarray], x_uint8: np.ndarray) -> np.ndarray:
+    """float64 features f [N, 512] (the pooled encoder output, before the head) for raw uint8 images."""
+    x = _images(x_uint8)
+    tensors = _checked(params)
+    if x.shape[0] == 0:
+        return np.zeros((0, STAGE_CHANNELS[-1]), dtype=np.float64)
+    return np.concatenate([_features(tensors, x[start : start + CHUNK]) for start in range(0, x.shape[0], CHUNK)])
+
+
+def forward(params: dict[str, np.ndarray], x_uint8: np.ndarray) -> np.ndarray:
+    """Logits float32 [N, N_CLASSES] for raw uint8 images [N, *INPUT_SHAPE]."""
+    x = _images(x_uint8)
+    tensors = _checked(params)
+    if x.shape[0] == 0:
+        return np.zeros((0, N_CLASSES), dtype=np.float32)
+    chunks = []
+    for start in range(0, x.shape[0], CHUNK):
+        f = _features(tensors, x[start : start + CHUNK])
+        chunks.append((f @ tensors["fc.weight"].T + tensors["fc.bias"]).astype(np.float32))
+    return np.concatenate(chunks, axis=0)

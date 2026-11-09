@@ -1,0 +1,143 @@
+{
+  "fits": {
+    "addprim_jump/full": {
+      "commands_sha256": "fe7819920cb8a37de85530abad5e578c8f79d4fc2781760f8bb5ebabae8bbf11",
+      "condition": "addprim_jump",
+      "fit": "full",
+      "n_generated": 2000,
+      "n_with_primitive": 2000,
+      "official_check": {
+        "mismatches": 0,
+        "n_rows": 2000,
+        "tasks_txt_sha256": "d824c7d9e9149ba497e25f701981dac79954e04bf670d22e5c209f076ac6c89f"
+      },
+      "pool_with_primitive": 7707,
+      "pool_without": 13203,
+      "streams": {
+        "prim": [
+          20261106,
+          1320,
+          1
+        ]
+      },
+      "with_primitive_by_construction": {
+        "after": 989,
+        "and": 1003,
+        "around": 958,
+        "none": 1,
+        "opposite": 973,
+        "turn": 387,
+        "twice_thrice": 1781
+      },
+      "with_primitive_sha256": "fe7819920cb8a37de85530abad5e578c8f79d4fc2781760f8bb5ebabae8bbf11"
+    },
+    "addprim_jump/mixed": {
+      "commands_sha256": "4834e49492cb73bf966839f3ffea7798e1a5951d03987dbc6ad1adbfe3e46094",
+      "condition": "addprim_jump",
+      "fit": "mixed",
+      "n_generated": 4000,
+      "n_with_primitive": 2000,
+      "n_without": 2000,
+      "official_check": {
+        "mismatches": 0,
+        "n_rows": 4000,
+        "tasks_txt_sha256": "d824c7d9e9149ba497e25f701981dac79954e04bf670d22e5c209f076ac6c89f"
+      },
+      "pool_with_primitive": 7707,
+      "pool_without": 13203,
+      "streams": {
+        "old": [
+          20261106,
+          1320,
+          2
+        ],
+        "prim": [
+          20261106,
+          1320,
+          1
+        ]
+      },
+      "with_primitive_by_construction": {
+        "after": 989,
+        "and": 1003,
+        "around": 958,
+        "none": 1,
+        "opposite": 973,
+        "turn": 387,
+        "twice_thrice": 1781
+      },
+      "with_primitive_sha256": "fe7819920cb8a37de85530abad5e578c8f79d4fc2781760f8bb5ebabae8bbf11",
+      "without_sha256": "92e1db88dcd449bf0634726d4446a678eceae4aa09c3171efbf3fbdbb80b844f"
+    },
+    "around_right/full": {
+      "commands_sha256": "c5092b11d3cc5a4a3be00da4f91ded3b758938e21e19d011358e0137b1db4dbb",
+      "condition": "around_right",
+      "fit": "full",
+      "n_generated": 2000,
+      "n_with_primitive": 2000,
+      "official_check": {
+        "mismatches": 0,
+        "n_rows": 2000,
+        "tasks_txt_sha256": "d824c7d9e9149ba497e25f701981dac79954e04bf670d22e5c209f076ac6c89f"
+      },
+      "pool_with_primitive": 5685,
+      "pool_without": 15225,
+      "streams": {
+        "prim": [
+          20261106,
+          1321,
+          1
+        ]
+      },
+      "with_primitive_by_construction": {
+        "after": 991,
+        "and": 1004,
+        "around": 2000,
+        "none": 0,
+        "opposite": 602,
+        "turn": 674,
+        "twice_thrice": 1777
+      },
+      "with_primitive_sha256": "c5092b11d3cc5a4a3be00da4f91ded3b758938e21e19d011358e0137b1db4dbb"
+    },
+    "around_right/mixed": {
+      "commands_sha256": "233056d1f903000c970cfe2e4321363d70f7227561bd83d554200af4c2dbcf9f",
+      "condition": "around_right",
+      "fit": "mixed",
+      "n_generated": 4000,
+      "n_with_primitive": 2000,
+      "n_without": 2000,
+      "official_check": {
+        "mismatches": 0,
+        "n_rows": 4000,
+        "tasks_txt_sha256": "d824c7d9e9149ba497e25f701981dac79954e04bf670d22e5c209f076ac6c89f"
+      },
+      "pool_with_primitive": 5685,
+      "pool_without": 15225,
+      "streams": {
+        "old": [
+          20261106,
+          1321,
+          2
+        ],
+        "prim": [
+          20261106,
+          1321,
+          1
+        ]
+      },
+      "with_primitive_by_construction": {
+        "after": 991,
+        "and": 1004,
+        "around": 2000,
+        "none": 0,
+        "opposite": 602,
+        "turn": 674,
+        "twice_thrice": 1777
+      },
+      "with_primitive_sha256": "c5092b11d3cc5a4a3be00da4f91ded3b758938e21e19d011358e0137b1db4dbb",
+      "without_sha256": "c765f8fabc55482a8269c5a8461cb5bff7586ea9519e6af5344fb7175039f471"
+    }
+  },
+  "schema": "weightcode.e13_rulegen_labels.v1"
+}

@@ -1,0 +1,182 @@
+{
+ "schema": "weightcode.t05.frozen_t04.v1",
+ "prereg": "T05 (retention on ImageNetV2)",
+ "list": {
+  "path": "scripts/sealed/finals_v6.json",
+  "sha256": "7240eb42e7874851c9e3d8ea299f963d19711b32dca3cff95fbec8712b860802",
+  "status": "draft"
+ },
+ "roles_file": {
+  "path": "scripts/sealed/finals_v6_roles.json",
+  "sha256": "ebaadb2f4be66b83149a5a3fa9166d5109666d2f63d1b373216abe69d46ed414"
+ },
+ "export_records": [
+  {
+   "file": "export_listdev_finals_v6_T04_contrast_main_grad_full_20261108_010606_ce50720e0b.json",
+   "sha256": "f8f027eed84be487f3f82c29e89461171d9ff8b032080124c5aa76a23f0c2098",
+   "code_commit": "ce50720e0b8f05b8c99f39ef30a7837c0f74c498",
+   "dirty": false,
+   "n": 8
+  },
+  {
+   "file": "export_listdev_finals_v6_T04_gaussian_arm3_ft_full_lwf_20261108_010602_ce50720e0b.json",
+   "sha256": "869371246166d7ba9757469a8cd1a2c80cf66bea9029d65fb516148aeb378226",
+   "code_commit": "ce50720e0b8f05b8c99f39ef30a7837c0f74c498",
+   "dirty": false,
+   "n": 6
+  },
+  {
+   "file": "export_listdev_finals_v6_T04_gaussian_LEARN_r1_20261108_010556_ce50720e0b.json",
+   "sha256": "621b3e45df3a459b1d9b52c1e8200010bdb0d26dda3bd629e8911bed8a52857e",
+   "code_commit": "ce50720e0b8f05b8c99f39ef30a7837c0f74c498",
+   "dirty": false,
+   "n": 4
+  },
+  {
+   "file": "export_listdev_finals_v6_T04_gaussian_main_ft_bn_20261108_010559_ce50720e0b.json",
+   "sha256": "ecda69957092806490b8f670c51a8d1e66c071a5b0d066290cc91dd245f383dd",
+   "code_commit": "ce50720e0b8f05b8c99f39ef30a7837c0f74c498",
+   "dirty": false,
+   "n": 5
+  }
+ ],
+ "networks": [
+  {
+   "name": "base",
+   "path": "$WEIGHTCODE_RUNS/frozen/finals_v6/T04_gaussian_base.npz",
+   "params_sha256": "d68d3932c5169cb3ab8eeb128436d1ad487e55a3409865ac47f0cd2bd9149412",
+   "file_sha256": "493155292bf631dd4073e6e58d00861de5ad720b21aea190683932987aa5c3a6",
+   "instance_id": "i4c8c63bd",
+   "entry": "T04_gaussian_base"
+  },
+  {
+   "name": "gaussian_LEARN_r1",
+   "path": "$WEIGHTCODE_RUNS/frozen/finals_v6/T04_gaussian_LEARN_r1.npz",
+   "params_sha256": "3a3ae203fe15d82f865ec81887d17cbd5263bb24670d3eee7c513e926a1f319e",
+   "file_sha256": "701795d18378e35f9b566c4f480d9a7119867e9562ad371e43be6e18899c0f9f",
+   "instance_id": "i4c8c63bd",
+   "entry": "T04_gaussian_LEARN_r1"
+  },
+  {
+   "name": "gaussian_LEARN_r2",
+   "path": "$WEIGHTCODE_RUNS/frozen/finals_v6/T04_gaussian_LEARN_r2.npz",
+   "params_sha256": "54b9a2ed9342581b27ab95cb3333e3466e6d00627f2637b3a2163289bcd1f452",
+   "file_sha256": "702da0fdaf6575f601783b21298230076331365ba826ed90c74a9100cd1a8837",
+   "instance_id": "i4c8c63bd",
+   "entry": "T04_gaussian_LEARN_r2"
+  },
+  {
+   "name": "gaussian_main_ft_bn",
+   "path": "$WEIGHTCODE_RUNS/frozen/finals_v6/T04_gaussian_main_ft_bn.npz",
+   "params_sha256": "25b6d3e00258aafc2a3fff01f2214cebc5aee7f78ec6df345e48b5598267bda4",
+   "file_sha256": "9613207becbaa7937b976dce01403eec029cfeb0f460503f6c3be5c2aac76ba5",
+   "instance_id": "i4c8c63bd",
+   "entry": "T04_gaussian_main_ft_bn"
+  },
+  {
+   "name": "gaussian_bn_adapt",
+   "path": "$WEIGHTCODE_RUNS/frozen/finals_v6/T04_gaussian_bn_adapt.npz",
+   "params_sha256": "56a9bd8c5f58a8dd4092d04901f081a758e645fb5ee1f33d1096cf82bbba2870",
+   "file_sha256": "db208790b1ca3e645c3e6493f172d4d1161c52195f3447cd3efa24b09b7b42e3",
+   "instance_id": "i4c8c63bd",
+   "entry": "T04_gaussian_bn_adapt"
+  },
+  {
+   "name": "contrast_LEARN_r1",
+   "path": "$WEIGHTCODE_RUNS/frozen/finals_v6/T04_contrast_LEARN_r1.npz",
+   "params_sha256": "0d7971e153e31f0e11c2e9e86a10ad7fb973ebcad375d348cb98a385d1d5b94d",
+   "file_sha256": "ed06412d7a3fd2269f81e0a4ebab019e033ef36dc67c0a503488d44d586ac119",
+   "instance_id": "i62cbf956",
+   "entry": "T04_contrast_LEARN_r1"
+  },
+  {
+   "name": "contrast_LEARN_r2",
+   "path": "$WEIGHTCODE_RUNS/frozen/finals_v6/T04_contrast_LEARN_r2.npz",
+   "params_sha256": "ce55b9a551a5d6d063c0aa0d7fd903b5dda9d382b01330d3d1fdc2cbdfb1b1e7",
+   "file_sha256": "821df91196af08f434ef745309102f25d433b42fb2f8d1992818217aacda620b",
+   "instance_id": "i62cbf956",
+   "entry": "T04_contrast_LEARN_r2"
+  },
+  {
+   "name": "contrast_main_grad_full",
+   "path": "$WEIGHTCODE_RUNS/frozen/finals_v6/T04_contrast_main_grad_full.npz",
+   "params_sha256": "34d2ff5a657460444ee6bbe2e681151e55bd57c8bbcb8f5668f7deacba697e30",
+   "file_sha256": "7c9b26663e264a923eb887392393eb56f05784ea1385ae7de104f8185f6163c4",
+   "instance_id": "i62cbf956",
+   "entry": "T04_contrast_main_grad_full"
+  }
+ ],
+ "roles": [
+  {
+   "condition": "gaussian_noise_s3",
+   "role": "LEARN final, repeat 1",
+   "required": "PREREG-required",
+   "network": "gaussian_LEARN_r1",
+   "child_sha256": "3a3ae203fe15d82f865ec81887d17cbd5263bb24670d3eee7c513e926a1f319e"
+  },
+  {
+   "condition": "gaussian_noise_s3",
+   "role": "LEARN final, repeat 2",
+   "required": "PREREG-required",
+   "network": "gaussian_LEARN_r2",
+   "child_sha256": "54b9a2ed9342581b27ab95cb3333e3466e6d00627f2637b3a2163289bcd1f452"
+  },
+  {
+   "condition": "gaussian_noise_s3",
+   "role": "main control of record (arm 3)",
+   "required": "PREREG-required",
+   "network": "gaussian_main_ft_bn",
+   "child_sha256": "25b6d3e00258aafc2a3fff01f2214cebc5aee7f78ec6df345e48b5598267bda4"
+  },
+  {
+   "condition": "gaussian_noise_s3",
+   "role": "large-sample diagnostic at its kept pick (arm 6)",
+   "required": "PREREG-required",
+   "network": "base",
+   "child_sha256": "d68d3932c5169cb3ab8eeb128436d1ad487e55a3409865ac47f0cd2bd9149412"
+  },
+  {
+   "condition": "gaussian_noise_s3",
+   "role": "bn_adapt at its kept pick of record (arm 4)",
+   "required": "PREREG-required",
+   "network": "gaussian_bn_adapt",
+   "child_sha256": "56a9bd8c5f58a8dd4092d04901f081a758e645fb5ee1f33d1096cf82bbba2870"
+  },
+  {
+   "condition": "contrast_s4",
+   "role": "LEARN final, repeat 1",
+   "required": "PREREG-required",
+   "network": "contrast_LEARN_r1",
+   "child_sha256": "0d7971e153e31f0e11c2e9e86a10ad7fb973ebcad375d348cb98a385d1d5b94d"
+  },
+  {
+   "condition": "contrast_s4",
+   "role": "LEARN final, repeat 2",
+   "required": "PREREG-required",
+   "network": "contrast_LEARN_r2",
+   "child_sha256": "ce55b9a551a5d6d063c0aa0d7fd903b5dda9d382b01330d3d1fdc2cbdfb1b1e7"
+  },
+  {
+   "condition": "contrast_s4",
+   "role": "main control of record (arm 3)",
+   "required": "PREREG-required",
+   "network": "contrast_main_grad_full",
+   "child_sha256": "34d2ff5a657460444ee6bbe2e681151e55bd57c8bbcb8f5668f7deacba697e30"
+  },
+  {
+   "condition": "contrast_s4",
+   "role": "large-sample diagnostic at its kept pick (arm 6)",
+   "required": "PREREG-required",
+   "network": "base",
+   "child_sha256": "d68d3932c5169cb3ab8eeb128436d1ad487e55a3409865ac47f0cd2bd9149412"
+  },
+  {
+   "condition": "contrast_s4",
+   "role": "bn_adapt at its kept pick of record (arm 4)",
+   "required": "PREREG-required",
+   "network": "base",
+   "child_sha256": "d68d3932c5169cb3ab8eeb128436d1ad487e55a3409865ac47f0cd2bd9149412"
+  }
+ ],
+ "note": "Frozen before ImageNetV2 is decoded. Each network is the params file exported for its list entry after the entry's dev check (R37 jobs 51 to 54); a kept pick that is the base reads as the base. ImageNetV2 chooses nothing."
+}

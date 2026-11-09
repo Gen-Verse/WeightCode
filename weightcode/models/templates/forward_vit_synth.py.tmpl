@@ -1,0 +1,209 @@
+"""Numpy reference forward pass of a Vision Transformer image classifier (model_spec.json describes it).
+
+Requires numpy only. Call ``forward(params, x_uint8)``:
+
+* ``params``: dict of float arrays keyed by parameter name, PyTorch layout (linear weight [out, in], patch projection
+  weight [DIM, C, PATCH, PATCH]).
+* ``x_uint8``: raw uint8 images of shape [N, *INPUT_SHAPE] (NCHW).
+* returns float32 logits [N, N_CLASSES]; the prediction is the argmax over axis 1.
+
+Preprocessing: x / 255, then per channel (x - MEAN[c]) / STD[c].
+
+Architecture (fixed; ``expected_shapes()`` lists every parameter, and any other name or shape is refused):
+
+* patch projection ``tokenizer.conv_layers.0.0``: the image is cut into non-overlapping PATCH x PATCH patches, read
+  in row-major order of the patch grid; each patch, flattened in (channel, row, column) order, is multiplied by the
+  weight reshaped to [DIM, C * PATCH * PATCH] and the bias is added. This equals a 2-D convolution with kernel and
+  stride PATCH and no padding. It gives N_PATCHES tokens of width DIM.
+* the class token ``classifier.class_emb`` [1, 1, DIM] is put before the patch tokens, and the positional embedding
+  ``classifier.positional_emb`` [1, N_PATCHES + 1, DIM] is added to all N_PATCHES + 1 tokens.
+* DEPTH layers ``classifier.blocks.<i>``, i = 0 .. DEPTH - 1, each computing, on the token matrix h:
+
+      h = h + proj(attention(pre_norm(h)))
+      h = norm1(h)
+      h = h + linear2(gelu(linear1(h)))
+
+  ``self_attn.qkv`` (no bias) gives q, k and v as its output columns 0 .. DIM - 1, DIM .. 2 DIM - 1 and
+  2 DIM .. 3 DIM - 1. Each is split into HEADS heads of HEAD_DIM columns; head j attends with
+  softmax(q_j k_j^T / sqrt(HEAD_DIM)) over all tokens and mixes v_j; the heads are concatenated in order and
+  ``self_attn.proj`` (with bias) is applied. ``linear1`` maps DIM to MLP_HIDDEN and ``linear2`` back to DIM.
+* final LayerNorm ``classifier.norm``; the class token's row (token 0) is the feature vector f [N, DIM].
+* linear head: logits = f @ ``classifier.fc.weight``.T + ``classifier.fc.bias``.
+
+LayerNorm: (a - mean) / sqrt(var + LN_EPS) * weight + bias over the last axis, with the biased variance.
+gelu is its tanh form: 0.5 * a * (1 + tanh(sqrt(2 / pi) * (a + 0.044715 * a ** 3))), computed through exp
+(``_gelu``).
+All arithmetic runs in float64 and the logits are cast once to float32. Inputs are processed in chunks of at most
+CHUNK images, which bounds memory.
+"""
+
+from __future__ import annotations
+
+import math
+
+import numpy as np
+
+INPUT_SHAPE = @@INPUT_SHAPE@@
+MEAN = np.array(@@MEAN@@, dtype=np.float64)
+STD = np.array(@@STD@@, dtype=np.float64)
+N_CLASSES = @@N_CLASSES@@
+PATCH = @@PATCH@@
+DIM = @@DIM@@
+DEPTH = @@DEPTH@@
+HEADS = @@HEADS@@
+MLP_HIDDEN = @@MLP_HIDDEN@@
+LN_EPS = @@LN_EPS@@
+HEAD_DIM = DIM // HEADS
+GRID = (INPUT_SHAPE[1] // PATCH, INPUT_SHAPE[2] // PATCH)
+N_PATCHES = GRID[0] * GRID[1]
+N_TOKENS = N_PATCHES + 1
+GELU_C = math.sqrt(2.0 / math.pi)
+CHUNK = 256
+
+
+def expected_shapes() -> dict[str, tuple[int, ...]]:
+    """Every parameter name of the model with its shape, in forward order."""
+    shapes: dict[str, tuple[int, ...]] = {
+        "tokenizer.conv_layers.0.0.weight": (DIM, INPUT_SHAPE[0], PATCH, PATCH),
+        "tokenizer.conv_layers.0.0.bias": (DIM,),
+        "classifier.class_emb": (1, 1, DIM),
+        "classifier.positional_emb": (1, N_TOKENS, DIM),
+    }
+    for index in range(DEPTH):
+        block = f"classifier.blocks.{index}"
+        shapes.update({
+            f"{block}.pre_norm.weight": (DIM,),
+            f"{block}.pre_norm.bias": (DIM,),
+            f"{block}.self_attn.qkv.weight": (3 * DIM, DIM),
+            f"{block}.self_attn.proj.weight": (DIM, DIM),
+            f"{block}.self_attn.proj.bias": (DIM,),
+            f"{block}.linear1.weight": (MLP_HIDDEN, DIM),
+            f"{block}.linear1.bias": (MLP_HIDDEN,),
+            f"{block}.norm1.weight": (DIM,),
+            f"{block}.norm1.bias": (DIM,),
+            f"{block}.linear2.weight": (DIM, MLP_HIDDEN),
+            f"{block}.linear2.bias": (DIM,),
+        })
+    shapes.update({
+        "classifier.norm.weight": (DIM,),
+        "classifier.norm.bias": (DIM,),
+        "classifier.fc.weight": (N_CLASSES, DIM),
+        "classifier.fc.bias": (N_CLASSES,),
+    })
+    return shapes
+
+
+def _checked(params: dict) -> dict[str, np.ndarray]:
+    expected = expected_shapes()
+    names = {str(key) for key in params}
+    if names != set(expected):
+        missing, extra = sorted(set(expected) - names), sorted(names - set(expected))
+        raise KeyError(f"parameter names differ from the architecture: missing {missing}, unexpected {extra}")
+    tensors = {}
+    for name, shape in expected.items():
+        value = np.asarray(params[name])
+        if not np.issubdtype(value.dtype, np.floating):
+            raise TypeError(f"{name} must be a float array, got {value.dtype}")
+        if tuple(value.shape) != shape:
+            raise ValueError(f"{name} has shape {tuple(value.shape)}, expected {shape}")
+        tensors[name] = value.astype(np.float64)
+    return tensors
+
+
+def _layernorm(a: np.ndarray, weight: np.ndarray, bias: np.ndarray) -> np.ndarray:
+    out = a - a.mean(axis=-1, keepdims=True)
+    var = np.einsum("...i,...i->...", out, out)[..., None] / out.shape[-1]
+    out *= 1.0 / np.sqrt(var + LN_EPS)
+    out *= weight
+    out += bias
+    return out
+
+
+def _gelu(a: np.ndarray) -> np.ndarray:
+    """The tanh form, computed as a / (1 + exp(-2 z)) with z = sqrt(2 / pi) * (a + 0.044715 a^3), which equals
+    0.5 * a * (1 + tanh(z)) exactly; -2 z is capped at 700 so that exp stays finite (the value is then 0 to within
+    1e-300)."""
+    t = a * a
+    t *= a
+    t *= -2.0 * 0.044715 * GELU_C
+    t -= (2.0 * GELU_C) * a
+    np.minimum(t, 700.0, out=t)
+    np.exp(t, out=t)
+    t += 1.0
+    return np.divide(a, t, out=t)
+
+
+def _linear(a: np.ndarray, weight: np.ndarray, bias: np.ndarray | None) -> np.ndarray:
+    out = a.reshape(-1, a.shape[-1]) @ weight.T
+    if bias is not None:
+        out += bias
+    return out.reshape(*a.shape[:-1], weight.shape[0])
+
+
+def _patches(x: np.ndarray) -> np.ndarray:
+    """[n, C, H, W] -> [n, N_PATCHES, C * PATCH * PATCH], patches in row-major grid order, each in (c, row, col)."""
+    n, channels = x.shape[0], x.shape[1]
+    grid = x.reshape(n, channels, GRID[0], PATCH, GRID[1], PATCH)
+    return grid.transpose(0, 2, 4, 1, 3, 5).reshape(n, N_PATCHES, channels * PATCH * PATCH)
+
+
+def _attention(a: np.ndarray, tensors: dict[str, np.ndarray], block: str) -> np.ndarray:
+    n = a.shape[0]
+    qkv = _linear(a, tensors[f"{block}.self_attn.qkv.weight"], None)
+    qkv = qkv.reshape(n, N_TOKENS, 3, HEADS, HEAD_DIM).transpose(2, 0, 3, 1, 4)
+    q, k, v = qkv[0], qkv[1], qkv[2]
+    scores = (q @ k.transpose(0, 1, 3, 2)) * (1.0 / math.sqrt(HEAD_DIM))
+    scores -= scores.max(axis=-1, keepdims=True)
+    np.exp(scores, out=scores)
+    scores /= scores.sum(axis=-1, keepdims=True)
+    mixed = (scores @ v).transpose(0, 2, 1, 3).reshape(n, N_TOKENS, DIM)
+    return _linear(mixed, tensors[f"{block}.self_attn.proj.weight"], tensors[f"{block}.self_attn.proj.bias"])
+
+
+def _features(tensors: dict[str, np.ndarray], x: np.ndarray) -> np.ndarray:
+    h = x.astype(np.float64) / 255.0
+    h = (h - MEAN.reshape(1, -1, 1, 1)) / STD.reshape(1, -1, 1, 1)
+    weight = tensors["tokenizer.conv_layers.0.0.weight"].reshape(DIM, -1)
+    tokens = _linear(_patches(h), weight, tensors["tokenizer.conv_layers.0.0.bias"])
+    cls = np.broadcast_to(tensors["classifier.class_emb"], (x.shape[0], 1, DIM))
+    h = np.concatenate([cls, tokens], axis=1) + tensors["classifier.positional_emb"]
+    for index in range(DEPTH):
+        block = f"classifier.blocks.{index}"
+        a = _layernorm(h, tensors[f"{block}.pre_norm.weight"], tensors[f"{block}.pre_norm.bias"])
+        h = h + _attention(a, tensors, block)
+        h = _layernorm(h, tensors[f"{block}.norm1.weight"], tensors[f"{block}.norm1.bias"])
+        hidden = _gelu(_linear(h, tensors[f"{block}.linear1.weight"], tensors[f"{block}.linear1.bias"]))
+        h = h + _linear(hidden, tensors[f"{block}.linear2.weight"], tensors[f"{block}.linear2.bias"])
+    h = _layernorm(h, tensors["classifier.norm.weight"], tensors["classifier.norm.bias"])
+    return h[:, 0]
+
+
+def _images(x_uint8: np.ndarray) -> np.ndarray:
+    x = np.asarray(x_uint8)
+    if x.dtype != np.uint8:
+        raise TypeError(f"images must be uint8, got {x.dtype}")
+    if x.ndim != 4 or tuple(x.shape[1:]) != INPUT_SHAPE:
+        raise ValueError(f"images must have shape [N, {', '.join(map(str, INPUT_SHAPE))}], got {list(x.shape)}")
+    return x
+
+
+def features(params: dict[str, np.ndarray], x_uint8: np.ndarray) -> np.ndarray:
+    """float64 features f [N, DIM]: the class token's row after the final LayerNorm, the head's input."""
+    x = _images(x_uint8)
+    tensors = _checked(params)
+    if x.shape[0] == 0:
+        return np.zeros((0, DIM), dtype=np.float64)
+    return np.concatenate([_features(tensors, x[start : start + CHUNK]) for start in range(0, x.shape[0], CHUNK)])
+
+
+def forward(params: dict[str, np.ndarray], x_uint8: np.ndarray) -> np.ndarray:
+    """Logits float32 [N, N_CLASSES] for raw uint8 images [N, *INPUT_SHAPE]."""
+    x = _images(x_uint8)
+    tensors = _checked(params)
+    if x.shape[0] == 0:
+        return np.zeros((0, N_CLASSES), dtype=np.float32)
+    chunks = []
+    for start in range(0, x.shape[0], CHUNK):
+        f = _features(tensors, x[start : start + CHUNK])
+        chunks.append((f @ tensors["classifier.fc.weight"].T + tensors["classifier.fc.bias"]).astype(np.float32))
+    return np.concatenate(chunks, axis=0)
