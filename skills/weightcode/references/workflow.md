@@ -6,7 +6,7 @@ Use Linux with bubblewrap 0.11+, unprivileged user namespaces, a distribution Py
 The program interpreter is a separate NumPy-only venv. There is no unsandboxed fallback.
 
 ```bash
-git clone https://github.com/Gen-Verse/WeightRSI.git WeightCode
+git clone https://github.com/Gen-Verse/WeightCode.git
 cd WeightCode
 uv sync --locked --extra train --extra dev
 bash scripts/setup_sandbox_venv.sh

@@ -95,7 +95,7 @@ Requirements: **Linux x86-64**, [uv](https://docs.astral.sh/uv/), a distribution
 must be available. On Ubuntu, install bubblewrap with `sudo apt install bubblewrap`.
 
 ```bash
-git clone https://github.com/Gen-Verse/WeightRSI.git WeightCode
+git clone https://github.com/Gen-Verse/WeightCode.git
 cd WeightCode
 uv sync --locked --extra train --extra dev
 bash scripts/setup_sandbox_venv.sh
@@ -184,7 +184,7 @@ With Codex's skill installer:
 
 ```text
 Use $skill-installer to install the skill at
-https://github.com/Gen-Verse/WeightRSI/tree/main/skills/weightcode
+https://github.com/Gen-Verse/WeightCode/tree/main/skills/weightcode
 ```
 
 Install the engine and the sandbox with the [quick-start commands](#quick-start), then ask, for example:
