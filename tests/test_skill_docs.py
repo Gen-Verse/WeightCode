@@ -17,7 +17,7 @@ from weightcode.application.cli import parser
 
 ROOT = Path(__file__).resolve().parents[1]
 SKILL = ROOT / "skills" / "weightcode"
-DOCS = [ROOT / "README.md", SKILL / "SKILL.md", *sorted((SKILL / "references").glob("*.md"))]
+DOCS = [ROOT / "README.md", ROOT / "README.zh-CN.md", SKILL / "SKILL.md", *sorted((SKILL / "references").glob("*.md"))]
 COMMAND = re.compile(r"^(?:uv run(?: --project \S+)? |\.venv/bin/)?weightcode (\S.*)$")
 
 

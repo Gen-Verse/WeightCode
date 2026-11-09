@@ -3,6 +3,10 @@
 <h3 align="center">🧬 Installing New Capabilities into Neural Networks via Weight Programming</h3>
 
 <p align="center">
+  <b>English</b> · <a href="README.zh-CN.md">简体中文</a>
+</p>
+
+<p align="center">
   <a href="https://gen-verse.github.io/WeightCode/"><img src="https://img.shields.io/badge/Homepage-Interactive-E0963A?style=for-the-badge" alt="Project homepage with an interactive demo"></a>
   <a href="#try-it"><img src="https://img.shields.io/badge/Try_it-Copy_%26_run-258D88?style=for-the-badge" alt="Copy the commands and run WeightCode locally"></a>
   <a href="#agent-skill"><img src="https://img.shields.io/badge/Agent_Skill-weightcode-405D96?style=for-the-badge" alt="Use WeightCode as an agent skill"></a>
@@ -194,7 +198,7 @@ reusable analytic head correction; it is not one of the paper's programs.
   tests/test_application.py tests/test_skill_docs.py
 ```
 
-✅ Expected: `231 passed` in about two minutes, with no `skipped`. A skip means the sandbox is unavailable (see below).
+✅ Expected: `233 passed` in about two minutes, with no `skipped`. A skip means the sandbox is unavailable (see below).
 
 <a id="troubleshooting"></a>
 
