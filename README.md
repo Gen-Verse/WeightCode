@@ -7,7 +7,6 @@
   <a href="#try-it"><img src="https://img.shields.io/badge/Try_it-Copy_%26_run-258D88?style=for-the-badge" alt="Copy the commands and run WeightCode locally"></a>
   <a href="#agent-skill"><img src="https://img.shields.io/badge/Agent_Skill-weightcode-405D96?style=for-the-badge" alt="Use WeightCode as an agent skill"></a>
   <a href="assets/WeightCode.pdf"><img src="https://img.shields.io/badge/Paper-PDF-B31B1B?style=for-the-badge" alt="Read the paper (PDF)"></a>
-  <a href="https://huggingface.co/datasets/Boom5426/WeightCode"><img src="https://img.shields.io/badge/Data-Hugging_Face-FFD21E?style=for-the-badge&amp;logo=huggingface&amp;logoColor=black" alt="Get the data on Hugging Face"></a>
 </p>
 
 <p align="center">
