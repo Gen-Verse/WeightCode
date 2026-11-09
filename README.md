@@ -34,9 +34,6 @@ examples into new weights; the updated network runs on its own, and the program 
 <p align="center">
   <a href="assets/fig1.png"><img src="assets/fig1.png" width="1100" alt="Figure 1 of the paper: a frozen LLM writes a weight program from a trained network and task knowledge; a rule, 8 demonstrations or 64 + 64 labeled images become new capabilities in SCAN, BabyAI and ImageNet; one program recomputes effective edits on five other networks; new programs build on already edited networks"></a>
 </p>
-<p align="center">
-  <sub>🖼️ Figure 1 of <a href="assets/WeightCode.pdf">the paper</a>. Click the figure to enlarge.</sub>
-</p>
 
 <a id="what-we-achieved"></a>
 
