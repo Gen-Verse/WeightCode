@@ -94,6 +94,48 @@ uv run weightcode reproduce scan
 `--sandbox-python .venv-sandbox/bin/python` to run it inside bubblewrap ([setup](#install-the-skill)). Behind a
 firewall, set `HF_ENDPOINT` to a Hugging Face mirror and pass `--scan-dir` with a local clone of SCAN.
 
+<a id="try-imagenet"></a>
+
+### 🖼️ ImageNet: noise robustness from 64 + 64 labeled images
+
+🔑 Needs a Hugging Face account that has accepted the
+[ImageNet-1k terms](https://huggingface.co/datasets/ILSVRC/imagenet-1k) and about 650 MB of downloads. It took about
+five minutes on our 24-thread CPU.
+
+```bash
+uv sync --locked --extra train --extra t03
+uv run hf auth login
+uv run weightcode reproduce imagenet
+```
+
+✅ It reads torchvision's ImageNet ResNet-18 and the two networks that two programs built for it (Figure 1b, right) on
+the first 500 held-out test images, clean and with Gaussian noise. It ends with:
+
+```text
+  ImageNet: 64 + 64 labeled images make a ResNet-18 robust to noise (Figure 1b, right)
+  Top-1 accuracy on the first 500 held-out test images
+                                              original   program 1   program 2
+    with Gaussian noise (severity 3)             19.4%       33.2%       38.4%
+    clean                                        69.6%       70.4%       70.2%
+  Same correctness as the paper's record, image by image (3 networks x clean and noisy): 3,000 of 3,000
+  Paper, all 38,000 test images: noise 21.66% -> 32.38% / 39.67%, clean 69.70% -> 69.45% / 69.30%, net gain +10.47 / +17.62 pt
+  (500 images give a rougher estimate than the paper's 38,000; the image-by-image check shows they are read as the paper read them.)
+```
+
+🔍 What it does:
+
+- 📥 Downloads the original network, the two edited networks and the paper's test record, which stores every image's
+  correctness for every network. Each edited network must hash to the one in the record.
+- 🖼️ Takes the first 500 of the 38,000 held-out test images in row order from ImageNet's validation set at the revision
+  the paper used, crops them, and adds noise with ImageNet-C's official code, per-image seed and JPEG quality 85.
+- 📏 Reads the three networks on the same clean and noisy images and checks each image's correctness against the
+  record.
+
+⚖️ The three networks see the same images, chosen by position, not by result. 500 images give a rougher estimate than
+the paper's 38,000, and the image-by-image check shows they are read exactly as the paper read them.
+`--images 38000` reads the whole test set (6.7 GB, several CPU hours). This example does not rerun the programs,
+because the images they learned from are spread over the whole validation set. The SCAN example above shows a rerun.
+
 <a id="agent-skill"></a>
 
 ## 🧩 The agent skill

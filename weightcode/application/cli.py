@@ -51,6 +51,8 @@ def parser() -> argparse.ArgumentParser:
                           "run it without the sandbox, after checking its published sha256")
     rep.add_argument("--scan-dir", type=Path, default=None,
                      help="scan: an existing checkout of github.com/brendenlake/SCAN instead of downloading its files")
+    rep.add_argument("--images", type=int, default=None,
+                     help="imagenet: how many held-out test images to read, the first in row order (default 500)")
     return p
 
 
@@ -66,13 +68,20 @@ def reproduce(a: argparse.Namespace) -> int:
     memory_bytes, threads = 8 * 2**30, 4  # the program sandbox of the sessions of record
     if a.sandbox_python is None:
         runner = UnisolatedRunner(python=Path(sys.executable), memory_bytes=memory_bytes, threads=threads)
-        print("Running the published program without the sandbox (its sha256 is checked first). "
-              "Pass --sandbox-python to run it inside bubblewrap.")
+        if getattr(module, "RERUNS_PROGRAM", False):
+            print("Running the published program without the sandbox (its sha256 is checked first). "
+                  "Pass --sandbox-python to run it inside bubblewrap.")
     else:
         runner = ProgramSandbox(python=a.sandbox_python, memory_bytes=memory_bytes, threads=threads)
     if a.scan_dir is not None and a.example != "scan":
         raise ValueError("--scan-dir applies to the scan example only")
-    options = {"scan_dir": a.scan_dir} if a.scan_dir is not None else {}
+    if a.images is not None and a.example != "imagenet":
+        raise ValueError("--images applies to the imagenet example only")
+    options: dict[str, object] = {}
+    if a.scan_dir is not None:
+        options["scan_dir"] = a.scan_dir
+    if a.images is not None:
+        options["images"] = a.images
     summary = module.run(a.out or Path("out") / a.example, runner, **options)
     return 0 if summary.get("matches_paper") else 1
 

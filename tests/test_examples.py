@@ -88,3 +88,19 @@ def test_scan_reproduces_the_paper(tmp_path: Path) -> None:
     summary = scan.run(tmp_path, runner, log=lambda _: None)
     assert summary["replay"]["exact"] and summary["matches_paper"]
     assert summary["new"]["n"] == 2568 and summary["new"]["em_base"] == 0.0 and summary["replay"]["n_changed"] == 257
+
+
+def test_imagenet_reads_the_records_per_image_bits() -> None:
+    """The record stores correctness as base64 of ``numpy.packbits(..., bitorder='big')``; a wrong length is refused."""
+    import base64
+
+    import numpy as np
+
+    from weightcode.examples import imagenet
+    from weightcode.examples.replay import ReplayError
+
+    bits = np.random.default_rng(0).random(13) < 0.5
+    text = base64.b64encode(np.packbits(bits, bitorder="big").tobytes()).decode("ascii")
+    assert np.array_equal(imagenet.decode_bits(text, 13), bits)
+    with pytest.raises(ReplayError, match="need"):
+        imagenet.decode_bits(text, 30)

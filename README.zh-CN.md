@@ -93,6 +93,45 @@ uv run weightcode reproduce scan
 就会改在 bubblewrap 里运行（[配置方法](#install-the-skill)）。如果网络受限，可以把 `HF_ENDPOINT` 设为 Hugging Face
 镜像，并用 `--scan-dir` 指向本地的 SCAN 仓库副本。
 
+<a id="try-imagenet"></a>
+
+### 🖼️ ImageNet：用 64 + 64 张带标签的图像获得抗噪能力
+
+🔑 需要一个已接受 [ImageNet-1k 使用条款](https://huggingface.co/datasets/ILSVRC/imagenet-1k)的 Hugging Face 账号，
+下载量约 650 MB。在我们的 24 线程 CPU 上用时约五分钟。
+
+```bash
+uv sync --locked --extra train --extra t03
+uv run hf auth login
+uv run weightcode reproduce imagenet
+```
+
+✅ 它在前 500 张留出测试图像上（干净图像和加高斯噪声的图像），读出 torchvision 的 ImageNet ResNet-18 以及两个程序为它
+构造的两个编辑后网络（图 1b 右）的表现。输出结尾如下：
+
+```text
+  ImageNet: 64 + 64 labeled images make a ResNet-18 robust to noise (Figure 1b, right)
+  Top-1 accuracy on the first 500 held-out test images
+                                              original   program 1   program 2
+    with Gaussian noise (severity 3)             19.4%       33.2%       38.4%
+    clean                                        69.6%       70.4%       70.2%
+  Same correctness as the paper's record, image by image (3 networks x clean and noisy): 3,000 of 3,000
+  Paper, all 38,000 test images: noise 21.66% -> 32.38% / 39.67%, clean 69.70% -> 69.45% / 69.30%, net gain +10.47 / +17.62 pt
+  (500 images give a rougher estimate than the paper's 38,000; the image-by-image check shows they are read as the paper read them.)
+```
+
+🔍 它做了什么：
+
+- 📥 下载原网络、两个编辑后网络和论文的测试记录。该记录保存了每个网络在每张图像上是否判对。每个编辑后网络都必须与
+  记录中的哈希一致。
+- 🖼️ 按行序取 38,000 张留出测试图像中的前 500 张，来自论文所用版本的 ImageNet 验证集；裁剪后用 ImageNet-C 官方代码、
+  逐图种子和 JPEG 质量 85 加噪声。
+- 📏 在相同的干净图像和噪声图像上读出三个网络，并逐图核对是否判对与记录一致。
+
+⚖️ 三个网络看到的是同一批图像，按位置选取，而不是按结果挑选。500 张图像的估计比论文的 38,000 张粗糙，但逐图核对表明
+它们的读取方式与论文完全相同。`--images 38000` 会读取整个测试集（6.7 GB，需要数个 CPU 小时）。这个示例不重新运行程序，
+因为程序学习用到的图像分布在整个验证集里。上面的 SCAN 示例展示了重新运行。
+
 <a id="agent-skill"></a>
 
 ## 🧩 智能体技能
