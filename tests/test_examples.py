@@ -58,6 +58,19 @@ def test_parse_sha256sums_refuses_a_bad_line() -> None:
         F.parse_sha256sums("abc  x\n")
 
 
+def test_the_examples_run_without_pytorch() -> None:
+    """``uv sync --locked`` installs numpy only; the reproduce path must not import torch or torchvision."""
+    import subprocess
+    import sys
+
+    code = ("import sys\nsys.modules['torch'] = sys.modules['torchvision'] = None\n"
+            "import weightcode.application.cli, weightcode.examples.replay\n"
+            "from weightcode.examples import EXAMPLES\nimport importlib\n"
+            "[importlib.import_module(m) for m in EXAMPLES.values()]\n")
+    done = subprocess.run([sys.executable, "-c", code], capture_output=True, text=True, timeout=120)
+    assert done.returncode == 0, done.stderr
+
+
 def test_the_cli_parses_every_example() -> None:
     for name in EXAMPLES:
         args = parser().parse_args(["reproduce", name, "--out", "out/x"])
