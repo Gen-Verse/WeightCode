@@ -51,7 +51,7 @@ from weightcode.sandbox.program import (
     STATUS_ERROR,
     STATUS_OK,
     STATUS_TIMEOUT,
-    ProgramSandbox,
+    ProgramRunner,
     run_program,
 )
 
@@ -246,7 +246,7 @@ def _module_strings(result: Mapping[str, Any]) -> tuple[list[tuple[str, str]], d
 
 
 def run_update(student: Student, experience_file: Path, program_file: Path, work_dir: Path,
-               sandbox: ProgramSandbox, wall_s: float = PROGRAM_WALL_S, blind: bool = False) -> Update:
+               sandbox: ProgramRunner, wall_s: float = PROGRAM_WALL_S, blind: bool = False) -> Update:
     """Run ``program_file`` once on ``student`` and its experience in ``work_dir`` (created) and validate the output.
 
     The staged input copies are removed after the run; ``work_dir`` keeps ``out/`` and the stdout and stderr logs.

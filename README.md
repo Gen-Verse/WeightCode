@@ -58,34 +58,41 @@ Mechanism and copied-edit numbers are on a held-out analysis split; the rest are
 <a id="try-it"></a>
 <a id="install"></a>
 
-## ⚡ Try it: copy, paste, run
+## ⚡ Try it: reproduce a paper result in about two minutes
 
-🖥️ Needs **Linux x86-64**, [uv](https://docs.astral.sh/uv/), a distribution **Python 3.14 under `/usr`**, and
-[bubblewrap](https://github.com/containers/bubblewrap) **0.11+** at `/usr/bin/bwrap` (Ubuntu:
-`sudo apt install bubblewrap`). No API key and no dataset download.
+🖥️ Needs **Linux x86-64** and [uv](https://docs.astral.sh/uv/). No GPU, no API key, no root and no sandbox setup.
 
 ```bash
 git clone https://github.com/Gen-Verse/WeightCode.git && cd WeightCode
-uv sync --locked --extra train --extra dev
-bash scripts/setup_sandbox_venv.sh
-mkdir -p ~/.claude/skills && cp -r skills/weightcode ~/.claude/skills/
-uv run weightcode doctor --sandbox-python .venv-sandbox/bin/python
-uv run python scripts/demo/skill_cli_walkthrough.py --root out/skill_cli
+uv sync --locked
+uv run weightcode reproduce scan
 ```
 
-✅ This installs the engine and its NumPy-only sandbox, installs the skill for Claude Code, checks the sandbox
-(`"status": "ok"`), and runs every skill command on a small synthetic project in about 40 s. The bundled example
-program is too weak for that project, so the run ends with `status: base-kept`: the engine kept the original model.
-If a step fails, see [troubleshooting](#troubleshooting).
-
-💬 **Then open Claude Code in your own project and ask:**
+✅ This reruns, with no language model, the program that taught a SCAN sequence model to use "jump" inside commands
+(Figure 1b, left), then reads both networks on the paper's held-out test commands. It ends with:
 
 ```text
-Use $weightcode to improve my ResNet-18 on these new-condition examples while preserving clean recognition.
-My checkpoint is model.pt, and labels.json gives its class order. I have separate experience,
-selection and final image folders. Allow at most 1 percentage point of clean-accuracy loss.
-First inspect compatibility and propose the run budget.
+  SCAN: a rule becomes a capability (Figure 1b, left)
+  Exact match on held-out test commands      before    after
+    new commands with 'jump' (2,568)          0.0%    99.8%
+    old commands (1,000)                     99.6%    99.6%
+  Weights changed: 257 of 803,975
+  Rebuilt network identical to the published one: yes (sha256 6c9bc3bdaf34)
+  Paper: +99.81 pt on new commands, +0.00 pt on old ones, 257 weights changed -> reproduced exactly
 ```
+
+🔍 What it does:
+
+- 📥 Downloads the trained network, the session record and the program (about 10 MB) from the
+  [🤗 dataset](https://huggingface.co/datasets/Boom5426/WeightCode), and SCAN's text files from
+  [its repository](https://github.com/brendenlake/SCAN) at the commit the paper used. Every file is checked by sha256.
+- 🧱 Rebuilds the paper's test split from SCAN's files and checks that it is the one the paper read.
+- ♻️ Reruns the program and checks that the edited network it builds is the published one, bit for bit.
+- 📏 Reads the original and the edited network on 2,568 new and 1,000 old held-out commands.
+
+🫧 The published program runs after its sha256 check, without the sandbox. Add
+`--sandbox-python .venv-sandbox/bin/python` to run it inside bubblewrap ([setup](#install-the-skill)). Behind a
+firewall, set `HF_ENDPOINT` to a Hugging Face mirror and pass `--scan-dir` with a local clone of SCAN.
 
 <a id="agent-skill"></a>
 
@@ -99,6 +106,38 @@ the program never saw.
 | 📥 You bring | 🤖 The agent runs | 📦 You get |
 | :--- | :--- | :--- |
 | 🧠 An FP32 torchvision ResNet-18 `state_dict` and its class list<br>🗂️ Three disjoint image sets: *experience* (seen by the program), *selection* (scores candidates), *final* (validates once)<br>🎚️ The clean-accuracy loss you accept | 🔍 Compatibility check and import<br>♻️ **Reuse** an existing program, no language-model call<br>✍️ **Synthesize** a new one with the controlled editor (Claude Code, explicit budget)<br>🏆 A fixed selection rule, then one final validation | 🧠 `model.pt`: the updated model if `accepted`, the original otherwise<br>📝 The program bundle, rerunnable on other checkpoints<br>📋 `report.json`: `accepted`, `base-kept` or `final-rejected` |
+
+<a id="install-the-skill"></a>
+
+### 🛠️ Install the skill
+
+🫧 The skill runs every program, including the ones a language model writes for you, in a
+[bubblewrap](https://github.com/containers/bubblewrap) sandbox with no network and no view of your selection and final
+data. It needs **Linux x86-64**, a distribution **Python 3.14 under `/usr`** and **bubblewrap 0.11+** at
+`/usr/bin/bwrap` (Ubuntu 26.04: `sudo apt install bubblewrap`; Ubuntu 22.04 and 24.04 ship older versions).
+Synthesizing a new program also needs [Claude Code](https://docs.anthropic.com/en/docs/claude-code).
+
+```bash
+uv sync --locked --extra train --extra dev
+bash scripts/setup_sandbox_venv.sh
+mkdir -p ~/.claude/skills && cp -r skills/weightcode ~/.claude/skills/
+uv run weightcode doctor --sandbox-python .venv-sandbox/bin/python
+uv run python scripts/demo/skill_cli_walkthrough.py --root out/skill_cli
+```
+
+✅ This installs the engine with PyTorch and the NumPy-only sandbox, installs the skill for Claude Code, checks the
+sandbox (`"status": "ok"`), and runs every skill command on a small synthetic project in about 40 s. The bundled
+example program is too weak for that project, so the run ends with `status: base-kept`: the engine kept the original
+model. If a step fails, see [troubleshooting](#troubleshooting).
+
+💬 **Then open Claude Code in your own project and ask:**
+
+```text
+Use $weightcode to improve my ResNet-18 on these new-condition examples while preserving clean recognition.
+My checkpoint is model.pt, and labels.json gives its class order. I have separate experience,
+selection and final image folders. Allow at most 1 percentage point of clean-accuracy loss.
+First inspect compatibility and propose the run budget.
+```
 
 ### ✅ Why you can trust what comes back
 
@@ -144,7 +183,8 @@ A weight program computes **`W′ = p(W, I)`** from a network's weights `W` and 
 
 ## 🚀 More checks
 
-🎈 With the engine installed ([Try it](#try-it)), everything here runs with no dataset download and no API key.
+🎈 With the engine and the sandbox installed ([Install the skill](#install-the-skill)), everything here runs with
+no dataset download and no API key.
 
 ### ▶️ 1. Run the toy demo
 
