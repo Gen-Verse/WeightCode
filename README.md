@@ -291,7 +291,7 @@ reusable analytic head correction; it is not one of the paper's programs.
   tests/test_application.py tests/test_skill_docs.py
 ```
 
-✅ Expected: `256 passed` in about two minutes, with no `skipped`. A skip means the sandbox is unavailable (see below).
+✅ Expected: `257 passed` in about two minutes, with no `skipped`. A skip means the sandbox is unavailable (see below).
 
 <a id="troubleshooting"></a>
 

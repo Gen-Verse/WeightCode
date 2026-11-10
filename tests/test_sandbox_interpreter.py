@@ -130,3 +130,18 @@ def test_the_cli_requires_a_sandbox_or_a_trusted_hash(capsys: pytest.CaptureFixt
         parser().parse_args(["synthesize", *common, "--editor-model", "m", "--checks", "1", "--cells", "1"])
     args = parser().parse_args(["doctor", "--sandbox-python", "x", "--bwrap", "/opt/bwrap/bin/bwrap"])
     assert args.bwrap == Path("/opt/bwrap/bin/bwrap")
+
+
+def test_the_mcp_server_takes_bwrap_from_the_session_record(tmp_path: Path) -> None:
+    """The research harness's MCP server starts with a cleaned environment, so ``$WEIGHTCODE_BWRAP`` never reaches it;
+    session.json records the binary and the server's SandboxConfig reads it from there (old records: the default)."""
+    from weightcode.harness.session import SessionPaths
+    from weightcode.harness.tools import sandbox_config
+    from weightcode.sandbox import DEFAULT_BWRAP
+
+    sandbox = {"python": "/x/bin/python", "cell_timeout_s": 1.0, "max_cells": 1, "memory_bytes": 2**30, "threads": 1,
+               "max_output_chars": 100}
+    paths = SessionPaths(tmp_path)
+    recorded = sandbox_config({"sandbox": {**sandbox, "bwrap": "/opt/bubblewrap/bin/bwrap"}}, paths)
+    assert recorded.bwrap == Path("/opt/bubblewrap/bin/bwrap")
+    assert sandbox_config({"sandbox": sandbox}, paths).bwrap == DEFAULT_BWRAP

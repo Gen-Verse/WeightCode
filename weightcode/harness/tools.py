@@ -86,7 +86,7 @@ from weightcode.harness.program import (
 )
 from weightcode.harness.snapshot import SnapshotProblem, patch_name, snapshot_file, snapshot_patch
 from weightcode.patch import PatchError, PatchResult
-from weightcode.sandbox import SandboxConfig, SandboxKernel
+from weightcode.sandbox import DEFAULT_BWRAP, SandboxConfig, SandboxKernel
 from weightcode.sandbox.program import ProgramSandbox
 
 DECLARED_SCHEMA = "weightcode.harness.declared.v0"
@@ -498,7 +498,8 @@ def last_valid_declaration(records: Sequence[Mapping[str, Any]]) -> Mapping[str,
 
 
 def sandbox_config(session: Mapping[str, Any], paths: SessionPaths) -> SandboxConfig:
-    """The session's SandboxConfig, from session.json."""
+    """The session's SandboxConfig, from session.json (a session recorded before ``sandbox.bwrap`` existed uses
+    ``DEFAULT_BWRAP``)."""
     sandbox = dict(session["sandbox"])
     return SandboxConfig(
         trial_dir=paths.trial,
@@ -506,6 +507,7 @@ def sandbox_config(session: Mapping[str, Any], paths: SessionPaths) -> SandboxCo
         scratch_dir=paths.scratch,
         log_path=paths.cells_log,
         python=Path(str(sandbox["python"])),
+        bwrap=Path(str(sandbox.get("bwrap") or DEFAULT_BWRAP)),
         cell_timeout_s=float(sandbox["cell_timeout_s"]),
         max_cells=int(sandbox["max_cells"]),
         memory_bytes=int(sandbox["memory_bytes"]),

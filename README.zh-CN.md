@@ -278,7 +278,7 @@ uv run python scripts/demo/skill_roundtrip.py --out out/skill_demo --sandbox-pyt
   tests/test_application.py tests/test_skill_docs.py
 ```
 
-✅ 预期结果：`256 passed`，约两分钟，没有 `skipped`。出现 skip 说明沙箱不可用（见下文）。
+✅ 预期结果：`257 passed`，约两分钟，没有 `skipped`。出现 skip 说明沙箱不可用（见下文）。
 
 <a id="troubleshooting"></a>
 
