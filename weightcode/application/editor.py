@@ -9,6 +9,7 @@ from pathlib import Path
 from weightcode.application.bundles import write
 from weightcode.application.runtime import Application, prepare_run
 from weightcode.harness.launch import ClaudeLauncher
+from weightcode.sandbox.host import DEFAULT_BWRAP
 
 TOOLS = {
     "python": ("Run NumPy-only Python in the isolated editor kernel. /work/trial is read-only; write programs "
@@ -39,10 +40,14 @@ based only on experience performance or on a proposed program that has not passe
 
 def synthesize(task: Path, out: Path, sandbox_python: Path, *, editor_model: str, checks: int,
                cells: int, wall_s: float, threads: int = 4, program_wall_s: float = 300,
-               launcher=None) -> dict:
+               launcher=None, bwrap: Path = DEFAULT_BWRAP) -> dict:
+    """Let the controlled editor write and check programs. Always sandboxed: a program a language model has just
+    written never runs outside bubblewrap."""
+    if sandbox_python is None:
+        raise ValueError("synthesize always runs programs in the sandbox: --sandbox-python is required")
     launcher = launcher or ClaudeLauncher()
     prepare_run(task, out, sandbox_python, checks=checks, cells=cells, wall_s=wall_s,
-                program_wall_s=program_wall_s, threads=threads)
+                program_wall_s=program_wall_s, threads=threads, bwrap=bwrap)
     app = Application(out)
     p = app.paths
     session = {"schema": "weightcode.application_editor.v1", "paths": {"root": str(p.root)},

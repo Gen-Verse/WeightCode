@@ -199,3 +199,46 @@ def test_rejected_update_releases_original(model, tmp_path, selection_old, final
     with pytest.raises(FileExistsError):
         app.finalize()
     assert sha(tmp_path / "run/final/model.pt") == before
+
+
+def test_apply_without_sandbox_needs_the_trusted_sha256(model, tmp_path):
+    task = make_task(tmp_path, model)
+    source = tmp_path / "program.py"
+    source.write_text(PROGRAM)
+    pack_program(source, model, tmp_path / "program")
+    with pytest.raises(ValueError, match="--program-sha256"):
+        apply_program(task, tmp_path / "program", tmp_path / "run", None, wall_s=120)
+    with pytest.raises(ValueError, match="not the trusted"):
+        apply_program(task, tmp_path / "program", tmp_path / "run", None, program_sha256="0" * 64, wall_s=120)
+    with pytest.raises(ValueError, match="no editor cells"):
+        prepare_run(task, tmp_path / "run", None, checks=1, cells=1, wall_s=120, trusted_program_sha256="0" * 64)
+    assert not (tmp_path / "run").exists()
+
+
+def test_unsandboxed_run_refuses_editor_code_and_other_programs(model, tmp_path):
+    task = make_task(tmp_path, model)
+    prepare_run(task, tmp_path / "run", None, checks=1, cells=0, wall_s=120, trusted_program_sha256="a" * 64)
+    app = Application(tmp_path / "run")
+    with pytest.raises(ValueError, match="no sandbox"):
+        app.python("print(1)")
+    (app.paths.patches / "program.py").write_text(PROGRAM)
+    result = app.check("program.py")
+    assert result["status"] == "rejected" and "not the trusted" in result["error"]
+    assert not (app.paths.attempts / "0001" / "run").exists()  # refused before it ran
+
+
+def test_apply_without_sandbox_matches_the_sandboxed_run(model, tmp_path):
+    require_sandbox()
+    task = make_task(tmp_path, model)  # the fixture program helps both splits here: accepted
+    source = tmp_path / "program.py"
+    source.write_text(PROGRAM)
+    digest = pack_program(source, model, tmp_path / "program")["files"]["program.py"]
+    plain = apply_program(task, tmp_path / "program", tmp_path / "plain", None, program_sha256=digest.upper(),
+                          wall_s=120)
+    boxed = apply_program(task, tmp_path / "program", tmp_path / "boxed", SANDBOX, program_sha256=digest, wall_s=120)
+    assert plain["status"] == boxed["status"] == "accepted"
+    assert (plain["program_isolation"], boxed["program_isolation"]) == ("none", "bubblewrap")
+    assert plain["export"]["params_sha256"] == boxed["export"]["params_sha256"]
+    assert plain["freeze"] == boxed["freeze"]
+    run = read(tmp_path / "plain" / "run.json")
+    assert run["sandbox_python"] is None and run["trusted_program_sha256"] == digest

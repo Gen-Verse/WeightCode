@@ -8,12 +8,18 @@ import os
 from pathlib import Path
 
 
+BWRAP_HELP = ("bubblewrap binary, 0.8.0 or newer (default: $WEIGHTCODE_BWRAP or /usr/bin/bwrap)")
+
+
 def parser() -> argparse.ArgumentParser:
+    from weightcode.sandbox.host import DEFAULT_BWRAP
+
     p = argparse.ArgumentParser(prog="weightcode", description="Install and reuse executable neural weight programs.")
     p.add_argument("--threads", type=int, default=4, help="CPU/BLAS threads (default: 4)")
     sub = p.add_subparsers(dest="command", required=True)
     doctor = sub.add_parser("doctor", help="Test the actual Linux/NumPy sandbox")
     doctor.add_argument("--sandbox-python", type=Path, required=True)
+    doctor.add_argument("--bwrap", type=Path, default=DEFAULT_BWRAP, help=BWRAP_HELP)
     model = sub.add_parser("import-model", help="Import a plain FP32 torchvision ResNet-18 state_dict")
     model.add_argument("--checkpoint", type=Path, required=True)
     model.add_argument("--labels", type=Path, required=True, help="JSON ordered list of class names")
@@ -32,12 +38,20 @@ def parser() -> argparse.ArgumentParser:
         pack.add_argument(f"--{name}", type=Path, required=True)
     for name in ("apply", "synthesize"):
         run = sub.add_parser(name, help="Reuse a program" if name == "apply" else "Synthesize using controlled Claude Code")
-        for field in ("task", "out", "sandbox-python"):
+        for field in ("task", "out"):
             run.add_argument(f"--{field}", type=Path, required=True)
+        run.add_argument("--sandbox-python", type=Path, required=name == "synthesize",
+                         help="Sandbox venv interpreter: programs run inside bubblewrap" + (
+                             "" if name == "synthesize" else
+                             ". Without it, --program-sha256 is required and the program runs unsandboxed"))
+        run.add_argument("--bwrap", type=Path, default=DEFAULT_BWRAP, help=BWRAP_HELP)
         run.add_argument("--wall-s", type=float, required=True, help="Editor/apply wall budget; independent final validation follows")
         run.add_argument("--program-wall-s", type=float, default=300)
         if name == "apply":
             run.add_argument("--program", type=Path, required=True, help="Program bundle directory")
+            run.add_argument("--program-sha256", default=None,
+                             help="sha256 of the bundle's program.py that you trust; checked before it runs. Required "
+                                  "without --sandbox-python")
         else:
             run.add_argument("--editor-model", required=True)
             run.add_argument("--checks", type=int, required=True)
@@ -49,6 +63,7 @@ def parser() -> argparse.ArgumentParser:
     rep.add_argument("--sandbox-python", type=Path, default=None,
                      help="Run the published program inside the bubblewrap sandbox with this interpreter. Default: "
                           "run it without the sandbox, after checking its published sha256")
+    rep.add_argument("--bwrap", type=Path, default=DEFAULT_BWRAP, help=BWRAP_HELP + "; with --sandbox-python")
     rep.add_argument("--scan-dir", type=Path, default=None,
                      help="scan: an existing checkout of github.com/brendenlake/SCAN instead of downloading its files")
     rep.add_argument("--images", type=int, default=None,
@@ -72,7 +87,7 @@ def reproduce(a: argparse.Namespace) -> int:
             print("Running the published program without the sandbox (its sha256 is checked first). "
                   "Pass --sandbox-python to run it inside bubblewrap.")
     else:
-        runner = ProgramSandbox(python=a.sandbox_python, memory_bytes=memory_bytes, threads=threads)
+        runner = ProgramSandbox(python=a.sandbox_python, memory_bytes=memory_bytes, threads=threads, bwrap=a.bwrap)
     if a.scan_dir is not None and a.example != "scan":
         raise ValueError("--scan-dir applies to the scan example only")
     if a.images is not None and a.example != "imagenet":
@@ -91,6 +106,8 @@ def main(argv=None) -> int:
     a = p.parse_args(argv)
     if a.threads < 1:
         p.error("--threads must be positive")
+    if a.command == "apply" and a.sandbox_python is None and a.program_sha256 is None:
+        p.error("apply without --sandbox-python needs --program-sha256: the sha256 of the program.py you trust")
     for name in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS"):
         os.environ[name] = str(a.threads)
     try:
@@ -98,7 +115,7 @@ def main(argv=None) -> int:
             return reproduce(a)
         if a.command == "doctor":
             from weightcode.application.runtime import doctor
-            result = doctor(a.sandbox_python, threads=a.threads)
+            result = doctor(a.sandbox_python, threads=a.threads, bwrap=a.bwrap)
         else:
             import torch
             torch.set_num_threads(a.threads)
@@ -117,9 +134,10 @@ def main(argv=None) -> int:
             else:
                 from weightcode.application.runtime import apply_program
                 from weightcode.application.editor import synthesize
-                common = dict(wall_s=a.wall_s, program_wall_s=a.program_wall_s, threads=a.threads)
+                common = dict(wall_s=a.wall_s, program_wall_s=a.program_wall_s, threads=a.threads, bwrap=a.bwrap)
                 if a.command == "apply":
-                    result = apply_program(a.task, a.program, a.out, a.sandbox_python, **common)
+                    result = apply_program(a.task, a.program, a.out, a.sandbox_python,
+                                           program_sha256=a.program_sha256, **common)
                 else:
                     result = synthesize(a.task, a.out, a.sandbox_python, editor_model=a.editor_model,
                                         checks=a.checks, cells=a.cells, **common)

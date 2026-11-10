@@ -15,6 +15,15 @@ and ``--remount-ro /dev`` make the sandbox's in-memory root and /dev read-only, 
 writable and sized at half the host RAM; /tmp and /dev/shm are separate tmpfs mounts capped at
 ``tmpfs_bytes``. Nothing else from the host filesystem is bound.
 
+Interpreter. ``python`` is ``<venv>/bin/python`` of a NumPy-only venv. The venv is bound read-only at its own path. A
+base interpreter under /usr needs nothing more. One elsewhere, such as a uv-managed CPython under
+``~/.local/share/uv/python``, is bound file by file (``interpreter_mounts``): its executable, its standard library
+directory and any ``libpython`` files, all read-only, and the symbolic links on the way to it are recreated. The rest of
+that installation and of the directories around it stays invisible.
+
+Bubblewrap. ``--disable-userns`` needs bubblewrap 0.8.0 or newer (``MIN_BWRAP_VERSION``); ``check_bwrap`` refuses an
+older one by name before anything starts. ``$WEIGHTCODE_BWRAP`` overrides the default /usr/bin/bwrap.
+
 Log. Every cell, executed or refused, is appended to ``config.log_path`` as one JSON line written by this
 process, which lies outside every directory bound into the sandbox. Before a cell is sent to the kernel,
 its code is written to ``<log_path>.inflight``; if this process dies mid-cell, the next ``SandboxKernel`` on
@@ -29,6 +38,7 @@ import functools
 import hashlib
 import json
 import os
+import re
 import resource
 import secrets
 import selectors
@@ -49,6 +59,13 @@ PROTOCOL = "weightcode.kernel.v0"
 CELL_LOG_SCHEMA = "weightcode.sandbox.cell.v0"
 INFLIGHT_SCHEMA = "weightcode.sandbox.inflight.v0"
 INFLIGHT_SUFFIX = ".inflight"
+DEFAULT_BWRAP = Path(os.environ.get("WEIGHTCODE_BWRAP") or "/usr/bin/bwrap")
+"""The bubblewrap binary when none is given: ``$WEIGHTCODE_BWRAP`` if set, else the distribution's /usr/bin/bwrap."""
+MIN_BWRAP_VERSION = (0, 8, 0)
+"""The oldest bubblewrap with every flag of ``isolation_argv`` (``--disable-userns`` arrived in 0.8.0)."""
+SYSTEM_TREE = "/usr"
+USR_LINKS = {"/bin": "usr/bin", "/lib": "usr/lib", "/lib64": "usr/lib64"}  # made by isolation_argv
+_MAX_SYMLINKS = 40
 
 STATE_LOST_NOTE = (
     "The Python kernel was restarted (state lost): all variables, imports and definitions from earlier cells "
@@ -81,7 +98,7 @@ class SandboxConfig:
     patches_dir: Path
     scratch_dir: Path
     log_path: Path
-    python: Path  # <venv>/bin/python of the sandbox venv (numpy only, system python 3.14)
+    python: Path  # <venv>/bin/python of the sandbox venv (numpy only; see "Interpreter" in the module docstring)
     cell_timeout_s: float = 120.0
     max_cells: int = 150
     memory_bytes: int = 8 * 2**30
@@ -89,7 +106,7 @@ class SandboxConfig:
     max_output_chars: int = 30_000
     max_log_bytes: int = 4 * 2**20
     tmpfs_bytes: int = 2**30
-    bwrap: Path = Path("/usr/bin/bwrap")
+    bwrap: Path = DEFAULT_BWRAP
     startup_timeout_s: float = 60.0
 
     def __post_init__(self) -> None:
@@ -177,6 +194,109 @@ def venv_root(python: str | Path) -> Path:
     return root
 
 
+@dataclass(frozen=True)
+class InterpreterMounts:
+    """What the sandbox needs besides /usr to start ``<venv>/bin/python`` (see ``interpreter_mounts``)."""
+
+    venv: Path
+    """The venv root as given, bound read-only at the same path."""
+    binds: tuple[Path, ...]
+    """Read-only binds of a base interpreter outside /usr: its executable, standard library and libpython files."""
+    symlinks: tuple[tuple[str, str], ...]
+    """``(target, link)`` for each symbolic link outside /usr and the venv on the way to the interpreter."""
+
+    def argv(self) -> list[str]:
+        """The bwrap arguments: the venv, the binds, then the links (with their parent directories)."""
+        argv = ["--ro-bind", str(self.venv), str(self.venv)]
+        for path in self.binds:
+            argv += ["--ro-bind", str(path), str(path)]
+        for target, link in self.symlinks:
+            parent = os.path.dirname(link)
+            if parent != "/":
+                argv += ["--dir", parent]
+            argv += ["--symlink", target, link]
+        return argv
+
+    def sources(self) -> tuple[Path, ...]:
+        """The host paths whose contents the sandbox can read through these mounts (resolved)."""
+        return (self.venv.resolve(), *(path.resolve() for path in self.binds))
+
+    def visible(self) -> tuple[str, ...]:
+        """The paths these mounts create inside the sandbox: the venv, each bind and each recreated link."""
+        return (str(self.venv), *(str(path) for path in self.binds), *(link for _, link in self.symlinks))
+
+
+def _within(path: str, root: str) -> bool:
+    return path == root or path.startswith(root.rstrip("/") + "/")
+
+
+def _walk(start: str, rest: list[str], trees: tuple[str, ...]) -> tuple[list[tuple[str, str]], str]:
+    """Resolve ``start/rest`` component by component the way the sandbox will see it. Paths inside ``trees`` (bound
+    whole) exist there with their own links; every other symbolic link met on the way is returned as ``(target,
+    link)`` to be recreated. Returns those links and the final path."""
+    links: list[tuple[str, str]] = []
+    current, pending, followed = start, list(rest), 0
+    while pending:
+        name = pending.pop(0)
+        if name in ("", "."):
+            continue
+        if name == "..":
+            current = os.path.dirname(current) or "/"
+            continue
+        candidate = os.path.join(current, name)
+        if not os.path.islink(candidate):
+            current = candidate
+            continue
+        followed += 1
+        if followed > _MAX_SYMLINKS:
+            raise SandboxError(f"more than {_MAX_SYMLINKS} symbolic links on the way to {os.path.join(start, *rest)}")
+        target = os.readlink(candidate)
+        if not any(_within(candidate, tree) for tree in trees) and USR_LINKS.get(candidate) != target:
+            links.append((target, candidate))
+        if target.startswith("/"):
+            current = "/"
+        pending = [part for part in target.split("/") if part] + pending
+    return links, current
+
+
+def interpreter_mounts(python: str | Path) -> InterpreterMounts:
+    """The mounts that let ``<venv>/bin/python`` start inside the sandbox (module docstring, "Interpreter").
+
+    The venv is bound whole. When the interpreter it links to lies under /usr, that is all. Otherwise the base
+    installation must look like one: ``<prefix>/bin/pythonX.Y`` with ``<prefix>/lib/pythonX.Y/os.py``. Its executable,
+    standard library directory and ``<prefix>/lib/libpython*`` files are bound read-only, and the links on the way are
+    recreated. Raises ``SandboxError`` when the interpreter cannot be made visible that way.
+    """
+    venv = venv_root(python)
+    interpreter = Path(os.path.abspath(python))
+    trees = (SYSTEM_TREE, str(venv))
+    links, final = _walk(str(venv), [*interpreter.relative_to(venv).parts], trees)
+    if not os.path.isfile(final):
+        raise SandboxError(f"{interpreter} does not lead to an interpreter file (it ends at {final})")
+    binds: list[Path] = []
+    if not any(_within(final, tree) for tree in trees):
+        real = Path(final)
+        match = re.fullmatch(r"python(\d+\.\d+)", real.name)
+        if match is None:
+            raise SandboxError(f"{interpreter} resolves to {real}; outside /usr the base interpreter must be named "
+                               "pythonX.Y (create the venv from that file)")
+        prefix = real.parent.parent
+        stdlib = prefix / "lib" / f"python{match.group(1)}"
+        if real.parent.name != "bin" or not (stdlib / "os.py").is_file():
+            raise SandboxError(f"{real} is not <prefix>/bin/python{match.group(1)} of an installation with "
+                               f"{stdlib}/os.py, so its standard library cannot be bound into the sandbox")
+        libraries = sorted(p for p in (prefix / "lib").glob(f"libpython{match.group(1)}*.so*") if p.is_file())
+        libraries += [p for p in [prefix / "lib" / "libpython3.so"] if p.is_file()]
+        binds = [real, stdlib, *libraries]
+    visible = [str(venv), *(str(path) for path in binds)]
+    for _, link in links:
+        for path in visible:
+            if _within(path, link) or _within(link, path):
+                raise SandboxError(f"the symbolic link {link} on the way to the interpreter overlaps {path}; create "
+                                   "the sandbox venv from the interpreter's real path (realpath of the base python)")
+    return InterpreterMounts(venv=venv, binds=tuple(binds), symlinks=tuple(links))
+
+
 def isolated_environment(threads: int, home: str) -> dict[str, str]:
     """The complete environment set inside a sandbox (after --clearenv), with ``HOME`` at ``home``."""
     value = str(threads)
@@ -203,8 +323,9 @@ SEAL_ARGV = ("--remount-ro", "/dev", "--remount-ro", "/", "--chdir", WORK_MOUNT)
 def isolation_argv(bwrap: Path, python: Path, environment: dict[str, str], tmpfs_bytes: int) -> list[str]:
     """The bwrap flags, environment and system mounts shared by the kernel and the update-program driver
     (``weightcode.sandbox.program``): every namespace unshared, no nested user namespace, /usr, /proc, /dev, the venv of
-    ``python`` and the two capped tmpfs mounts. The caller adds its work mounts, then ``SEAL_ARGV`` and its command."""
-    venv = venv_root(python)
+    ``python`` (and its base interpreter when that lies outside /usr, ``interpreter_mounts``) and the two capped tmpfs
+    mounts. The caller adds its work mounts, then ``SEAL_ARGV`` and its command."""
+    mounts = interpreter_mounts(python)
     tmpfs = str(tmpfs_bytes)
     argv = [
         str(bwrap),
@@ -226,7 +347,7 @@ def isolation_argv(bwrap: Path, python: Path, environment: dict[str, str], tmpfs
         "--dev", "/dev",
         "--size", tmpfs, "--tmpfs", "/dev/shm",
         "--size", tmpfs, "--tmpfs", "/tmp",
-        "--ro-bind", str(venv), str(venv),
+        *mounts.argv(),
     ]  # fmt: skip
     return argv
 
@@ -251,10 +372,30 @@ def kernel_sha256() -> str:
     return hashlib.sha256(KERNEL_SCRIPT.read_bytes()).hexdigest()
 
 
-def bwrap_version(bwrap: str | Path = "/usr/bin/bwrap") -> str:
+def bwrap_version(bwrap: str | Path = DEFAULT_BWRAP) -> str:
     """``bwrap --version`` output, for provenance records."""
     completed = subprocess.run([str(bwrap), "--version"], capture_output=True, text=True, timeout=10, env={}, check=True)
     return completed.stdout.strip()
+
+
+def check_bwrap(bwrap: str | Path = DEFAULT_BWRAP) -> str:
+    """The ``bwrap --version`` of a bubblewrap that can run the sandbox; ``SandboxError`` naming the remedy otherwise
+    (missing, unreadable version, or older than ``MIN_BWRAP_VERSION``)."""
+    needed = ".".join(map(str, MIN_BWRAP_VERSION))
+    if not os.access(bwrap, os.X_OK):
+        raise SandboxError(f"bubblewrap is missing or not executable at {bwrap}: install bubblewrap {needed} or newer "
+                           "(Ubuntu 24.04+, Debian 12+: sudo apt install bubblewrap) or pass its path with --bwrap")
+    try:
+        text = bwrap_version(bwrap)
+    except (OSError, subprocess.SubprocessError) as exc:
+        raise SandboxError(f"could not run {bwrap} --version: {exc}") from exc
+    match = re.fullmatch(r"bubblewrap (\d+)\.(\d+)\.(\d+)\S*", text)
+    if match is None:
+        raise SandboxError(f"cannot read the version of {bwrap} from {text!r}")
+    if tuple(int(part) for part in match.groups()) < MIN_BWRAP_VERSION:
+        raise SandboxError(f"{bwrap} is {text}; the sandbox needs bubblewrap {needed} or newer (for --disable-userns). "
+                           "Install a newer one, or pass its path with --bwrap")
+    return text
 
 
 def recover_interrupted_cell(log_path: str | Path) -> dict[str, object] | None:
@@ -517,15 +658,11 @@ class SandboxKernel:
 
     def _check_paths(self) -> None:
         config = self._config
-        if not os.access(config.bwrap, os.X_OK):
-            raise SandboxError(f"bubblewrap is missing or not executable at {config.bwrap}")
+        check_bwrap(config.bwrap)
         interpreter = Path(os.path.abspath(config.python))
         if not interpreter.exists():
             raise SandboxError(f"sandbox interpreter {interpreter} does not exist")
-        venv = self._venv.resolve()
-        real = interpreter.resolve()
-        if not (_is_within(real, Path("/usr")) or _is_within(real, venv)):
-            raise SandboxError(f"{interpreter} resolves to {real}, which is not visible in the sandbox (/usr and the venv only)")
+        sources = interpreter_mounts(config.python).sources()  # raises when the interpreter cannot be made visible
         dirs: dict[str, Path] = {}
         for name in ("trial_dir", "patches_dir", "scratch_dir"):
             path = getattr(config, name)
@@ -537,10 +674,11 @@ class SandboxKernel:
             for second in names[position + 1 :]:
                 if _is_within(dirs[first], dirs[second]) or _is_within(dirs[second], dirs[first]):
                     raise SandboxError(f"{first} {dirs[first]} and {second} {dirs[second]} overlap")
-            if _is_within(dirs[first], venv) or _is_within(venv, dirs[first]):
-                raise SandboxError(f"{first} {dirs[first]} overlaps the venv {venv}")
+            for source in sources:
+                if _is_within(dirs[first], source) or _is_within(source, dirs[first]):
+                    raise SandboxError(f"{first} {dirs[first]} overlaps the interpreter mount {source}")
         log_real = self._log_path.resolve()
-        for name, path in [*dirs.items(), ("venv", venv)]:
+        for name, path in [*dirs.items(), *(("interpreter mount", source) for source in sources)]:
             if _is_within(log_real, path):
                 raise SandboxError(f"log_path {self._log_path} lies inside {name} {path}, which the sandbox can see")
         if not KERNEL_SCRIPT.is_file():

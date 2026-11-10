@@ -1,8 +1,14 @@
-"""Bounded application checks and finalization, using the research execution kernel."""
+"""Bounded application checks and finalization, using the research execution kernel.
+
+Programs run in the bubblewrap sandbox. ``apply`` can instead run one fixed program without it, but only after the
+user names the program's sha256 (``trusted_program_sha256``): the run then records ``program_isolation: none``, opens
+no editor kernel, and refuses any other program. ``synthesize`` always uses the sandbox.
+"""
 
 from __future__ import annotations
 
 import platform
+import re
 import shutil
 import sys
 import time
@@ -20,8 +26,19 @@ from weightcode.harness.program import ProgramProblem, Student, run_update, writ
 from weightcode.harness.session import SessionPaths
 from weightcode.patch import Limits, PatchError, apply_patch
 from weightcode.patch.limits import dense_delta_bytes, with_dense_file_cap
-from weightcode.sandbox.host import SandboxConfig, SandboxKernel
-from weightcode.sandbox.program import ProgramSandbox
+from weightcode.sandbox.host import DEFAULT_BWRAP, SandboxConfig, SandboxKernel
+from weightcode.sandbox.program import ISOLATION_NONE, ProgramSandbox, UnisolatedRunner
+
+ISOLATION_BWRAP = "bubblewrap"
+PROGRAM_MEMORY_BYTES = 8 * 2**30
+
+
+def trusted_sha256(value: str) -> str:
+    """A sha256 the user vouches for, as 64 lowercase hex digits."""
+    text = value.strip().lower()
+    if not re.fullmatch(r"[0-9a-f]{64}", text):
+        raise ValueError(f"program sha256 must be 64 hex digits, got {value!r}")
+    return text
 
 
 def score(params: dict, data: dict) -> dict:
@@ -57,13 +74,23 @@ def deployment_score(params: dict, buffers: dict, data: dict) -> dict:
     return result
 
 
-def prepare_run(task: Path, out: Path, sandbox_python: Path, *, checks: int, cells: int,
-                wall_s: float, program_wall_s: float = 300, threads: int = 4) -> dict:
+def prepare_run(task: Path, out: Path, sandbox_python: Path | None, *, checks: int, cells: int,
+                wall_s: float, program_wall_s: float = 300, threads: int = 4, bwrap: Path = DEFAULT_BWRAP,
+                trusted_program_sha256: str | None = None) -> dict:
+    """Create the run directory. ``sandbox_python`` None means no sandbox (module docstring): it needs
+    ``trusted_program_sha256`` and ``cells == 0``."""
     if type(checks) is not int or checks < 1 or type(cells) is not int or cells < 0 \
             or not 0 < wall_s < float("inf") or not 0 < program_wall_s < float("inf") or threads < 1:
         raise ValueError("checks>=1, cells>=0, finite positive timeouts and threads>=1 required")
-    # Includes real sandbox startup, imports and filesystem/network isolation checks.
-    probe = doctor(sandbox_python, threads=threads)
+    trusted = None if trusted_program_sha256 is None else trusted_sha256(trusted_program_sha256)
+    if sandbox_python is None:
+        if trusted is None or cells:
+            raise ValueError("a run without the sandbox needs the trusted program's sha256 and no editor cells")
+        probe = {"status": "not-run", "isolation": ISOLATION_NONE,
+                 "reason": "the user named the program's sha256; it runs without bubblewrap"}
+    else:
+        # Includes real sandbox startup, imports and filesystem/network isolation checks.
+        probe = doctor(sandbox_python, threads=threads, bwrap=bwrap)
     task_bundle(task)
     paths = SessionPaths(out.absolute())
     paths.root.parent.mkdir(parents=True, exist_ok=True)
@@ -82,7 +109,9 @@ def prepare_run(task: Path, out: Path, sandbox_python: Path, *, checks: int, cel
     base = score(params, dataset(paths.private / "task" / "selection.npz", len(m["labels"])))
     write(paths.private / "baseline.json", base)
     config = {"schema": "weightcode.application_run.v1", "task_manifest_sha256": sha(paths.private / "task" / "manifest.json"),
-              "sandbox_python": str(sandbox_python.absolute()), "checks": checks, "cells": cells,
+              "sandbox_python": None if sandbox_python is None else str(sandbox_python.absolute()),
+              "program_isolation": ISOLATION_NONE if sandbox_python is None else ISOLATION_BWRAP,
+              "trusted_program_sha256": trusted, "bwrap": str(bwrap), "checks": checks, "cells": cells,
               "wall_s": wall_s, "program_wall_s": program_wall_s, "threads": threads,
               "limits": asdict(limits), "started_unix": time.time(), "python": platform.python_version(),
               "numpy": np.__version__, "platform": platform.platform(), "sandbox_probe": probe,
@@ -95,18 +124,20 @@ def prepare_run(task: Path, out: Path, sandbox_python: Path, *, checks: int, cel
     return config
 
 
-def doctor(python: Path, *, threads: int = 4) -> dict:
+def doctor(python: Path, *, threads: int = 4, bwrap: Path = DEFAULT_BWRAP) -> dict:
+    """Start the real sandbox with ``python`` and check what a program inside can see; raise if anything fails."""
     import tempfile
-    from weightcode.sandbox.host import bwrap_version, venv_root
+    from weightcode.sandbox.host import check_bwrap, interpreter_mounts
 
-    venv_root(python)
+    version_text = check_bwrap(bwrap)
+    mounts = interpreter_mounts(python)
     with tempfile.TemporaryDirectory(prefix="weightcode-doctor-") as tmp:
         root = Path(tmp)
         for name in ("trial", "patches", "scratch"):
             (root / name).mkdir()
         (root / "hidden.txt").write_text("not mounted")
         config = SandboxConfig(root / "trial", root / "patches", root / "scratch", root / "cells.jsonl",
-                               python.absolute(), threads=threads, max_cells=1)
+                               python.absolute(), threads=threads, max_cells=1, bwrap=bwrap)
         with SandboxKernel(config) as kernel:
             code = ("import os, pathlib, socket, numpy, sys\n"
                     f"assert not pathlib.Path({str(root / 'hidden.txt')!r}).exists()\n"
@@ -116,8 +147,9 @@ def doctor(python: Path, *, threads: int = 4) -> dict:
             result = kernel.run(code)
             if result.error or result.timed_out:
                 raise RuntimeError(f"sandbox self-check failed: {result.error} {result.stderr}")
-    return {"status": "ok", "bubblewrap": bwrap_version(), "numpy": result.stdout.strip(),
-            "sandbox_python": str(python.absolute()), "threads": threads}
+    return {"status": "ok", "bubblewrap": version_text, "bwrap": str(bwrap), "numpy": result.stdout.strip(),
+            "sandbox_python": str(python.absolute()), "interpreter_binds": [str(p) for p in mounts.binds],
+            "threads": threads}
 
 
 class Application:
@@ -135,7 +167,14 @@ class Application:
         self.selection = dataset(self.task_root / "selection.npz", len(self.model["labels"]))
         self.base = read(self.paths.private / "baseline.json")
         self.limits = Limits(**self.config["limits"])
-        self.sandbox = ProgramSandbox(Path(self.config["sandbox_python"]), 8 * 2**30, self.config["threads"])
+        self.isolation = self.config.get("program_isolation", ISOLATION_BWRAP)
+        self.bwrap = Path(self.config.get("bwrap", DEFAULT_BWRAP))
+        if self.isolation == ISOLATION_NONE:
+            self.sandbox: ProgramSandbox | UnisolatedRunner = UnisolatedRunner(
+                Path(sys.executable), PROGRAM_MEMORY_BYTES, self.config["threads"])
+        else:
+            self.sandbox = ProgramSandbox(Path(self.config["sandbox_python"]), PROGRAM_MEMORY_BYTES,
+                                          self.config["threads"], bwrap=self.bwrap)
         self.kernel: SandboxKernel | None = None
 
     def attempts(self) -> list[Path]:
@@ -154,11 +193,13 @@ class Application:
 
     def python(self, code: str) -> dict:
         self.require_open()
+        if self.isolation == ISOLATION_NONE:
+            raise ValueError("this run has no sandbox, so it runs no editor code")
         if self.kernel is None:
             p = self.paths
             self.kernel = SandboxKernel(SandboxConfig(p.trial, p.patches, p.scratch, p.cells_log,
                 Path(self.config["sandbox_python"]), max_cells=self.config["cells"], threads=self.config["threads"],
-                cell_timeout_s=min(120, self.status()["wall_s_remaining"])))
+                cell_timeout_s=min(120, self.status()["wall_s_remaining"]), bwrap=self.bwrap))
             self.kernel.start()
         return asdict(self.kernel.run(code))
 
@@ -178,6 +219,9 @@ class Application:
         try:
             (attempt / "program.py").write_bytes(program_source(source))
             record["program_sha256"] = sha(attempt / "program.py")
+            trusted = self.config.get("trusted_program_sha256")
+            if trusted is not None and record["program_sha256"] != trusted:
+                raise ValueError(f"program sha256 {record['program_sha256']} is not the trusted {trusted}")
             student = Student(self.params, self.task_root / "model" / "params.npz",
                               self.task_root / "model" / "forward.py", {}, self.model)
             update = run_update(student, self.task_root / "experience.npz", attempt / "program.py",
@@ -253,6 +297,7 @@ class Application:
                   "torchvision_final_base": deployed_base, "torchvision_final_candidate": deployed_candidate,
                   "torchvision_final_decision": deployed_verdict,
                   "output_is_updated_model": accepted, "run_manifest_sha256": sha(self.paths.root / "run.json"),
+                  "program_isolation": self.isolation,
                   "note": "Application validation, not a reproduction of frozen paper experiments."}
         write(self.paths.result_json, report)
         write(self.paths.final / "report.json", report)
@@ -264,10 +309,18 @@ class Application:
             self.kernel = None
 
 
-def apply_program(task: Path, program: Path, out: Path, sandbox_python: Path, **kwargs) -> dict:
+def apply_program(task: Path, program: Path, out: Path, sandbox_python: Path | None, *,
+                  program_sha256: str | None = None, **kwargs) -> dict:
+    """Reuse one program bundle on a task. ``sandbox_python`` None runs it without the sandbox; that needs
+    ``program_sha256``, the sha256 of ``program.py`` the user trusts. A given ``program_sha256`` is always enforced."""
     _, model, _ = task_bundle(task)
     manifest = program_bundle(program, model)
-    prepare_run(task, out, sandbox_python, checks=1, cells=0, **kwargs)
+    if program_sha256 is not None and manifest["files"]["program.py"] != trusted_sha256(program_sha256):
+        raise ValueError(f"{program}/program.py has sha256 {manifest['files']['program.py']}, "
+                         f"not the trusted {trusted_sha256(program_sha256)}")
+    if sandbox_python is None and program_sha256 is None:
+        raise ValueError("without --sandbox-python, pass --program-sha256 with the sha256 of the program you trust")
+    prepare_run(task, out, sandbox_python, checks=1, cells=0, trusted_program_sha256=program_sha256, **kwargs)
     app = Application(out)
     shutil.copyfile(program / "program.py", app.paths.patches / "program.py")
     if sha(app.paths.patches / "program.py") != manifest["files"]["program.py"]:

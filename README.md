@@ -155,9 +155,10 @@ the program never saw.
 
 🫧 The skill runs every program, including the ones a language model writes for you, in a
 [bubblewrap](https://github.com/containers/bubblewrap) sandbox with no network and no view of your selection and final
-data. It needs **Linux x86-64**, a distribution **Python 3.14 under `/usr`** and **bubblewrap 0.11+** at
-`/usr/bin/bwrap` (Ubuntu 26.04: `sudo apt install bubblewrap`; Ubuntu 22.04 and 24.04 ship older versions).
-Synthesizing a new program also needs [Claude Code](https://docs.anthropic.com/en/docs/claude-code).
+data. It needs **Linux x86-64** and **bubblewrap 0.8+** (Ubuntu 24.04+, Debian 12+: `sudo apt install bubblewrap`).
+Ubuntu 22.04 ships 0.6: build a newer one without root with `bash scripts/build_bwrap.sh`, then export the
+`WEIGHTCODE_BWRAP` path it prints. The sandbox Python is `/usr/bin/python3.14` if you have it, otherwise a CPython 3.14
+that uv downloads. Synthesizing a new program also needs [Claude Code](https://docs.anthropic.com/en/docs/claude-code).
 
 ```bash
 uv sync --locked --extra train --extra dev
@@ -168,9 +169,20 @@ uv run python scripts/demo/skill_cli_walkthrough.py --root out/skill_cli
 ```
 
 ✅ This installs the engine with PyTorch and the NumPy-only sandbox, installs the skill for Claude Code, checks the
-sandbox (`"status": "ok"`), and runs every skill command on a small synthetic project in about 40 s. The bundled
+sandbox (`"status": "ok"`), and runs every skill command on a small synthetic project in about 45 s. The bundled
 example program is too weak for that project, so the run ends with `status: base-kept`: the engine kept the original
-model. If a step fails, see [troubleshooting](#troubleshooting).
+model. It then applies the program once more without the sandbox and checks that the result is the same. If a step
+fails, see [troubleshooting](#troubleshooting).
+
+♻️ **Reusing a program you trust needs no sandbox.** Leave out `--sandbox-python` and pass the sha256 of the bundle's
+`program.py`, for example `freeze.program_sha256` from the `report.json` of the run that accepted it:
+
+```bash
+uv run weightcode apply --task work/task --program work/program --program-sha256 "$PROGRAM_SHA256" --wall-s 600 --out work/reuse
+```
+
+`apply` checks the hash before the program runs and records `"program_isolation": "none"` in the report. A program a
+language model writes (`synthesize`) always runs in the sandbox.
 
 💬 **Then open Claude Code in your own project and ask:**
 
@@ -187,7 +199,7 @@ First inspect compatibility and propose the run budget.
 - 🛡️ **No quiet regressions.** An update ships only if it meets your thresholds on both the selection and the final
   split. Otherwise the original model is returned and the report says so.
 - 📏 **Bounded edits.** By default a program may touch at most 5% of the network's weights and change each weight
-  tensor by at most half its norm. It runs in a 🫧 bubblewrap sandbox with no network.
+  tensor by at most half its norm. It runs in a 🫧 bubblewrap sandbox with no network, unless you named its sha256.
 - ♻️ **Replayable.** The kept program is a file; rerun on the same inputs, it reproduces the released weights exactly.
 
 ### 🔌 Other agents and your own model
@@ -258,7 +270,7 @@ uv run python scripts/demo/skill_roundtrip.py --out out/skill_demo --sandbox-pyt
 ```
 
 - 🩺 `doctor` prints `"status": "ok"` once the sandbox works.
-- 🚶 The walkthrough (about 40 s) writes a small synthetic project (`model.pt`, `labels.json` and three image folders)
+- 🚶 The walkthrough (about 45 s) writes a small synthetic project (`model.pt`, `labels.json` and three image folders)
   and runs the skill's reuse commands on it one by one. The bundled example program is too weak for this project,
   so the engine keeps the original model and reports `status: base-kept`.
 - 🔁 The round trip (about 30 s) drives the editor's MCP server with a scripted editor on two independently initialized
@@ -274,12 +286,12 @@ reusable analytic head correction; it is not one of the paper's programs.
 ```bash
 .venv/bin/python -m pytest -q \
   tests/test_patch_ops.py tests/test_patch_validation.py \
-  tests/test_sandbox_isolation.py tests/test_sandbox_kernel.py \
+  tests/test_sandbox_isolation.py tests/test_sandbox_kernel.py tests/test_sandbox_interpreter.py \
   tests/test_harness_e2e.py tests/test_harness_e11.py tests/test_demo_toy_walkthrough.py \
   tests/test_application.py tests/test_skill_docs.py
 ```
 
-✅ Expected: `233 passed` in about two minutes, with no `skipped`. A skip means the sandbox is unavailable (see below).
+✅ Expected: `256 passed` in about two minutes, with no `skipped`. A skip means the sandbox is unavailable (see below).
 
 <a id="troubleshooting"></a>
 
@@ -291,9 +303,10 @@ sessions or the authors' local research records, and skip without them.
 
 | Issue | Action |
 | :--- | :--- |
-| ⏭️ Sandbox tests skip | Check `/usr/bin/bwrap` and run `bash scripts/setup_sandbox_venv.sh`. |
-| 🐍 The sandbox interpreter is refused | Use a distribution Python under `/usr`; uv-managed and conda interpreters lie outside the sandbox mounts. |
-| 🫧 bubblewrap reports a namespace or uid-map error | Check that the host allows unprivileged user namespaces and `/usr/bin/bwrap`. |
+| ⏭️ Sandbox tests skip | Check `/usr/bin/bwrap` (or `$WEIGHTCODE_BWRAP`) and run `bash scripts/setup_sandbox_venv.sh`. |
+| 🧱 `bubblewrap 0.6.1; the sandbox needs bubblewrap 0.8.0 or newer` | Run `bash scripts/build_bwrap.sh` and export the `WEIGHTCODE_BWRAP` path it prints. |
+| 🐍 The sandbox interpreter is refused | Recreate `.venv-sandbox` with `scripts/setup_sandbox_venv.sh`; it uses `/usr/bin/python3.14` or a uv-managed CPython, both of which mount. |
+| 🫧 bubblewrap reports a namespace or uid-map error | Check that the host allows unprivileged user namespaces (`sysctl user.max_user_namespaces` above 0). |
 | 📦 The sandbox environment already exists | Setup preserves it; use the existing environment or choose a new target with `--target`. |
 | 📁 The demo output directory already exists | Pass a new `--root`; existing records are preserved. |
 

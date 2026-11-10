@@ -53,6 +53,7 @@ __pycache__/
 /scripts/**/*.sha256
 /scripts/**/*.sh
 !/scripts/setup_sandbox_venv.sh
+!/scripts/build_bwrap.sh
 
 # assets/ holds the latest paper build and its figures; only the paper PDF and Figure 1 are published.
 /assets/*

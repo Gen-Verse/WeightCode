@@ -35,7 +35,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from weightcode.sandbox.host import SEAL_ARGV, SandboxConfig, isolated_environment, isolation_argv
+from weightcode.sandbox.host import (DEFAULT_BWRAP, SEAL_ARGV, SandboxConfig, SandboxError, _is_within, check_bwrap,
+                                     interpreter_mounts, isolated_environment, isolation_argv)
 
 PROGRAM_WALL_S = 300.0
 PROGRAM_CLOCK = "virtual-v1"  # the driver's clock (program_driver.CLOCK_VIRTUAL_V1), recorded with every run
@@ -67,7 +68,7 @@ class ProgramSandbox:
     memory_bytes: int
     threads: int
     tmpfs_bytes: int = 2**30
-    bwrap: Path = Path("/usr/bin/bwrap")
+    bwrap: Path = DEFAULT_BWRAP
     max_output_chars: int = 30_000
 
     @classmethod
@@ -129,8 +130,18 @@ def driver_sha256() -> str:
 
 
 def build_program_argv(sandbox: ProgramSandbox, in_dir: Path, out_dir: Path, program_name: str) -> list[str]:
-    """The bwrap command line of one run: the kernel's isolation prefix, /work/in read-only, /work/out, the driver."""
+    """The bwrap command line of one run: the kernel's isolation prefix, /work/in read-only, /work/out, the driver.
+    Raises ``ProgramSandboxError`` when the interpreter cannot be mounted or a work directory overlaps its mounts."""
     interpreter = Path(os.path.abspath(sandbox.python))
+    try:
+        sources = interpreter_mounts(sandbox.python).sources()
+    except SandboxError as exc:
+        raise ProgramSandboxError(str(exc)) from exc
+    for name, directory in (("in", in_dir), ("out", out_dir)):
+        real = directory.resolve()
+        for source in sources:
+            if _is_within(real, source) or _is_within(source, real):
+                raise ProgramSandboxError(f"the run's {name} directory {real} overlaps the interpreter mount {source}")
     argv = isolation_argv(sandbox.bwrap, sandbox.python, isolated_environment(sandbox.threads, DRIVER_HOME),
                           sandbox.tmpfs_bytes)
     argv += [
@@ -204,8 +215,10 @@ def run_program(sandbox: ProgramRunner, run_dir: Path, program_name: str, wall_s
         argv = build_unisolated_argv(sandbox, in_dir, out_dir, program_name)
         env, cwd = isolated_environment(sandbox.threads, str(run_dir.resolve())), str(out_dir.resolve())
     else:
-        if not os.access(sandbox.bwrap, os.X_OK):
-            raise ProgramSandboxError(f"bubblewrap is missing or not executable at {sandbox.bwrap}")
+        try:
+            check_bwrap(sandbox.bwrap)
+        except SandboxError as exc:
+            raise ProgramSandboxError(str(exc)) from exc
         out_dir.mkdir(mode=0o700)
         argv = build_program_argv(sandbox, in_dir, out_dir, program_name)
         env, cwd = {}, "/"

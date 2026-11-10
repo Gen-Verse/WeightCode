@@ -24,7 +24,10 @@ Run `weightcode --help` and `weightcode doctor --sandbox-python <checkout>/.venv
 editing; from outside the engine checkout, prefix each command with `uv run --project <checkout>`. If the engine is
 missing, use an isolated checkout/environment as described there. If the engine has not run on this machine before,
 or `doctor` fails, run the two no-API checks in its "Check the engine" section first. They write about 1.5 GB, so
-ask before writing them into the user's project.
+ask before writing them into the user's project. If the sandbox cannot run here (bubblewrap older than 0.8), reuse
+can still run one program without it through `apply --program-sha256` (workflow.md, "Reuse without the sandbox"): use
+that only for a program whose hash the user gives you and vouches for, never for one written in this run.
+Synthesis always needs the sandbox.
 
 ## Establish the task
 

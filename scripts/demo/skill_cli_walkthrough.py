@@ -11,6 +11,8 @@ It first writes what a user would bring:
 
 Then it runs the exact commands of `skills/weightcode/references/workflow.md` through the installed `weightcode`
 executable (doctor, import-model, prepare-data three times, prepare-task, pack-program, apply) and prints the outcome.
+Last, it applies the same program again without the sandbox, naming its sha256 (``--program-sha256``), and checks that
+both runs reach the same decision and the same released weights.
 With this project the bundled example program caps its head change at 10% of the head's norm, which is too small to
 flip a new-condition decision on the selection split, so nothing is selected and the engine keeps the original model
 (`base-kept`). That is the release rule at work: an update is exported only when it meets the thresholds on both the
@@ -152,7 +154,18 @@ def main(argv: list[str] | None = None) -> int:
         print(f"  final split, selected program: {counts(report['final_candidate'])}")
     print(f"outputs: {final / 'model.pt'}, {final / 'report.json'}"
           + (f", {final / 'program'}" if (final / "program").is_dir() else ""))
-    return 0
+
+    digest = json.loads((root / "work" / "program" / "manifest.json").read_text())["files"]["program.py"]
+    plain = run(wc + ["apply", "--task", "work/task", "--program", "work/program", "--program-sha256", digest,
+                      "--wall-s", "600", "--out", "work/reuse-unsandboxed"], root)
+    candidates = [json.loads((root / "work" / out / "attempts" / "0001" / "check.json").read_text())["patch"]
+                  ["child_sha256"] for out in ("reuse", "reuse-unsandboxed")]
+    same = all(plain[key] == report[key] for key in ("status", "freeze", "final_decision")) \
+        and plain["export"]["params_sha256"] == report["export"]["params_sha256"] and candidates[0] == candidates[1]
+    print(f"\nwithout the sandbox (program sha256 {digest[:12]}): status {plain['status']}, "
+          f"isolation {plain['program_isolation']}, candidate {candidates[1][:12]}; same decision and weights as in "
+          f"the sandbox: {'yes' if same else 'NO'}")
+    return 0 if same else 1
 
 
 if __name__ == "__main__":
