@@ -36,6 +36,7 @@ from weightcode.harness.seqskill import scan_experience
 from weightcode.sandbox.program import ProgramRunner
 
 NAME = "scan"
+RERUNS_PROGRAM = True
 TITLE = "SCAN: a rule becomes a capability (Figure 1b, left)"
 CONDITION = "addprim_jump"
 INSTANCE_ID = "ncc5c260f"
