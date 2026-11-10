@@ -68,10 +68,13 @@ def _points(value: float | None) -> str:
 
 def _check_prerequisites(repo: Path) -> None:
     from weightcode.harness.runner import SANDBOX_PYTHON
+    from weightcode.sandbox import SandboxError, check_bwrap
 
     missing = []
-    if not Path("/usr/bin/bwrap").exists():
-        missing.append("bubblewrap at /usr/bin/bwrap (Ubuntu: sudo apt install bubblewrap)")
+    try:
+        check_bwrap()  # $WEIGHTCODE_BWRAP or /usr/bin/bwrap, 0.8.0 or newer
+    except SandboxError as error:
+        missing.append(str(error))
     if not SANDBOX_PYTHON.exists():
         missing.append(f"the sandbox venv {SANDBOX_PYTHON} (run: bash scripts/setup_sandbox_venv.sh)")
     if missing:

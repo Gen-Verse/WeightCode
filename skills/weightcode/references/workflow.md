@@ -2,8 +2,12 @@
 
 ## Engine and sandbox
 
-Use Linux with bubblewrap 0.11+, unprivileged user namespaces, a distribution Python under `/usr`, and `uv`.
-The program interpreter is a separate NumPy-only venv. There is no unsandboxed fallback.
+Use Linux with bubblewrap 0.8+, unprivileged user namespaces, and `uv`. The program interpreter is a separate
+NumPy-only venv; the setup script bases it on `/usr/bin/python3.14` when present, else on a CPython 3.14 that uv
+downloads. Where the distribution's bubblewrap is older (Ubuntu 22.04 ships 0.6), `bash scripts/build_bwrap.sh`
+builds one without root; pass it with `--bwrap` or `export WEIGHTCODE_BWRAP=<path>`. Programs a language model writes
+always run in the sandbox. Only reuse of one fixed program can skip it, when the user names that program's sha256
+(see "Reuse without the sandbox").
 
 ```bash
 git clone https://github.com/Gen-Verse/WeightCode.git
@@ -21,7 +25,8 @@ interpreter and any program file, such as `<engine-checkout>/programs/resnet18-r
 user's own files stay relative to the user's project. uv may warn that `VIRTUAL_ENV` does not match the project
 environment; the warning is harmless.
 Do not bind a venv containing credentials or user data as the sandbox interpreter; its entire directory is mounted
-read-only. The supplied setup script creates a NumPy-only environment.
+read-only. The supplied setup script creates a NumPy-only environment. When its base interpreter lies outside `/usr`
+(a uv-managed CPython), only that interpreter's executable, standard library and libpython files are mounted.
 
 ## Check the engine (no API key, about one minute)
 
@@ -86,6 +91,21 @@ retention. Packing arbitrary source records compatibility, not trust or measured
 
 For a second checkpoint, import that checkpoint, prepare a task with its own permitted experience and validation,
 then pass the same program bundle to `apply`. Matching tensor shapes with a reordered class list is rejected.
+
+### Reuse without the sandbox
+
+When bubblewrap is unavailable, `apply` can run one program the user trusts without it. Leave out
+`--sandbox-python` and pass the sha256 of the bundle's `program.py`, which the user takes from a source they trust
+(for a program an earlier run accepted, `freeze.program_sha256` in that run's `report.json`):
+
+```bash
+uv run weightcode apply --task work/task --program work/program --program-sha256 "$PROGRAM_SHA256" --wall-s 600 --out work/reuse
+```
+
+The engine refuses a program whose hash differs, runs it with the same limits and virtual clock but without
+isolation, and records `"program_isolation": "none"` in `run.json` and `report.json`. The program can then read the
+host's files, the task's selection and final data included, so use this only for a program whose source the user
+vouches for. It gives the same released weights as a sandboxed run of that program.
 
 ## Synthesize
 

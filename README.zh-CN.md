@@ -149,9 +149,10 @@ uv run weightcode reproduce imagenet
 ### 🛠️ 安装技能
 
 🫧 这个技能会把每个程序（包括语言模型为你新写的程序）放进 [bubblewrap](https://github.com/containers/bubblewrap)
-沙箱里运行：不能联网，也看不到你的 selection 和 final 数据。它需要 **Linux x86-64**、系统发行版自带的
-**Python 3.14（位于 `/usr`）**，以及 **bubblewrap 0.11+**，路径为 `/usr/bin/bwrap`（Ubuntu 26.04 上运行
-`sudo apt install bubblewrap`；Ubuntu 22.04 和 24.04 自带的版本较旧）。合成新程序还需要
+沙箱里运行：不能联网，也看不到你的 selection 和 final 数据。它需要 **Linux x86-64** 和 **bubblewrap 0.8+**
+（Ubuntu 24.04+、Debian 12+：`sudo apt install bubblewrap`）。Ubuntu 22.04 自带 0.6，可以不用 root 运行
+`bash scripts/build_bwrap.sh` 编译一个新版本，再按它的提示设置 `WEIGHTCODE_BWRAP`。沙箱用的 Python 优先取
+`/usr/bin/python3.14`，没有时由 uv 下载 CPython 3.14。合成新程序还需要
 [Claude Code](https://docs.anthropic.com/en/docs/claude-code)。
 
 ```bash
@@ -163,8 +164,19 @@ uv run python scripts/demo/skill_cli_walkthrough.py --root out/skill_cli
 ```
 
 ✅ 这几步会安装带 PyTorch 的引擎和只依赖 NumPy 的沙箱，为 Claude Code 安装技能，检查沙箱（输出 `"status": "ok"`），
-再在一个小型合成项目上依次运行技能的全部命令，耗时约 40 秒。自带的示例程序对这个项目来说太弱，
-所以运行以 `status: base-kept` 结束，也就是引擎保留了原模型。某一步失败时，请看[故障排查](#troubleshooting)。
+再在一个小型合成项目上依次运行技能的全部命令，耗时约 45 秒。自带的示例程序对这个项目来说太弱，
+所以运行以 `status: base-kept` 结束，也就是引擎保留了原模型。最后它不经沙箱再复用一次同一个程序，并核对结果相同。
+某一步失败时，请看[故障排查](#troubleshooting)。
+
+♻️ **复用你信任的程序不需要沙箱。** 去掉 `--sandbox-python`，改为给出程序包中 `program.py` 的 sha256，
+例如接受该程序那次运行的 `report.json` 里的 `freeze.program_sha256`：
+
+```bash
+uv run weightcode apply --task work/task --program work/program --program-sha256 "$PROGRAM_SHA256" --wall-s 600 --out work/reuse
+```
+
+`apply` 在程序运行前核对哈希，并在报告中记录 `"program_isolation": "none"`。语言模型新写的程序（`synthesize`）
+始终在沙箱里运行。
 
 💬 **然后在你自己的项目里打开 Claude Code，这样提出请求：**
 
@@ -180,7 +192,7 @@ uv run python scripts/demo/skill_cli_walkthrough.py --root out/skill_cli
 - 🛡️ **不会悄悄变差。** 只有在 selection 集和 final 集上都达到你设定的阈值，更新才会发布。
   否则返回原模型，报告里会写明。
 - 📏 **修改有上限。** 默认情况下，一个程序最多改动网络 5% 的权重，每个权重张量的变化不超过其范数的一半。
-  程序在 🫧 bubblewrap 沙箱中运行，不能联网。
+  程序在 🫧 bubblewrap 沙箱中运行，不能联网；你给出了程序 sha256 的复用除外。
 - ♻️ **可重放。** 保留下来的程序是一个文件。在相同输入上重新运行，会精确复现发布的权重。
 
 ### 🔌 其他智能体，以及你自己的模型
@@ -246,7 +258,7 @@ uv run python scripts/demo/skill_roundtrip.py --out out/skill_demo --sandbox-pyt
 ```
 
 - 🩺 沙箱可用时，`doctor` 输出 `"status": "ok"`。
-- 🚶 walkthrough（约 40 秒）写出一个小型合成项目（`model.pt`、`labels.json` 和三个图像文件夹），并在上面逐条运行技能的复用命令。
+- 🚶 walkthrough（约 45 秒）写出一个小型合成项目（`model.pt`、`labels.json` 和三个图像文件夹），并在上面逐条运行技能的复用命令。
   自带的示例程序对这个项目太弱，所以引擎保留原模型，报告 `status: base-kept`。
 - 🔁 round trip（约 30 秒）用一个脚本化的 editor 驱动 editor 的 MCP 服务器，作用于两个独立初始化的 ResNet-18。
   它以 `"fixture_statuses": ["accepted", "accepted", "accepted"]` 和 `"exact_replay": true` 结束，
@@ -261,12 +273,12 @@ uv run python scripts/demo/skill_roundtrip.py --out out/skill_demo --sandbox-pyt
 ```bash
 .venv/bin/python -m pytest -q \
   tests/test_patch_ops.py tests/test_patch_validation.py \
-  tests/test_sandbox_isolation.py tests/test_sandbox_kernel.py \
+  tests/test_sandbox_isolation.py tests/test_sandbox_kernel.py tests/test_sandbox_interpreter.py \
   tests/test_harness_e2e.py tests/test_harness_e11.py tests/test_demo_toy_walkthrough.py \
   tests/test_application.py tests/test_skill_docs.py
 ```
 
-✅ 预期结果：`233 passed`，约两分钟，没有 `skipped`。出现 skip 说明沙箱不可用（见下文）。
+✅ 预期结果：`257 passed`，约两分钟，没有 `skipped`。出现 skip 说明沙箱不可用（见下文）。
 
 <a id="troubleshooting"></a>
 
@@ -278,9 +290,10 @@ uv run python scripts/demo/skill_roundtrip.py --out out/skill_demo --sandbox-pyt
 
 | 问题 | 处理 |
 | :--- | :--- |
-| ⏭️ 沙箱测试被跳过 | 检查 `/usr/bin/bwrap`，然后运行 `bash scripts/setup_sandbox_venv.sh`。 |
-| 🐍 沙箱解释器被拒绝 | 使用 `/usr` 下的发行版 Python。uv 管理的解释器和 conda 解释器不在沙箱的挂载范围内。 |
-| 🫧 bubblewrap 报 namespace 或 uid-map 错误 | 确认主机允许非特权用户命名空间，并检查 `/usr/bin/bwrap`。 |
+| ⏭️ 沙箱测试被跳过 | 检查 `/usr/bin/bwrap`（或 `$WEIGHTCODE_BWRAP`），然后运行 `bash scripts/setup_sandbox_venv.sh`。 |
+| 🧱 提示 `bubblewrap 0.6.1; the sandbox needs bubblewrap 0.8.0 or newer` | 运行 `bash scripts/build_bwrap.sh`，再按提示设置 `WEIGHTCODE_BWRAP`。 |
+| 🐍 沙箱解释器被拒绝 | 用 `scripts/setup_sandbox_venv.sh` 重建 `.venv-sandbox`。它使用 `/usr/bin/python3.14` 或 uv 管理的 CPython，两者都能挂载。 |
+| 🫧 bubblewrap 报 namespace 或 uid-map 错误 | 确认主机允许非特权用户命名空间（`sysctl user.max_user_namespaces` 大于 0）。 |
 | 📦 沙箱环境已存在 | 安装脚本会保留它。直接使用现有环境，或用 `--target` 指定新位置。 |
 | 📁 示例输出目录已存在 | 换一个新的 `--root`，已有记录会被保留。 |
 

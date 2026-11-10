@@ -19,13 +19,14 @@ from pathlib import Path
 import pytest
 
 import weightcode.sandbox.host as host_module
-from weightcode.sandbox import KERNEL_SCRIPT, SandboxConfig, SandboxKernel, isolation_selftest, sandbox_environment
+from weightcode.sandbox import (DEFAULT_BWRAP, KERNEL_SCRIPT, SandboxConfig, SandboxKernel, interpreter_mounts,
+                                isolation_selftest, sandbox_environment)
 from weightcode.sandbox.selftest import INSIDE_CHECKS
 
 REPO = Path(__file__).resolve().parents[1]
 SANDBOX_PYTHON = REPO / ".venv-sandbox" / "bin" / "python"
 SANDBOX_VENV = SANDBOX_PYTHON.parent.parent
-BWRAP = Path("/usr/bin/bwrap")
+BWRAP = DEFAULT_BWRAP  # $WEIGHTCODE_BWRAP or /usr/bin/bwrap
 
 pytestmark = [
     pytest.mark.skipif(not BWRAP.exists(), reason=f"{BWRAP} is missing: the sandbox tests need the real bubblewrap"),
@@ -172,10 +173,11 @@ def test_host_files_and_protected_roots_are_invisible(store: dict[str, Path], di
         home_listing = value_of(kernel, f"import os\nsorted(os.listdir({str(home)!r})) if os.path.exists({str(home)!r}) else None")
     assert visible == []
     assert repo_listing == [SANDBOX_VENV.name]  # the repo root shows nothing but the path to the sandbox venv
-    if SANDBOX_VENV.is_relative_to(home):
-        assert home_listing == [SANDBOX_VENV.relative_to(home).parts[0]]
-    else:
-        assert home_listing is None
+    # The home shows only the first directories of what is mounted: the venv and, for a base interpreter outside
+    # /usr such as a uv-managed CPython, its binds and links (interpreter_mounts).
+    under_home = sorted({Path(path).relative_to(home).parts[0] for path in interpreter_mounts(SANDBOX_PYTHON).visible()
+                         if Path(path).is_relative_to(home)})
+    assert home_listing == (under_home or None)
 
 
 def test_parent_environment_is_not_visible(

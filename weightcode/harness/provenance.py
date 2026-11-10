@@ -28,7 +28,7 @@ import numpy as np
 import weightcode
 from weightcode.harness.jsonio import text_sha256
 from weightcode.harness.prompts import template_sha256s
-from weightcode.sandbox import bwrap_version, kernel_sha256
+from weightcode.sandbox import DEFAULT_BWRAP, bwrap_version, kernel_sha256
 
 REPO_ROOT = Path(weightcode.__file__).resolve().parents[1]
 HASHED_PACKAGES = ("harness", "patch", "sandbox", "evalkit", "common", "audit")
@@ -144,6 +144,7 @@ def claude_version(claude_bin: str, env: Mapping[str, str]) -> str:
 def collect(
     *,
     sandbox_python: Path,
+    bwrap: Path = DEFAULT_BWRAP,
     prompts: Mapping[str, str],
     claude: Mapping[str, Any] | None,
 ) -> dict[str, Any]:
@@ -156,7 +157,7 @@ def collect(
         "prompt_templates_sha256": template_sha256s(),
         "rendered_prompts_sha256": {name: text_sha256(text) for name, text in prompts.items()},
         "kernel_sha256": kernel_sha256(),
-        "bwrap_version": bwrap_version(),
+        "bwrap_version": bwrap_version(bwrap),
         "sandbox": sandbox_versions(sandbox_python),
         "host": {"python": sys.version, "numpy": np.__version__},
         "claude": None if claude is None else dict(claude),

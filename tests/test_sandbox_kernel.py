@@ -18,11 +18,11 @@ from pathlib import Path
 
 import pytest
 
-from weightcode.sandbox import STATE_LOST_NOTE, SandboxConfig, SandboxError, SandboxKernel
+from weightcode.sandbox import DEFAULT_BWRAP, STATE_LOST_NOTE, SandboxConfig, SandboxError, SandboxKernel
 
 REPO = Path(__file__).resolve().parents[1]
 SANDBOX_PYTHON = REPO / ".venv-sandbox" / "bin" / "python"
-BWRAP = Path("/usr/bin/bwrap")
+BWRAP = DEFAULT_BWRAP  # $WEIGHTCODE_BWRAP or /usr/bin/bwrap
 
 pytestmark = [
     pytest.mark.skipif(not BWRAP.exists(), reason=f"{BWRAP} is missing: the sandbox tests need the real bubblewrap"),

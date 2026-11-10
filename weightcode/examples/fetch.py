@@ -16,7 +16,7 @@ from collections.abc import Iterable, Mapping
 from pathlib import Path
 
 HF_REPO = "Boom5426/WeightCode"
-HF_REVISION = "fef94dc474d826aa6a58586281f1bafcdc2e1d88"
+HF_REVISION = "4c27541829737b8a4c438634d12792043409706d"
 HF_SHA256SUMS = "SHA256SUMS"
 HF_SHA256SUMS_SHA256 = "31edb7a83866bb9950e527a8f2d7d55826089a75552f1a34efa6a8247faba0e4"
 DEFAULT_HF_ENDPOINT = "https://huggingface.co"

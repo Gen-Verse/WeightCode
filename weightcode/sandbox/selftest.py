@@ -31,6 +31,7 @@ from weightcode.sandbox.host import (
     _is_within,
     build_bwrap_argv,
     bwrap_version,
+    interpreter_mounts,
     kernel_sha256,
     sandbox_environment,
     venv_root,
@@ -137,19 +138,25 @@ def _weightcode_selftest_probe(params):
         return run
 
     def home_and_repo():
-        problems = []
-        parts = params["venv"].strip("/").split("/")
-        for depth in range(1, len(parts)):
-            ancestor = "/" + "/".join(parts[:depth])
-            if ancestor == "/usr" or ancestor.startswith("/usr/"):
+        # Each directory leading to a mounted path (the venv, a base interpreter's binds, a recreated link) may list
+        # only the next components of those paths; nothing else of the home or the repository may show.
+        problems, expected = [], {}
+        visible = params["visible"]
+        for path in visible:
+            parts = path.strip("/").split("/")
+            for depth in range(1, len(parts)):
+                expected.setdefault("/" + "/".join(parts[:depth]), set()).add(parts[depth])
+        for ancestor, names in sorted(expected.items()):
+            if ancestor == "/usr" or ancestor.startswith("/usr/") \
+                    or any(ancestor == path or ancestor.startswith(path + "/") for path in visible):
                 continue
             entries = sorted(os.listdir(ancestor))
-            if entries != [parts[depth]]:
+            if entries != sorted(names):
                 problems.append(f"{ancestor} lists {entries}")
         home = params["home"].rstrip("/")
-        if os.path.lexists(home) and not params["venv"].startswith(home + "/"):
+        if os.path.lexists(home) and not any(path.startswith(home + "/") for path in visible):
             problems.append(f"{home} is visible")
-        return not problems, problems or "only the directories leading to the venv are visible, each with one entry"
+        return not problems, problems or "only the directories leading to the mounted interpreter are visible"
 
     def environment():
         expected, optional = params["env"], set(params["env_optional"])
@@ -271,7 +278,7 @@ def _weightcode_selftest_probe(params):
     with open("/proc/self/mountinfo") as handle:
         for line in handle:
             fields = line.split()
-            if fields[4].startswith(("/work", "/opt")) or fields[4] == params["venv"]:
+            if fields[4].startswith(("/work", "/opt")) or fields[4] in params["visible"]:
                 sources[fields[4]] = fields[3]
     return {"checks": results, "info": {"mount_sources": sources, "hostname": os.uname().nodename}}
 
@@ -433,6 +440,7 @@ def _bind_sources_safe(config: SandboxConfig, protected: dict[str, dict[str, obj
     """No bind source may contain a protected root, or lie inside $WEIGHTCODE_PRIVATE or $WEIGHTCODE_SEALED."""
     sources = {
         "venv": venv_root(config.python).resolve(),
+        **{f"interpreter {path}": path.resolve() for path in interpreter_mounts(config.python).binds},
         "trial": Path(config.trial_dir).resolve(),
         "patches": Path(config.patches_dir).resolve(),
         "scratch": Path(config.scratch_dir).resolve(),
@@ -470,6 +478,7 @@ def _probe_params(
         "nonce": nonce,
         "probe_name": probe_name,
         "venv": str(venv_root(config.python)),
+        "visible": list(interpreter_mounts(config.python).visible()),
         "home": str(home),
         "claude_dir": str(home / ".claude"),
         "protected": {name: {"paths": entry["paths"], "error": entry["error"]} for name, entry in protected.items()},

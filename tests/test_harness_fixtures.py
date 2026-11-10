@@ -21,8 +21,9 @@ from test_evalkit_instances_store import ToyStore, build_toy_store, build_v1
 
 from weightcode.harness.runner import SANDBOX_PYTHON, SessionResult, run_session
 from weightcode.harness.scripted import ScriptedLauncher, ToolReply, call_and_record
+from weightcode.sandbox.host import DEFAULT_BWRAP
 
-BWRAP = Path("/usr/bin/bwrap")
+BWRAP = DEFAULT_BWRAP  # $WEIGHTCODE_BWRAP or /usr/bin/bwrap
 needs_sandbox = pytest.mark.skipif(
     not (BWRAP.exists() and SANDBOX_PYTHON.exists()),
     reason="scripted sessions need the real bubblewrap sandbox and the sandbox venv (scripts/setup_sandbox_venv.sh)",

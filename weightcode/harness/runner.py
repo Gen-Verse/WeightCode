@@ -103,7 +103,7 @@ from weightcode.harness.provenance import REPO_ROOT, claude_version, code_change
 from weightcode.harness.session import SESSION_SCHEMA, SessionPaths, new_session_id
 from weightcode.harness.tools import sandbox_config, tool_specs
 from weightcode.harness.trial import StudentOverride, TrialError, assemble, check_max_checks, decoy_evidence_source
-from weightcode.sandbox import isolation_selftest
+from weightcode.sandbox import DEFAULT_BWRAP, isolation_selftest
 from weightcode.sandbox.program import PROGRAM_CLOCK, PROGRAM_WALL_S, driver_sha256
 
 DEFAULT_MODEL = "claude-opus-5-5"  # the PREREG editor model
@@ -304,6 +304,7 @@ def run_session(
     skip_audit: bool = False,
     dry_run: bool = False,
     sandbox_python: Path = SANDBOX_PYTHON,
+    bwrap: Path = DEFAULT_BWRAP,
     retention_floor_frac: float | None = None,
     library_sessions: Sequence[str] | None = None,
     loop_context: Path | None = None,
@@ -820,8 +821,10 @@ def run_session(
         "editor": {"model": model, "effort": effort, "launcher": launcher_name,
                    "system_prompt_mode": system_prompt_mode,
                    "claude_version": None if claude_info is None else claude_info["version"]},
-        "sandbox": {"python": str(sandbox_python), "cell_timeout_s": cell_timeout_s, "max_cells": max_cells,
-                    "memory_bytes": memory_bytes, "threads": threads, "max_output_chars": max_output_chars},
+        # bwrap is recorded, not read from the environment: the MCP server starts with a cleaned one
+        "sandbox": {"python": str(sandbox_python), "bwrap": str(Path(bwrap).absolute()), "cell_timeout_s": cell_timeout_s,
+                    "max_cells": max_cells, "memory_bytes": memory_bytes, "threads": threads,
+                    "max_output_chars": max_output_chars},
         "server_threads": threads,
         "server_python": str(SERVER_PYTHON),
         "mcp": {"config_path": str(paths.mcp_json), "tool_timeout_ms": mcp_tool_timeout_ms,
@@ -859,7 +862,7 @@ def run_session(
         "claude": claude_info,
         "created_at": utc_now(),
     }
-    session["provenance"] = collect(sandbox_python=sandbox_python,
+    session["provenance"] = collect(sandbox_python=sandbox_python, bwrap=bwrap,
                                     prompts={"system": system_prompt, "task": task_prompt}, claude=claude_info)
     if prepared is not None and prepared.protect is not None:  # follow-up M: the applier the tools and the final use
         protected = ArmApplier(json.loads(json.dumps(session))).protected  # sets the limit up from these records
@@ -894,7 +897,7 @@ def run_session(
         outcome = LaunchOutcome(launcher=launcher.name, stream_expected=launcher.stream_expected,
                                 started_at=session["created_at"], ended_at=utc_now(),
                                 error=f"launcher: {type(exc).__name__}: {exc}")
-    after = collect(sandbox_python=sandbox_python, prompts={"system": system_prompt, "task": task_prompt},
+    after = collect(sandbox_python=sandbox_python, bwrap=bwrap, prompts={"system": system_prompt, "task": task_prompt},
                     claude=claude_info)
     result = finalize_session(paths, session, outcome, skip_audit=skip_audit, provenance_after=after,
                               code_changes=code_changed(session["provenance"], after),
