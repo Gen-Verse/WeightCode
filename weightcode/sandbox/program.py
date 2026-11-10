@@ -13,6 +13,12 @@ the wall limit is real time.
 
 Everything the run writes is untrusted: the program runs in the driver's process and can change any of its behaviour.
 Callers validate ``deltas.npz`` themselves and treat ``result.json`` as text (``weightcode.harness.program``).
+
+``UnisolatedRunner`` runs the same driver without bubblewrap (``unisolated_launcher.py`` redirects its two directories),
+with the same wall limit, memory and file-size caps, clock and thread environment. It exists to replay a published
+program whose sha256 the caller has checked against a record (``weightcode.examples``) on machines without a
+suitable bubblewrap. The program can then read the host's files and use the network, so it must never run a program
+a language model has just written.
 """
 
 from __future__ import annotations
@@ -34,6 +40,8 @@ from weightcode.sandbox.host import SEAL_ARGV, SandboxConfig, isolated_environme
 PROGRAM_WALL_S = 300.0
 PROGRAM_CLOCK = "virtual-v1"  # the driver's clock (program_driver.CLOCK_VIRTUAL_V1), recorded with every run
 DRIVER_SCRIPT = Path(__file__).resolve().with_name("program_driver.py")
+LAUNCHER_SCRIPT = Path(__file__).resolve().with_name("unisolated_launcher.py")
+ISOLATION_NONE = "none"
 DRIVER_MOUNT = "/opt/weightcode/program_driver.py"
 IN_MOUNT = "/work/in"
 OUT_MOUNT = "/work/out"
@@ -75,6 +83,29 @@ class ProgramSandbox:
 
 
 @dataclass(frozen=True)
+class UnisolatedRunner:
+    """Runs the driver without bubblewrap (module docstring): only for a published program checked by its sha256.
+
+    ``python`` must have numpy importable; it is normally the engine's own interpreter (``sys.executable``).
+    """
+
+    python: Path
+    memory_bytes: int
+    threads: int
+    max_output_chars: int = 30_000
+
+    def as_dict(self) -> dict[str, Any]:
+        return {"isolation": ISOLATION_NONE, "python": str(self.python), "memory_bytes": self.memory_bytes,
+                "threads": self.threads, "max_output_chars": self.max_output_chars, "driver_sha256": driver_sha256(),
+                "launcher_sha256": hashlib.sha256(LAUNCHER_SCRIPT.read_bytes()).hexdigest(),
+                "file_size_limit_bytes": FILE_SIZE_LIMIT_BYTES}
+
+
+ProgramRunner = ProgramSandbox | UnisolatedRunner
+"""Where a program runs: in the bubblewrap sandbox, or (published programs only) without it."""
+
+
+@dataclass(frozen=True)
 class ProgramRun:
     """What one run produced. ``result`` is the driver's result.json (None if absent or unreadable)."""
 
@@ -112,6 +143,13 @@ def build_program_argv(sandbox: ProgramSandbox, in_dir: Path, out_dir: Path, pro
     return argv
 
 
+def build_unisolated_argv(runner: UnisolatedRunner, in_dir: Path, out_dir: Path, program_name: str) -> list[str]:
+    """The command line of one run without bubblewrap: the launcher, the driver and the two work directories."""
+    return [str(runner.python), "-I", "-u", str(LAUNCHER_SCRIPT), "--driver", str(DRIVER_SCRIPT),
+            "--in-dir", str(in_dir.resolve()), "--out-dir", str(out_dir.resolve()), "--",
+            "--program", program_name, "--clock", PROGRAM_CLOCK]
+
+
 def _limit_run(memory_bytes: int) -> None:
     """preexec_fn: the kernel's address-space cap, no core dumps, and the file-size cap of the run."""
     resource.setrlimit(resource.RLIMIT_AS, (memory_bytes, memory_bytes))
@@ -146,9 +184,10 @@ def _read_result(out_dir: Path) -> dict[str, Any] | None:
     return record if isinstance(record, dict) else None
 
 
-def run_program(sandbox: ProgramSandbox, run_dir: Path, program_name: str, wall_s: float = PROGRAM_WALL_S
+def run_program(sandbox: ProgramRunner, run_dir: Path, program_name: str, wall_s: float = PROGRAM_WALL_S
                 ) -> ProgramRun:
-    """Run the program ``run_dir/in/<program_name>`` once (see the module docstring).
+    """Run the program ``run_dir/in/<program_name>`` once (see the module docstring), in the bubblewrap sandbox or,
+    for an ``UnisolatedRunner``, without it.
 
     ``run_dir/in`` must hold the staged inputs; ``run_dir/out`` is created empty; stdout and stderr are written to
     ``run_dir/stdout.txt`` and ``run_dir/stderr.txt``. Status: ``ok`` (the driver reported success), ``error`` (the
@@ -160,19 +199,26 @@ def run_program(sandbox: ProgramSandbox, run_dir: Path, program_name: str, wall_
     in_dir, out_dir = run_dir / "in", run_dir / "out"
     if not (in_dir / program_name).is_file():
         raise ProgramSandboxError(f"the staged program {program_name!r} is missing from {in_dir}")
-    if not os.access(sandbox.bwrap, os.X_OK):
-        raise ProgramSandboxError(f"bubblewrap is missing or not executable at {sandbox.bwrap}")
-    out_dir.mkdir(mode=0o700)
-    argv = build_program_argv(sandbox, in_dir, out_dir, program_name)
+    if isinstance(sandbox, UnisolatedRunner):
+        out_dir.mkdir(mode=0o700)
+        argv = build_unisolated_argv(sandbox, in_dir, out_dir, program_name)
+        env, cwd = isolated_environment(sandbox.threads, str(run_dir.resolve())), str(out_dir.resolve())
+    else:
+        if not os.access(sandbox.bwrap, os.X_OK):
+            raise ProgramSandboxError(f"bubblewrap is missing or not executable at {sandbox.bwrap}")
+        out_dir.mkdir(mode=0o700)
+        argv = build_program_argv(sandbox, in_dir, out_dir, program_name)
+        env, cwd = {}, "/"
     stdout_path, stderr_path = run_dir / "stdout.txt", run_dir / "stderr.txt"
     with open(stdout_path, "wb") as stdout, open(stderr_path, "wb") as stderr:
         began = time.monotonic()
         try:
             proc = subprocess.Popen(argv, stdin=subprocess.DEVNULL, stdout=stdout, stderr=stderr, close_fds=True,
-                                    start_new_session=True, env={}, cwd="/",
+                                    start_new_session=True, env=env, cwd=cwd,
                                     preexec_fn=functools.partial(_limit_run, sandbox.memory_bytes))
         except (OSError, subprocess.SubprocessError) as exc:
-            raise ProgramSandboxError(f"could not start bubblewrap: {exc}") from exc
+            what = "the program" if isinstance(sandbox, UnisolatedRunner) else "bubblewrap"
+            raise ProgramSandboxError(f"could not start {what}: {exc}") from exc
         timed_out = False
         try:
             code: int | None = proc.wait(timeout=wall_s)
@@ -202,7 +248,8 @@ def run_program(sandbox: ProgramSandbox, run_dir: Path, program_name: str, wall_
                       stderr=_head_tail(stderr_path, limit), result=result, out_dir=out_dir)
 
 
-__all__ = ["DRIVER_MOUNT", "DRIVER_SCRIPT", "FILE_SIZE_LIMIT_BYTES", "IN_MOUNT", "OUT_MOUNT", "PROGRAM_CLOCK",
-           "PROGRAM_WALL_S",
-           "STATUS_DIED", "STATUS_ERROR", "STATUS_OK", "STATUS_TIMEOUT", "ProgramRun", "ProgramSandbox",
-           "ProgramSandboxError", "build_program_argv", "driver_sha256", "run_program"]
+__all__ = ["DRIVER_MOUNT", "DRIVER_SCRIPT", "FILE_SIZE_LIMIT_BYTES", "IN_MOUNT", "ISOLATION_NONE", "LAUNCHER_SCRIPT",
+           "OUT_MOUNT", "PROGRAM_CLOCK", "PROGRAM_WALL_S",
+           "STATUS_DIED", "STATUS_ERROR", "STATUS_OK", "STATUS_TIMEOUT", "ProgramRun", "ProgramRunner", "ProgramSandbox",
+           "ProgramSandboxError", "UnisolatedRunner", "build_program_argv", "build_unisolated_argv", "driver_sha256",
+           "run_program"]

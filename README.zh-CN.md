@@ -58,32 +58,40 @@
 <a id="try-it"></a>
 <a id="install"></a>
 
-## ⚡ 立即试用：复制、粘贴、运行
+## ⚡ 立即试用：大约两分钟复现论文的一个结果
 
-🖥️ 需要 **Linux x86-64**、[uv](https://docs.astral.sh/uv/)、系统发行版自带的 **Python 3.14（位于 `/usr`）**，
-以及 [bubblewrap](https://github.com/containers/bubblewrap) **0.11+**，路径为 `/usr/bin/bwrap`
-（Ubuntu 上运行 `sudo apt install bubblewrap`）。不需要 API key，也不需要下载数据集。
+🖥️ 只需要 **Linux x86-64** 和 [uv](https://docs.astral.sh/uv/)。不需要 GPU、API key、root 权限，也不需要配置沙箱。
 
 ```bash
 git clone https://github.com/Gen-Verse/WeightCode.git && cd WeightCode
-uv sync --locked --extra train --extra dev
-bash scripts/setup_sandbox_venv.sh
-mkdir -p ~/.claude/skills && cp -r skills/weightcode ~/.claude/skills/
-uv run weightcode doctor --sandbox-python .venv-sandbox/bin/python
-uv run python scripts/demo/skill_cli_walkthrough.py --root out/skill_cli
+uv sync --locked
+uv run weightcode reproduce scan
 ```
 
-✅ 这几步会安装引擎和只依赖 NumPy 的沙箱，为 Claude Code 安装技能，检查沙箱（输出 `"status": "ok"`），
-再在一个小型合成项目上依次运行技能的全部命令，耗时约 40 秒。自带的示例程序对这个项目来说太弱，
-所以运行以 `status: base-kept` 结束，也就是引擎保留了原模型。某一步失败时，请看[故障排查](#troubleshooting)。
-
-💬 **然后在你自己的项目里打开 Claude Code，这样提出请求：**
+✅ 这条命令在不调用语言模型的情况下，重新运行论文里那个让 SCAN 序列模型学会在命令中使用 "jump" 的程序
+（图 1b 左），然后在论文的留出测试命令上读出原网络和编辑后网络的表现。输出结尾如下：
 
 ```text
-使用 $weightcode，在这些新条件样本上改进我的 ResNet-18，同时保持对干净图像的识别能力。
-我的检查点是 model.pt，labels.json 给出类别顺序。我有相互独立的 experience、selection 和 final 三个图像文件夹。
-干净准确率最多允许下降 1 个百分点。请先检查兼容性，并提出运行预算。
+  SCAN: a rule becomes a capability (Figure 1b, left)
+  Exact match on held-out test commands      before    after
+    new commands with 'jump' (2,568)          0.0%    99.8%
+    old commands (1,000)                     99.6%    99.6%
+  Weights changed: 257 of 803,975
+  Rebuilt network identical to the published one: yes (sha256 6c9bc3bdaf34)
+  Paper: +99.81 pt on new commands, +0.00 pt on old ones, 257 weights changed -> reproduced exactly
 ```
+
+🔍 它做了什么：
+
+- 📥 从 [🤗 数据集](https://huggingface.co/datasets/Boom5426/WeightCode)下载训练好的网络、会话记录和程序（约 10 MB），
+  并从 [SCAN 仓库](https://github.com/brendenlake/SCAN)下载论文所用提交版本的文本文件。每个文件都核对 sha256。
+- 🧱 用 SCAN 的文件重建论文的测试划分，并核对它就是论文读取的那一份。
+- ♻️ 重新运行程序，核对它构造出的编辑后网络与发布的网络逐位一致。
+- 📏 在 2,568 条新命令和 1,000 条旧命令（均为留出数据）上读出原网络和编辑后网络的表现。
+
+🫧 已发布的程序在核对 sha256 之后直接运行，不经过沙箱。加上 `--sandbox-python .venv-sandbox/bin/python`
+就会改在 bubblewrap 里运行（[配置方法](#install-the-skill)）。如果网络受限，可以把 `HF_ENDPOINT` 设为 Hugging Face
+镜像，并用 `--scan-dir` 指向本地的 SCAN 仓库副本。
 
 <a id="agent-skill"></a>
 
@@ -96,6 +104,36 @@ uv run python scripts/demo/skill_cli_walkthrough.py --root out/skill_cli
 | 📥 你提供 | 🤖 智能体执行 | 📦 你得到 |
 | :--- | :--- | :--- |
 | 🧠 一个 FP32 的 torchvision ResNet-18 `state_dict` 及其类别列表<br>🗂️ 三个互不重叠的图像集：*experience*（程序可见）、*selection*（为候选打分）、*final*（只验证一次）<br>🎚️ 你能接受的干净准确率损失 | 🔍 兼容性检查与导入<br>♻️ **复用**已有程序，不调用语言模型<br>✍️ 用受控的 editor **合成**新程序（Claude Code，预算明确）<br>🏆 按固定规则选择，再做一次最终验证 | 🧠 `model.pt`：结果为 `accepted` 时是更新后的模型，否则是原模型<br>📝 程序包，可在其他检查点上重新运行<br>📋 `report.json`：`accepted`、`base-kept` 或 `final-rejected` |
+
+<a id="install-the-skill"></a>
+
+### 🛠️ 安装技能
+
+🫧 这个技能会把每个程序（包括语言模型为你新写的程序）放进 [bubblewrap](https://github.com/containers/bubblewrap)
+沙箱里运行：不能联网，也看不到你的 selection 和 final 数据。它需要 **Linux x86-64**、系统发行版自带的
+**Python 3.14（位于 `/usr`）**，以及 **bubblewrap 0.11+**，路径为 `/usr/bin/bwrap`（Ubuntu 26.04 上运行
+`sudo apt install bubblewrap`；Ubuntu 22.04 和 24.04 自带的版本较旧）。合成新程序还需要
+[Claude Code](https://docs.anthropic.com/en/docs/claude-code)。
+
+```bash
+uv sync --locked --extra train --extra dev
+bash scripts/setup_sandbox_venv.sh
+mkdir -p ~/.claude/skills && cp -r skills/weightcode ~/.claude/skills/
+uv run weightcode doctor --sandbox-python .venv-sandbox/bin/python
+uv run python scripts/demo/skill_cli_walkthrough.py --root out/skill_cli
+```
+
+✅ 这几步会安装带 PyTorch 的引擎和只依赖 NumPy 的沙箱，为 Claude Code 安装技能，检查沙箱（输出 `"status": "ok"`），
+再在一个小型合成项目上依次运行技能的全部命令，耗时约 40 秒。自带的示例程序对这个项目来说太弱，
+所以运行以 `status: base-kept` 结束，也就是引擎保留了原模型。某一步失败时，请看[故障排查](#troubleshooting)。
+
+💬 **然后在你自己的项目里打开 Claude Code，这样提出请求：**
+
+```text
+使用 $weightcode，在这些新条件样本上改进我的 ResNet-18，同时保持对干净图像的识别能力。
+我的检查点是 model.pt，labels.json 给出类别顺序。我有相互独立的 experience、selection 和 final 三个图像文件夹。
+干净准确率最多允许下降 1 个百分点。请先检查兼容性，并提出运行预算。
+```
 
 ### ✅ 为什么可以信任返回的结果
 
@@ -138,7 +176,7 @@ https://github.com/Gen-Verse/WeightCode/tree/main/skills/weightcode
 
 ## 🚀 更多检查
 
-🎈 引擎装好之后（见[立即试用](#try-it)），这一节的所有内容都不需要下载数据集，也不需要 API key。
+🎈 引擎和沙箱装好之后（见[安装技能](#install-the-skill)），这一节的所有内容都不需要下载数据集，也不需要 API key。
 
 ### ▶️ 1. 运行玩具示例
 

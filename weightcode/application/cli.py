@@ -42,7 +42,39 @@ def parser() -> argparse.ArgumentParser:
             run.add_argument("--editor-model", required=True)
             run.add_argument("--checks", type=int, required=True)
             run.add_argument("--cells", type=int, required=True)
+    from weightcode.examples import EXAMPLES
+    rep = sub.add_parser("reproduce", help="Reproduce a paper example from public data: no API key, no language model")
+    rep.add_argument("example", choices=sorted(EXAMPLES))
+    rep.add_argument("--out", type=Path, default=None, help="Output directory (default: out/<example>)")
+    rep.add_argument("--sandbox-python", type=Path, default=None,
+                     help="Run the published program inside the bubblewrap sandbox with this interpreter. Default: "
+                          "run it without the sandbox, after checking its published sha256")
+    rep.add_argument("--scan-dir", type=Path, default=None,
+                     help="scan: an existing checkout of github.com/brendenlake/SCAN instead of downloading its files")
     return p
+
+
+def reproduce(a: argparse.Namespace) -> int:
+    """``weightcode reproduce``: run one example of ``weightcode.examples``; exit 0 only if it matches the paper."""
+    import importlib
+    import sys
+
+    from weightcode.examples import EXAMPLES
+    from weightcode.sandbox.program import ProgramSandbox, UnisolatedRunner
+
+    module = importlib.import_module(EXAMPLES[a.example])
+    memory_bytes, threads = 8 * 2**30, 4  # the program sandbox of the sessions of record
+    if a.sandbox_python is None:
+        runner = UnisolatedRunner(python=Path(sys.executable), memory_bytes=memory_bytes, threads=threads)
+        print("Running the published program without the sandbox (its sha256 is checked first). "
+              "Pass --sandbox-python to run it inside bubblewrap.")
+    else:
+        runner = ProgramSandbox(python=a.sandbox_python, memory_bytes=memory_bytes, threads=threads)
+    if a.scan_dir is not None and a.example != "scan":
+        raise ValueError("--scan-dir applies to the scan example only")
+    options = {"scan_dir": a.scan_dir} if a.scan_dir is not None else {}
+    summary = module.run(a.out or Path("out") / a.example, runner, **options)
+    return 0 if summary.get("matches_paper") else 1
 
 
 def main(argv=None) -> int:
@@ -53,6 +85,8 @@ def main(argv=None) -> int:
     for name in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS"):
         os.environ[name] = str(a.threads)
     try:
+        if a.command == "reproduce":
+            return reproduce(a)
         if a.command == "doctor":
             from weightcode.application.runtime import doctor
             result = doctor(a.sandbox_python, threads=a.threads)
