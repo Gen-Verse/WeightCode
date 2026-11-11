@@ -1,6 +1,6 @@
 <h1 align="center">🧠 WeightCode</h1>
 
-<h3 align="center">🧬 通过权重编程为神经网络安装新能力</h3>
+<h3 align="center">🧬 通过权重空间编程为神经网络安装新能力</h3>
 
 <p align="center">
   <a href="README.md">English</a> · <b>简体中文</b>
