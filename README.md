@@ -1,6 +1,6 @@
 <h1 align="center">🧠 WeightCode</h1>
 
-<h3 align="center">🧬 Installing New Capabilities into Neural Networks via Weight Programming</h3>
+<h3 align="center">🧬 Installing New Capabilities into Neural Networks via Weight-Space Programming</h3>
 
 <p align="center">
   <b>English</b> · <a href="README.zh-CN.md">简体中文</a>
