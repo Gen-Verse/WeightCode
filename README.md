@@ -218,6 +218,12 @@ model. Synthesis currently runs through Claude Code; Codex can operate the skill
 
 ## ⚙️ How it works
 
+| Term | Meaning |
+| :--- | :--- |
+| 🧭 **Weight-Space Programming (WSP)** | The research paradigm: reading, constructing or modifying a neural network's weights with a program. |
+| 📝 **Weight Program** | The concrete artifact: the program `p` that carries out a weight modification. |
+| 🧠 **WeightCode** | Our framework: it installs, reuses and accumulates capabilities with executable weight programs. |
+
 A weight program computes **`W′ = p(W, I)`** from a network's weights `W` and task knowledge `I`:
 
 1. 👀 **Read.** The editor, a frozen language model, works in a NumPy-only sandbox with the network's weights, its

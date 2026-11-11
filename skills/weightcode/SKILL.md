@@ -1,6 +1,6 @@
 ---
 name: weightcode
-description: Install a capability in a trained neural network by synthesizing or reusing an executable weight-update program with WeightCode, without gradient fine-tuning. Use when a user wants a trained model (first adapter: torchvision ResNet-18) to handle a new condition or class decision while keeping its old behaviour, wants to rerun a saved weight program on another checkpoint, or wants such an edit validated and exported. Ordinary source-code edits do not need this skill.
+description: Install a capability in a trained neural network by synthesizing or reusing an executable weight program with WeightCode, without gradient fine-tuning. Use when a user wants a trained model (first adapter: torchvision ResNet-18) to handle a new condition or class decision while keeping its old behaviour, wants to rerun a saved weight program on another checkpoint, or wants such an edit validated and exported. Ordinary source-code edits do not need this skill.
 ---
 
 # WeightCode

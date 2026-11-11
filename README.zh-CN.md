@@ -211,6 +211,12 @@ https://github.com/Gen-Verse/WeightCode/tree/main/skills/weightcode
 
 ## ⚙️ 工作原理
 
+| 术语 | 含义 |
+| :--- | :--- |
+| 🧭 **权重空间编程（Weight-Space Programming, WSP）** | 研究范式：通过程序化方式读取、构造或修改神经网络权重。 |
+| 📝 **权重程序（Weight Program）** | 具体产物：执行权重修改的程序 `p`。 |
+| 🧠 **WeightCode** | 我们提出的框架：使用可执行权重程序实现能力安装、复用与积累。 |
+
 权重程序根据网络的权重 `W` 和任务知识 `I` 计算 **`W′ = p(W, I)`**：
 
 1. 👀 **读。** editor 是一个冻结的语言模型，在只依赖 NumPy 的沙箱里工作，能看到网络权重、前向代码和任务知识 `I`。
