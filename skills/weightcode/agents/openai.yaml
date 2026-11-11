@@ -1,4 +1,4 @@
 interface:
   display_name: "WeightCode"
-  short_description: "Install and reuse executable neural weight programs"
+  short_description: "Install and reuse executable weight programs"
   default_prompt: "Use $weightcode to install a capability in my compatible model and export a validated program bundle."

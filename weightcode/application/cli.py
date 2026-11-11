@@ -14,7 +14,7 @@ BWRAP_HELP = ("bubblewrap binary, 0.8.0 or newer (default: $WEIGHTCODE_BWRAP or 
 def parser() -> argparse.ArgumentParser:
     from weightcode.sandbox.host import DEFAULT_BWRAP
 
-    p = argparse.ArgumentParser(prog="weightcode", description="Install and reuse executable neural weight programs.")
+    p = argparse.ArgumentParser(prog="weightcode", description="Install and reuse executable weight programs.")
     p.add_argument("--threads", type=int, default=4, help="CPU/BLAS threads (default: 4)")
     sub = p.add_subparsers(dest="command", required=True)
     doctor = sub.add_parser("doctor", help="Test the actual Linux/NumPy sandbox")
