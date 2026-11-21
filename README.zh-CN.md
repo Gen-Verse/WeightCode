@@ -25,7 +25,8 @@
   <a href="#quick-start">🚀&nbsp;更多检查</a> ·
   <a href="#run-the-experiments">🔬&nbsp;运行实验</a> ·
   <a href="https://huggingface.co/datasets/Boom5426/WeightCode">🤗&nbsp;数据</a> ·
-  <a href="#repository-map">🗂️&nbsp;代码结构</a>
+  <a href="#repository-map">🗂️&nbsp;代码结构</a> ·
+  <a href="#citation">📖&nbsp;引用</a>
 </p>
 
 💡 **WeightCode 不经过梯度训练，就能为训练好的神经网络安装新能力。** 一个冻结的语言模型编写可执行的*权重程序*，
@@ -364,3 +365,21 @@ export WEIGHTCODE_RUNS=/path/to/store/runs
 ## ⚖️ 许可证
 
 代码以 [MIT 许可证](LICENSE) 发布。随附的第三方资源保留各自的许可证。
+
+<a id="citation"></a>
+
+## 📖 引用
+
+如果 WeightCode 对你的工作有帮助，请引用[论文](https://arxiv.org/abs/2611.25476)：
+
+```bibtex
+@misc{li2026weightcode,
+  title         = {WeightCode: Installing New Capabilities into Neural Networks via Weight-Space Programming},
+  author        = {Bo Li and Taoyong Cui and Bob Zhang and Mengran Li and Chengyang Zhang and Yang Zhang and Pheng Ann Heng and Wanli Ouyang and Zhenfei Yin and Yingcheng Wu and Ling Yang},
+  year          = {2026},
+  eprint        = {2611.25476},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.LG},
+  url           = {https://arxiv.org/abs/2611.25476}
+}
+```

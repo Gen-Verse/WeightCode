@@ -24,7 +24,8 @@
   <a href="#quick-start">🚀&nbsp;More&nbsp;checks</a> ·
   <a href="#run-the-experiments">🔬&nbsp;Experiments</a> ·
   <a href="https://huggingface.co/datasets/Boom5426/WeightCode">🤗&nbsp;Data</a> ·
-  <a href="#repository-map">🗂️&nbsp;Code&nbsp;map</a>
+  <a href="#repository-map">🗂️&nbsp;Code&nbsp;map</a> ·
+  <a href="#citation">📖&nbsp;Citation</a>
 </p>
 
 💡 **WeightCode installs new capabilities into trained neural networks without gradient training.** A frozen
@@ -378,3 +379,21 @@ then pass credentials with `--api-key-file`. Live sessions cost API credit, and 
 ## ⚖️ License
 
 The code is released under the [MIT License](LICENSE). Bundled third-party assets keep their own licenses.
+
+<a id="citation"></a>
+
+## 📖 Citation
+
+If you use WeightCode, please cite the [paper](https://arxiv.org/abs/2611.25476):
+
+```bibtex
+@misc{li2026weightcode,
+  title         = {WeightCode: Installing New Capabilities into Neural Networks via Weight-Space Programming},
+  author        = {Bo Li and Taoyong Cui and Bob Zhang and Mengran Li and Chengyang Zhang and Yang Zhang and Pheng Ann Heng and Wanli Ouyang and Zhenfei Yin and Yingcheng Wu and Ling Yang},
+  year          = {2026},
+  eprint        = {2611.25476},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.LG},
+  url           = {https://arxiv.org/abs/2611.25476}
+}
+```
