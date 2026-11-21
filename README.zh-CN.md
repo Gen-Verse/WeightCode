@@ -3,17 +3,15 @@
 <h3 align="center">🧬 通过权重空间编程为神经网络安装新能力</h3>
 
 <p align="center">
-  <a href="README.md">English</a> · <b>简体中文</b>
-</p>
-
-<p align="center">
   <a href="https://gen-verse.github.io/WeightCode/"><img src="https://img.shields.io/badge/%E9%A1%B9%E7%9B%AE%E4%B8%BB%E9%A1%B5-%E4%BA%A4%E4%BA%92%E6%BC%94%E7%A4%BA-E0963A?style=for-the-badge" alt="项目主页，含交互演示"></a>
   <a href="#try-it"><img src="https://img.shields.io/badge/%E7%AB%8B%E5%8D%B3%E8%AF%95%E7%94%A8-%E5%A4%8D%E5%88%B6%E5%8D%B3%E8%B7%91-258D88?style=for-the-badge" alt="复制命令，在本地运行 WeightCode"></a>
   <a href="#agent-skill"><img src="https://img.shields.io/badge/%E6%99%BA%E8%83%BD%E4%BD%93%E6%8A%80%E8%83%BD-weightcode-405D96?style=for-the-badge" alt="把 WeightCode 当作智能体技能使用"></a>
-  <a href="assets/WeightCode.pdf"><img src="https://img.shields.io/badge/%E8%AE%BA%E6%96%87-PDF-B31B1B?style=for-the-badge" alt="阅读论文（PDF）"></a>
+  <a href="https://arxiv.org/abs/2611.25476"><img src="https://img.shields.io/badge/arXiv-2611.25476-B31B1B?style=for-the-badge&amp;logo=arxiv&amp;logoColor=white" alt="在 arXiv 阅读论文"></a>
 </p>
 
 <p align="center">
+  <a href="README.md"><img src="https://img.shields.io/badge/Language-English-1F6FB2?style=flat-square&amp;logo=googletranslate&amp;logoColor=white" alt="Language: English"></a>
+  <a href="README.zh-CN.md"><img src="https://img.shields.io/badge/%E8%AF%AD%E8%A8%80-%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87-1BA39C?style=flat-square&amp;logo=googletranslate&amp;logoColor=white" alt="语言：简体中文"></a>
   <img src="https://img.shields.io/badge/Python-3.14-3776AB?style=flat-square&amp;logo=python&amp;logoColor=white" alt="Python 3.14">
   <img src="https://img.shields.io/badge/Platform-Linux-555555?style=flat-square&amp;logo=linux&amp;logoColor=white" alt="Linux 平台">
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-258D88?style=flat-square" alt="MIT 许可证"></a>
@@ -50,7 +48,7 @@
 | ♻️ **可复用** | 不调用 LLM，把程序放到 5 个独立训练的网络上重新运行，它会为每个网络写出新的修改。直接复制权重修改则没有效果。 | 保留 **83–110%** 的增益 · 复制的修改 **−0.10 pt** |
 | 🧱 **可接续** | 新程序可以在已经修改过的网络上继续安装能力，并保住先前的能力。 | 新增 **+5.2 至 +14.5 pt** · 原有能力变化在 **0.23 pt** 以内 |
 
-📄 **[阅读论文](assets/WeightCode.pdf)**，查看完整的对比、机制分析和每一次会话。
+📄 **[在 arXiv 阅读论文](https://arxiv.org/abs/2611.25476)**，查看完整的对比、机制分析和每一次会话。
 🤗 **[在 Hugging Face 获取数据](https://huggingface.co/datasets/Boom5426/WeightCode)**。
 📏 净增益等于新条件上的准确率变化加上干净准确率的变化，单位为百分点（pt）。
 机制和复制修改的数字来自留出的分析集，其余来自留出的测试集。
