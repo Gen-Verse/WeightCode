@@ -3,16 +3,14 @@
 <h3 align="center">🧬 Installing New Capabilities into Neural Networks via Weight-Space Programming</h3>
 
 <p align="center">
-  <b>English</b> · <a href="README.zh-CN.md">简体中文</a>
-</p>
-
-<p align="center">
   <a href="#try-it"><img src="https://img.shields.io/badge/Try_it-Copy_%26_run-258D88?style=for-the-badge" alt="Copy the commands and run WeightCode locally"></a>
   <a href="#agent-skill"><img src="https://img.shields.io/badge/Agent_Skill-weightcode-405D96?style=for-the-badge" alt="Use WeightCode as an agent skill"></a>
-  <a href="assets/WeightCode.pdf"><img src="https://img.shields.io/badge/Paper-PDF-B31B1B?style=for-the-badge" alt="Read the paper (PDF)"></a>
+  <a href="https://arxiv.org/abs/2611.25476"><img src="https://img.shields.io/badge/arXiv-2611.25476-B31B1B?style=for-the-badge&amp;logo=arxiv&amp;logoColor=white" alt="Read the paper on arXiv"></a>
 </p>
 
 <p align="center">
+  <a href="README.md"><img src="https://img.shields.io/badge/Language-English-1F6FB2?style=flat-square&amp;logo=googletranslate&amp;logoColor=white" alt="Language: English"></a>
+  <a href="README.zh-CN.md"><img src="https://img.shields.io/badge/%E8%AF%AD%E8%A8%80-%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87-1BA39C?style=flat-square&amp;logo=googletranslate&amp;logoColor=white" alt="语言：简体中文"></a>
   <img src="https://img.shields.io/badge/Python-3.14-3776AB?style=flat-square&amp;logo=python&amp;logoColor=white" alt="Python 3.14">
   <img src="https://img.shields.io/badge/Platform-Linux-555555?style=flat-square&amp;logo=linux&amp;logoColor=white" alt="Linux platform">
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-258D88?style=flat-square" alt="MIT license"></a>
@@ -50,7 +48,7 @@ examples into new weights; the updated network runs on its own, and the program 
 | ♻️ **Reuse** | Rerun without the LLM on 5 independently trained networks, a program writes a new edit for each; copying the weight edit does not. | **83–110%** of the gain kept · copied edit **−0.10 pt** |
 | 🧱 **Succession** | New programs build on an already edited network and keep the earlier capability. | **+5.2 to +14.5 pt** added · earlier within **0.23 pt** |
 
-📄 **[Read the paper](assets/WeightCode.pdf)** for the full comparisons, the mechanism analyses and every session.
+📄 **[Read the paper on arXiv](https://arxiv.org/abs/2611.25476)** for the full comparisons, the mechanism analyses and every session.
 🤗 **[Get the data on Hugging Face](https://huggingface.co/datasets/Boom5426/WeightCode)**.
 📏 Net gain is the accuracy change on the new condition plus the change in clean accuracy, in percentage points (pt).
 Mechanism and copied-edit numbers are on a held-out analysis split; the rest are on held-out test sets.
